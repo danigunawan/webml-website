@@ -1,0 +1,1 @@
+http://belem.oss-cn-shanghai.aliyuncs.com/webml/model/ic/*.onnx
