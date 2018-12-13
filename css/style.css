@@ -1007,3 +1007,11 @@ footer {
 #extra:hover {
   color: rgba(255, 111, 97, 0.9);
 }
+
+#canvas {
+  display: none;
+}
+
+.ir {
+  color: rgba(255, 111, 97, 1.0);
+}

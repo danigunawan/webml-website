@@ -103,6 +103,7 @@ $(document).ready(function () {
     $('#progressContainer').slideToggle(300);
     $('.github-corner').slideToggle(200);
     $('#mobile-nav-toggle').slideToggle(200);
+    $('#mobile-nav-toggle i').slideToggle(200);
     $('footer').slideToggle(800);
 
     if($('#extraspan').hasClass('fa-angle-up')){

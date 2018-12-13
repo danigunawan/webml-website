@@ -1,5 +1,5 @@
 const mobilenet_v1_tflite = {
-  modelName: 'Mobilenet V1(TFlite)',
+  modelName: 'mobilenet_v1_tflite',
   inputSize: [224, 224, 3],
   outputSize: 1001,
   modelFile: './model/mobilenet_v1_1.0_224.tflite',
@@ -10,7 +10,7 @@ const mobilenet_v1_tflite = {
   }
 };
 const mobilenet_v2_tflite = {
-  modelName: 'Mobilenet V2(TFlite)',
+  modelName: 'mobilenet_v2_tflite',
   inputSize: [224, 224, 3],
   outputSize: 1001,
   modelFile: './model/mobilenet_v2_1.0_224.tflite',
@@ -21,7 +21,7 @@ const mobilenet_v2_tflite = {
   }
 };
 const inception_v3_tflite = {
-  modelName: 'Inception V3(TFlite)',
+  modelName: 'inception_v3_tflite',
   inputSize: [299, 299, 3],
   outputSize: 1001,
   modelFile: './model/inception_v3.tflite',
@@ -32,7 +32,7 @@ const inception_v3_tflite = {
   },
 };
 const inception_v4_tflite = {
-  modelName: 'Inception V4(TFlite)',
+  modelName: 'inception_v4_tflite',
   inputSize: [299, 299, 3],
   outputSize: 1001,
   modelFile: './model/inception_v4.tflite',
@@ -43,7 +43,7 @@ const inception_v4_tflite = {
   }
 };
 const squeezenet_tflite = {
-  modelName: 'Squeezenet(TFlite)',
+  modelName: 'squeezenet_tflite',
   inputSize: [224, 224, 3],
   outputSize: 1001,
   modelFile: './model/squeezenet.tflite',
@@ -54,7 +54,7 @@ const squeezenet_tflite = {
   }
 };
 const inception_resnet_v2_tflite = {
-  modelName: 'Incep. Res. V2(TFlite)',
+  modelName: 'inception_resnet_v2_tflite',
   inputSize: [299, 299, 3],
   outputSize: 1001,
   modelFile: './model/inception_resnet_v2.tflite',
@@ -68,7 +68,7 @@ const inception_resnet_v2_tflite = {
   }
 };
 const squeezenet_onnx = {
-  modelName: 'SqueezeNet(Onnx)',
+  modelName: 'squeezenet_onnx',
   modelFile: './model/squeezenet1.1.onnx',
   labelsFile: './model/labels1000.txt',
   inputSize: [224, 224, 3],
@@ -84,7 +84,7 @@ const squeezenet_onnx = {
   }
 };
 const mobilenet_v2_onnx = {
-  modelName: 'Mobilenet v2(Onnx)',
+  modelName: 'mobilenet_v2_onnx',
   modelFile: './model/mobilenetv2-1.0.onnx',
   labelsFile: './model/labels1000.txt',
   inputSize: [224, 224, 3],
@@ -100,7 +100,7 @@ const mobilenet_v2_onnx = {
   }
 };
 const resnet_v1_onnx = {
-  modelName: 'ResNet50 v1(Onnx)',
+  modelName: 'resnet_v1_onnx',
   modelFile: './model/resnet50v1.onnx',
   labelsFile: './model/labels1000.txt',
   inputSize: [224, 224, 3],
@@ -116,7 +116,7 @@ const resnet_v1_onnx = {
   }
 };
 const resnet_v2_onnx = {
-  modelName: 'ResNet50 v2(Onnx)',
+  modelName: 'resnet_v2_onnx',
   modelFile: './model/resnet50v2.onnx',
   labelsFile: './model/labels1000.txt',
   inputSize: [224, 224, 3],
@@ -131,15 +131,15 @@ const resnet_v2_onnx = {
     softmax: true,
   }
 };
-const inceptionv2_onnx = {
-  modelName: 'Inception v2(Onnx)',
-  modelFile: './model/inceptionv2.onnx',
+const inception_v2_onnx = {
+  modelName: 'inception_v2_onnx',
+  modelFile: './model/inception_v2.onnx',
   labelsFile: './model/ilsvrc2012labels.txt',
   inputSize: [224, 224, 3],
   outputSize: 1000,
 };
 const densenet_onnx = {
-  modelName: 'DenseNet(Onnx)',
+  modelName: 'densenet_onnx',
   modelFile: './model/densenet121.onnx',
   labelsFile: './model/labels1000.txt',
   inputSize: [224, 224, 3],
@@ -193,7 +193,7 @@ function main(camera) {
     mobilenet_v2_onnx,
     resnet_v1_onnx,
     resnet_v2_onnx,
-    inceptionv2_onnx,
+    inception_v2_onnx,
     densenet_onnx,
   ];
 
@@ -320,21 +320,21 @@ function main(camera) {
     }, 10);
   }
 
-  function fileExists(url) {
-    var exists;
-    $.ajax({
-      url:url,
-      async:false,
-      type:'HEAD',
-      error:function() { exists = 0; },
-      success:function() { exists = 1; }
-    });
-    if (exists === 1) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // function fileExists(url) {
+  //   var exists;
+  //   $.ajax({
+  //     url:url,
+  //     async:false,
+  //     type:'HEAD',
+  //     error:function() { exists = 0; },
+  //     success:function() { exists = 1; }
+  //   });
+  //   if (exists === 1) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   function updateProgress(ev) {
     if (ev.lengthComputable) {
@@ -353,7 +353,7 @@ function main(camera) {
   function updateResult(result) {
     console.log(`Inference time: ${result.time} ms`);
     let inferenceTimeElement = document.getElementById('inferenceTime');
-    inferenceTimeElement.innerHTML = `inference time: <em style="color:green;font-weight:bloder;">${result.time} </em>ms`;
+    inferenceTimeElement.innerHTML = `inference time: <span class='ir'>${result.time} ms</span>`;
     console.log(`Classes: `);
     result.classes.forEach((c, i) => {
       console.log(`\tlabel: ${c.label}, probability: ${c.prob}%`);
@@ -394,22 +394,30 @@ function main(camera) {
     }
   }
 
+  console.log(currentModel)
+
   // register models
   for (let model of availableModels) {
-    console.log(currentModel)
 
-    if (!fileExists(model.modelFile)) {
-      continue;
+    // if (!fileExists(model.modelFile)) {
+    //   continue;
+    // }
+
+    if(currentModel == model.modelName) {
+      utils.changeModelParam(model)
     }
+
+    console.log(model.modelName + ' ' + currentModel)
+
     // let dropdownBtn = $('<button class="dropdown-item"/>')
     //   .text(model.modelName)
     //   .click(_ => changeModel(model));
     // $('.available-models').append(dropdownBtn);
 
-    if (!currentModel) {
-      utils.changeModelParam(model);
-      currentModel = model.modelName;
-    }
+    // if (!currentModel) {
+    //   utils.changeModelParam(model);
+    //   currentModel = model.modelName;
+    // }
   }
 
   // register prefers
@@ -442,14 +450,19 @@ function main(camera) {
     imageElement.onload = function() {
       utils.predict(imageElement).then(ret => updateResult(ret));
     }
+    console.log(currentBackend)
+    console.log(currentPrefer)
+    console.log(imageElement)
+    //utils.changeModelParam(currentModel);
+    // utils.changeModelParam(mobilenet_v1_tflite);
     utils.init(currentBackend, currentPrefer).then(() => {
       utils.predict(imageElement).then(ret => updateResult(ret));
     }).catch((e) => {
       console.warn(`Failed to init ${utils.model._backend}, try to use WASM`);
       console.error(e);
       showAlert(utils.model._backend);
-      changeBackend('WASM');
     });
+    utils.deleteAll();
   } else {
     let stats = new Stats();
     stats.dom.style.cssText = 'position:fixed;top:60px;left:10px;cursor:pointer;opacity:0.9;z-index:10000';
@@ -465,7 +478,6 @@ function main(camera) {
         console.warn(`Failed to init ${utils.model._backend}, try to use WASM`);
         console.error(e);
         showAlert(utils.model._backend);
-        changeBackend('WASM');
       });
     }).catch((error) => {
       console.log('getUserMedia error: ' + error.name, error);
