@@ -94,6 +94,24 @@ $(document).ready(function () {
     location.href = strsearch;
   });
 
+  $('#extra').click(function(){
+    $('#header-sticky-wrapper').slideToggle(800);
+    $('#header').slideToggle(700);
+    $('#query').slideToggle(600);
+    // $('#ictitle').slideToggle(500);
+    $('.nav-pills').slideToggle(400);
+    $('#progressContainer').slideToggle(300);
+    $('.github-corner').slideToggle(200);
+    $('#mobile-nav-toggle').slideToggle(200);
+    $('footer').slideToggle(800);
+
+    if($('#extraspan').hasClass('fa-angle-up')){
+      $('#extraspan').removeClass('fa-angle-up').addClass('fa-angle-down');
+    } else {
+      $('#extraspan').removeClass('fa-angle-down').addClass('fa-angle-up');
+    }
+  });
+
 });
 
 function getRandom(min, max) {

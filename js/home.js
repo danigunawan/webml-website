@@ -163,3 +163,27 @@ $(document).ready(function () {
   };
   e.positionProperty = "parallaxPosition"; $.stellar(e)
 });
+
+function isWebML() {
+  if (navigator.ml && navigator.ml.getNeuralNetworkContext()) {
+    if (!navigator.ml.isPolyfill) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+$(document).ready(function () {
+  if(!isWebML()){
+    $('#WebML').addClass('dnone');
+    $('#l-WebML').addClass('dnone');
+    $('#webmlstatus').addClass('webml-status-false').html('not supported');
+  } else {
+    $('#WebML').removeClass('dnone');
+    $('#l-WebML').removeClass('dnone');
+    $('#webmlstatus').addClass('webml-status-true').html('supported');
+  }
+});
