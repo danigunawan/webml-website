@@ -1,8 +1,11 @@
 node_modules/
 examples/**/*.tflite
 examples/**/*.onnx
-examples/**/**/*.tflite
-examples/**/**/*.onnx
+# examples/**/**/*.tflite
+# examples/**/**/*.onnx
+examples/**/**/inception_v3.tflite
+examples/**/**/inception_resnet_v2.tflite
+examples/**/**/inception_v4.tflite
 examples/ssd_mobilenet/model/
 !examples/ssd_mobilenet/model/README.md
 .DS_Store
