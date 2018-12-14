@@ -182,7 +182,6 @@ class Utils {
   }
 
   changeModelParam(newModel) {
-    console.log(newModel)
     this.inputSize = newModel.inputSize;
     this.outputSize = newModel.outputSize;
     this.modelFile = newModel.modelFile;
