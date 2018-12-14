@@ -1,6 +1,6 @@
 node_modules/
-examples/**/*.tflite
-examples/**/*.onnx
+# examples/**/*.tflite
+# examples/**/*.onnx
 # examples/**/**/*.tflite
 # examples/**/**/*.onnx
 examples/**/**/inception_v3.tflite
