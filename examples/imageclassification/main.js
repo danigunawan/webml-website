@@ -495,4 +495,10 @@ function main(camera) {
   }
 }
 
-document.addEventListener('load', main(), false);
+let searchParams = new URLSearchParams(location.search);
+let us = searchParams.get('s');
+if(us =='camera') {
+  document.addEventListener('load', main('camera'), false);
+} else {
+  document.addEventListener('load', main(), false);
+}
