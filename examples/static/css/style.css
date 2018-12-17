@@ -645,6 +645,15 @@ body.mobile-nav-active #mobile-nav-toggle {
   color: rgba(255, 111, 97, 1.0);
 }
 
+.disabled, .disabled h3 {
+  color: #555 !important;
+}
+
+.disabled:hover, .disabled h3:hover {
+  color: #777 !important;
+}
+
+
 .examples-col p {
   font-size: 14px;
 }
