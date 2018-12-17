@@ -1107,5 +1107,17 @@ footer {
 
 video {
   text-align: center;
-  border: 1px solid red;
+  border: 1px solid rgba(255, 111, 97, 1.0);
+}
+
+@media (max-width: 768px) {
+  video {
+    width: 80vw;
+  }
+} 
+
+#inferenceTime {
+  display: inline-block;
+  text-align: center;
+  margin: 0px auto;
 }
