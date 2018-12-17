@@ -1104,3 +1104,8 @@ footer {
   display: block;
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
+
+video {
+  text-align: center;
+  border: 1px solid red;
+}

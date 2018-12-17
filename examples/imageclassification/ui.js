@@ -78,8 +78,14 @@ $(document).ready(function () {
     $('#1a').addClass('active');  
   }
 
-  if(getOS() !== 'Mac OS') {
-    // $('.prefer').addClass('dnone');
+  if(getOS() != 'Mac OS') {
+    $('#l-fast').addClass('dnone');
+    $('#l-sustained').addClass('dnone');
+    $('#l-WebML').removeClass('dnone');
+  } else {
+    $('#l-WebML').addClass('dnone');
+    $('#l-fast').removeClass('dnone');
+    $('#l-sustained').removeClass('dnone');
   }
 
   if(!isWebML()){

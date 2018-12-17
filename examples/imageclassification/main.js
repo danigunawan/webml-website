@@ -462,7 +462,7 @@ function main(camera) {
       console.error(e);
       showAlert(utils.model._backend);
     });
-    utils.deleteAll();
+    // utils.deleteAll();
   } else {
     let stats = new Stats();
     stats.dom.style.cssText = 'position:fixed;top:60px;left:10px;cursor:pointer;opacity:0.9;z-index:10000';

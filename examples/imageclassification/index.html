@@ -102,15 +102,6 @@
     <div class="filter mb-3">
       <table id="filter" class="t-filter table table-condensed">
         <tbody>
-          <tr class='prefer'>
-              <th class='text-center'>Prefer</th>
-              <td>
-                <input type="radio" name="p" class="d-none" id="fast" value="fast">
-                <label id="l-fast" for="fast">BNNS</label>
-                <input type="radio" name="p" class="d-none" id="sustained" value="sustained">
-                <label id="l-sustained" for="sustained">MPS</label>
-              </td>
-            </tr>
           <tr class='backend'>
             <th class='text-center'>Backend</th>
             <td>
@@ -120,6 +111,10 @@
               <label id="l-WebGL" for="WebGL">WebGL</label>
               <input type="radio" name="b" class="d-none" id="WebML" value="WebML">
               <label id="l-WebML" for="WebML">WebML</label>
+              <input type="radio" name="p" class="d-none" id="fast" value="fast">
+              <label id="l-fast" for="fast">BNNS</label>
+              <input type="radio" name="p" class="d-none" id="sustained" value="sustained">
+              <label id="l-sustained" for="sustained">MPS</label>
             </td>
           </tr>
           <tr class='model'>
@@ -193,7 +188,7 @@
       </div>
 
       <div class="tab-content clearfix">
-        <div class="tab-pane active" id="1a">
+        <div class="tab-pane text-center active" id="1a">
           <div class="col-lg-12 col-xs-12 text-center">
             <figure class="item">
                 <div class="inner">
@@ -217,7 +212,7 @@
             <canvas id="canvas" width=224 height=224></canvas>
           </div>
         </div>
-        <div class="tab-pane" id="2a">
+        <div class="tab-pane text-center" id="2a">
           <video id="video" autoplay playsinline></video>
         </div>
 
