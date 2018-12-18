@@ -7,7 +7,10 @@ const mobilenet_v1_tflite = {
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
-  }
+  },
+  intro: 'An efficient Convolutional Neural Networks for Mobile Vision Applications. Loading MobileNet model trained by ImageNet in TensorFlow Lite format, constructs and inferences it by WebML API.',
+  introUrl: 'https://arxiv.org/pdf/1704.04861.pdf',
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/mobilenet_v1_1.0_224.tflite'
 };
 const mobilenet_v2_tflite = {
   modelName: 'mobilenet_v2_tflite',
@@ -18,7 +21,10 @@ const mobilenet_v2_tflite = {
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
-  }
+  },
+  intro: 'MobileNetV2 improves the state of the art performance of mobile models. Loading MobileNet model v2.0 trained by ImageNet in TensorFlow Lite format, constructs and inferences it by WebML API.',
+  introUrl: 'https://arxiv.org/abs/1801.04381',
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/mobilenet_v2_1.0_224.tflite'
 };
 const inception_v3_tflite = {
   modelName: 'inception_v3_tflite',
@@ -30,6 +36,9 @@ const inception_v3_tflite = {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
   },
+  intro: 'Inception-v3 is trained for the ImageNet Large Visual Recognition Challenge. Loading Inception-v3 model trained by ImageNet in TensorFlow Lite format, constructs and inferences it by WebML API.',
+  introUrl: 'http://arxiv.org/abs/1512.00567',
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/inception_v3.tflite'
 };
 const inception_v4_tflite = {
   modelName: 'inception_v4_tflite',
@@ -40,7 +49,10 @@ const inception_v4_tflite = {
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
-  }
+  },
+  intro: '',
+  introUrl: '',
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/inception_v4.tflite'
 };
 const squeezenet_tflite = {
   modelName: 'squeezenet_tflite',
@@ -51,7 +63,10 @@ const squeezenet_tflite = {
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
-  }
+  },
+  intro: '',
+  introUrl: '',
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/squeezenet.tflite'
 };
 const inception_resnet_v2_tflite = {
   modelName: 'inception_resnet_v2_tflite',
@@ -65,7 +80,10 @@ const inception_resnet_v2_tflite = {
   },
   postOptions: {
     softmax: true,
-  }
+  },
+  intro: '',
+  introUrl: '',
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/inception_resnet_v2.tflite'
 };
 const squeezenet_onnx = {
   modelName: 'squeezenet_onnx',
@@ -81,7 +99,10 @@ const squeezenet_onnx = {
   },
   postOptions: {
     softmax: true,
-  }
+  },
+  intro: 'A light-weight CNN providing Alexnet level accuracy with 50X fewer parameters. Loading SqueezeNet model trained by ImageNet in ONNX format, constructs and inferences it by WebML API.',
+  introUrl: 'https://arxiv.org/abs/1602.07360',
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/squeezenet1.1.onnx'
 };
 const mobilenet_v2_onnx = {
   modelName: 'mobilenet_v2_onnx',
@@ -97,7 +118,10 @@ const mobilenet_v2_onnx = {
   },
   postOptions: {
     softmax: true,
-  }
+  },
+  intro: '',
+  introUrl: '',
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/mobilenetv2-1.0.onnx'
 };
 const resnet_v1_onnx = {
   modelName: 'resnet_v1_onnx',
@@ -113,7 +137,10 @@ const resnet_v1_onnx = {
   },
   postOptions: {
     softmax: true,
-  }
+  },
+  intro: '',
+  introUrl: '',
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/resnet50v1.onnx'
 };
 const resnet_v2_onnx = {
   modelName: 'resnet_v2_onnx',
@@ -129,7 +156,10 @@ const resnet_v2_onnx = {
   },
   postOptions: {
     softmax: true,
-  }
+  },
+  intro: '',
+  introUrl: '',
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/resnet50v2.onnx'
 };
 const inception_v2_onnx = {
   modelName: 'inception_v2_onnx',
@@ -137,6 +167,9 @@ const inception_v2_onnx = {
   labelsFile: './model/ilsvrc2012labels.txt',
   inputSize: [224, 224, 3],
   outputSize: 1000,
+  intro: '',
+  introUrl: '',
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/inception_v2.onnx'
 };
 const densenet_onnx = {
   modelName: 'densenet_onnx',
@@ -153,13 +186,10 @@ const densenet_onnx = {
   },
   postOptions: {
     softmax: true,
-  }
-};
-const preferMap = {
-  'MPS': 'sustained',
-  'BNNS': 'fast',
-  'sustained': 'MPS',
-  'fast': 'BNNS',
+  },
+  intro: '',
+  introUrl: '',
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/densenet121.onnx'
 };
 
 function getURLSearchParams_prefer(){
@@ -181,33 +211,26 @@ function getURLSearchParams_model(){
   }
 }
 
-function main(camera) {
-  const availableModels = [
-    mobilenet_v1_tflite,
-    mobilenet_v2_tflite,
-    inception_v3_tflite,
-    inception_v4_tflite,
-    squeezenet_tflite,
-    inception_resnet_v2_tflite,
-    squeezenet_onnx,
-    mobilenet_v2_onnx,
-    resnet_v1_onnx,
-    resnet_v2_onnx,
-    inception_v2_onnx,
-    densenet_onnx,
-  ];
+const availableModels = [
+  mobilenet_v1_tflite,
+  mobilenet_v2_tflite,
+  inception_v3_tflite,
+  inception_v4_tflite,
+  squeezenet_tflite,
+  inception_resnet_v2_tflite,
+  squeezenet_onnx,
+  mobilenet_v2_onnx,
+  resnet_v1_onnx,
+  resnet_v2_onnx,
+  inception_v2_onnx,
+  densenet_onnx,
+];
 
+function main(camera) {
   const videoElement = document.getElementById('video');
   const imageElement = document.getElementById('image');
   const inputElement = document.getElementById('input');
-  const buttonEelement = document.getElementById('button');
-  const backend = document.getElementById('backend');
-  const selectModel = document.getElementById('selectModel');
-  const wasm = document.getElementById('wasm');
-  const webgl = document.getElementById('webgl');
-  const webml = document.getElementById('webml');
   const canvasElement = document.getElementById('canvas');
-  const progressContainer = document.getElementById('progressContainer');
   const progressBar = document.getElementById('progressBar');
 
   let currentBackend = getURLSearchParams_backend();
@@ -251,91 +274,6 @@ function main(camera) {
     }
   }
 
-  function changeBackend(newBackend, force) {
-    if (!force && currentBackend === newBackend) {
-      return;
-    }
-    streaming = false;
-    utils.deleteAll();
-    setTimeout(() => {
-      utils.init(newBackend, currentPrefer).then(() => {
-        currentBackend = newBackend;
-        if (!camera) {
-          utils.predict(imageElement).then(ret => updateResult(ret));
-        } else {
-          streaming = true;
-          startPredict();
-        }
-      }).catch((e) => {
-        console.warn(`Failed to change backend ${newBackend}, switch back to ${currentBackend}`);
-        console.log(e);
-        showAlert(newBackend);
-        changeBackend(currentBackend, true);
-      });
-    }, 10);
-  }
-
-  function changeModel(newModel) {
-    if (currentModel === newModel.modelName) {
-      return;
-    }
-    streaming = false;
-    utils.deleteAll();
-    utils.changeModelParam(newModel);
-    currentPrefer = "sustained";
-    currentModel = newModel.modelName;
-    setTimeout(() => {
-      utils.init(currentBackend, currentPrefer).then(() => {
-        if (!camera) {
-          utils.predict(imageElement).then(ret => updateResult(ret));
-        } else {
-          streaming = true;
-          startPredict();
-        }
-      });
-    }, 10);
-  }
-
-  function changePrefer(newPrefer, force) {
-    if (currentPrefer === newPrefer && !force) {
-      return;
-    }
-    streaming = false;
-    utils.deleteAll();
-    setTimeout(() => {
-      utils.init(currentBackend, newPrefer).then(() => {
-        currentPrefer = newPrefer;
-        if (!camera) {
-          utils.predict(imageElement).then(ret => updateResult(ret));
-        } else {
-          streaming = true;
-          startPredict();
-        }
-      }).catch((e) => {
-        console.warn(`Failed to change backend ${preferMap[newPrefer]}, switch back to ${preferMap[currentPrefer]}`);
-        console.error(e);
-        showAlert(preferMap[newPrefer]);
-        changePrefer(currentPrefer, true);
-      });
-    }, 10);
-  }
-
-  // function fileExists(url) {
-  //   var exists;
-  //   $.ajax({
-  //     url:url,
-  //     async:false,
-  //     type:'HEAD',
-  //     error:function() { exists = 0; },
-  //     success:function() { exists = 1; }
-  //   });
-  //   if (exists === 1) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
   function updateProgress(ev) {
     if (ev.lengthComputable) {
       let percentComplete = ev.loaded / ev.total * 100;
@@ -343,7 +281,6 @@ function main(camera) {
       progressBar.style = `width: ${percentComplete}%`;
       progressBar.innerHTML = `Loading Model: ${percentComplete}%`;
       // if (ev.loaded === ev.total) {
-      //   progressContainer.style.display = "none";
       //   progressBar.style = `width: 0%`;
       //   progressBar.innerHTML = `0%`;
       // }
@@ -363,28 +300,6 @@ function main(camera) {
       probElement.innerHTML = `${c.prob}%`;
     });
   }
- 
-  // if (nnNative) {
-  //   webml.onclick = function (e) {
-  //     removeAlertElement();
-  //     checkPreferParam();
-  //     changeBackend('WebML');
-  //   };
-  // }
-
-  // if (nnPolyfill.supportWebGL) {
-  //   webgl.onclick = function(e) {
-  //     removeAlertElement();
-  //     changeBackend('WebGL');
-  //   };
-  // }
-
-  // if (nnPolyfill.supportWasm) {
-  //   wasm.onclick = function(e) {
-  //     removeAlertElement();
-  //     changeBackend('WASM');
-  //   };
-  // }
 
   if (currentBackend === '') {
     if (nnNative) {
@@ -394,44 +309,15 @@ function main(camera) {
     }
   }
 
-  console.log(currentModel)
-
   // register models
   for (let model of availableModels) {
-
-    // if (!fileExists(model.modelFile)) {
-    //   continue;
-    // }
-
     if(currentModel == model.modelName) {
       utils.changeModelParam(model)
     }
-
-    console.log(model.modelName + ' ' + currentModel)
-
-    // let dropdownBtn = $('<button class="dropdown-item"/>')
-    //   .text(model.modelName)
-    //   .click(_ => changeModel(model));
-    // $('.available-models').append(dropdownBtn);
-
-    // if (!currentModel) {
-    //   utils.changeModelParam(model);
-    //   currentModel = model.modelName;
-    // }
   }
 
   // register prefers
   if (getOS() === 'Mac OS' && currentBackend === 'WebML') {
-
-    // let MPS = $('<button class="dropdown-item"/>')
-    //   .text('MPS')
-    //   .click(_ => changePrefer(preferMap['MPS']));
-    // $('.preference').append(MPS);
-    // let BNNS = $('<button class="dropdown-item"/>')
-    //   .text('BNNS')
-    //   .click(_ => changePrefer(preferMap['BNNS']));
-    // $('.preference').append(BNNS);
-
     console.log(currentPrefer)
     if (!currentPrefer) {
       currentPrefer = "sustained";
@@ -502,3 +388,41 @@ if(us =='camera') {
 } else {
   document.addEventListener('load', main(), false);
 }
+
+$(document).ready(function () {
+  $('.model label').each(function(){
+    $(this).on('mouseover touchstart', function() {
+      let modelid = this.id.replace('l-', '');
+      for (model of availableModels) {
+        if(modelid == model.modelName) {
+
+          $('#intro').slideDown();
+          
+          if(model.intro) {
+            $('#introdescription').html(model.intro);
+            $('#introdescription').removeClass('dnone');
+          } else {
+            $('#introdescription').addClass('dnone');
+          }
+
+          if(model.introUrl) {
+            $('#introurl').html('Paper');
+            $('#introurl').attr('href', model.introUrl);
+            $('#introurl').removeClass('dnone');
+          } else {
+            $('#introurl').addClass('dnone');
+          }
+
+          if(model.netronUrl) {
+            $('#netronurl').html(model.modelName + ' Model Viewer');
+            $('#netronurl').attr('href', model.netronUrl);
+            $('#netronurl').removeClass('dnone');
+          } else {
+            $('#netronurl').addClass('dnone');
+          }
+        }
+      }
+      $('#intro').delay(5000).slideUp();
+    })
+  })
+});

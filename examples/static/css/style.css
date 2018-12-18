@@ -915,7 +915,7 @@ footer {
 }
 
 .progress-bar {
-  background-color: rgba(255, 111, 97, 1.0);
+  background-color: rgba(73, 193, 100, 1.0);
   height: 1px;
   color: rgba(255, 111, 97, 1.0);
   border: 0px;
@@ -1022,7 +1022,7 @@ footer {
 }
 
 .ir {
-  color: rgba(255, 111, 97, 1.0);
+  color: rgba(73, 193, 100, 1.0);
 }
 
 /* #image {
@@ -1102,12 +1102,10 @@ footer {
 }
 .inner img {
   display: block;
-  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 video {
   text-align: center;
-  border: 1px solid rgba(255, 111, 97, 1.0);
 }
 
 @media (max-width: 768px) {
@@ -1121,3 +1119,46 @@ video {
   text-align: center;
   margin: 0px auto;
 }
+
+@media (min-width: 1200px) {
+  #intro {
+    max-width: 1140px;
+  }
+}
+
+#intro { 
+  display: none; 
+  background-color: rgba(62, 142, 157, 1.0);
+  color: rgba(255, 255, 255, 1.0);
+  padding: 1rem;
+  font-size: 0.8rem;
+  margin: 0rem auto;
+  text-align: center;
+}
+
+#introdescription {
+  text-align: left;
+}
+
+#intro a {
+  display: inline-block;
+  margin: 0 4px 0 0;
+  border-bottom: 1px dotted rgba(255, 255, 255, 1.0);
+  color:rgba(255, 255, 255, 1.0);
+  padding: 0 4px;
+  text-transform: capitalize;
+}
+
+#intro a:hover {
+  border-bottom: 1px solid rgba(255, 255, 255, 1.0);
+  color:rgba(62, 142, 157, 1.0);
+  background-color: rgba(255, 255, 255, 1.0);
+}
+
+/* 
+  color schema:
+  rgba(255, 111, 97, 1.0);
+  rgba(73, 193, 100, 1.0);
+  rgba(62, 142, 157, 1.0)
+  rgba(255, 174, 91, 1.0)
+*/
