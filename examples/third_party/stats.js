@@ -49,13 +49,9 @@
 
         if (fpsnow < 10)
           c = '255, 111, 97,';
-        else if (fpsnow < 20 && fpsnow >= 10)
+        else if (fpsnow < 30 && fpsnow >= 10)
           c = '255, 174, 91, ';
-        else if (fpsnow < 30 && fpsnow >= 20)
-          c = '255, 174, 91, ';
-        else if (fpsnow < 40 && fpsnow >= 30)
-          c = '62, 142, 157, ';
-        else if (fpsnow < 50 && fpsnow >= 40)
+        else if (fpsnow < 50 && fpsnow >= 30)
           c = '62, 142, 157, ';
         else if (fpsnow >= 50)
           c = '73, 193, 100, ';
