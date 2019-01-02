@@ -48,17 +48,17 @@
         var c = '255, 255, 255, ';
 
         if (fpsnow < 10)
-          c = '255, 138, 128,';
+          c = '255, 111, 97,';
         else if (fpsnow < 20 && fpsnow >= 10)
-          c = '255, 209, 128, ';
+          c = '255, 174, 91, ';
         else if (fpsnow < 30 && fpsnow >= 20)
-          c = '255, 255, 141, ';
+          c = '255, 174, 91, ';
         else if (fpsnow < 40 && fpsnow >= 30)
-          c = '244, 255, 129, ';
+          c = '62, 142, 157, ';
         else if (fpsnow < 50 && fpsnow >= 40)
-          c = '132, 255, 255, ';
+          c = '62, 142, 157, ';
         else if (fpsnow >= 50)
-          c = '185, 246, 202, ';
+          c = '73, 193, 100, ';
 
         fps.innerHTML = '<span style="color: rgba(' + c + '0.75);">' + fpsnow + ' <span style="font-size: 3rem;">FPS</span>' + '</span>';
         // fpsscope.innerHTML = round( min ) + '-' + round( max );
