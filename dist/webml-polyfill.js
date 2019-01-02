@@ -8299,9 +8299,9 @@ var OperationCode = exports.OperationCode = {
    */
   TANH: 28,
 
-  /** Performs a astrous 2-D convolution operation.
+  /** Performs a atrous 2-D convolution operation.
    *
-   * The ASTROUS_CONV_2D op sweeps a 2-D filter that can mix channels together over a batch of
+   * The ATROUS_CONV_2D op sweeps a 2-D filter that can mix channels together over a batch of
    * images, applying the filter to each window of each image of the appropriate size.
    *
    * If the dilation rate parameters are greater than one, it performs convolution with holes,
@@ -8366,9 +8366,9 @@ var OperationCode = exports.OperationCode = {
    *      For output tensor of {@link TENSOR_QUANT8_ASYMM} type, the following
    *      condition must be satisfied: output_scale > input_scale * filter_scale.
    */
-  ASTROUS_CONV_2D: 10003,
+  ATROUS_CONV_2D: 10003,
 
-  /** Performs a astrous depthwise 2-D convolution operation.
+  /** Performs a atrous depthwise 2-D convolution operation.
    *
    * Given an input tensor of shape [batches, height, width, depth_in] and a filter
    * tensor of shape [1, filter_height, filter_width, depth_out] containing
@@ -8439,7 +8439,7 @@ var OperationCode = exports.OperationCode = {
    *      For output tensor of {@link TENSOR_QUANT8_ASYMM} type, the following
    *      condition must be satisfied: output_scale > input_scale * filter_scale.
    */
-  ASTROUS_DEPTHWISE_CONV_2D: 10004
+  ATROUS_DEPTHWISE_CONV_2D: 10004
 };
 
 var ResultCode = exports.ResultCode = {
@@ -15085,10 +15085,11 @@ var WebGLModel = function () {
             _output.assign(_activation(tf.mul(_in, _in2)));
           }break;
         case _Enums.OperationCode.CONV_2D:
+        case _Enums.OperationCode.ATROUS_CONV_2D:
           {
             var inCount = inputs.length;
             if (inCount !== 7 && inCount !== 10) {
-              throw new Error('Invalid parameters number of CONV_2D');
+              throw new Error('Invalid parameters number of Conv2d ' + op);
             }
             var i = 0;
             var input = operands[inputs[i++]];
@@ -15097,30 +15098,51 @@ var WebGLModel = function () {
             var _output2 = operands[outputs[0]];
             var strideW = void 0,
                 strideH = void 0;
+            var dilationW = void 0,
+                dilationH = void 0;
             var _activation2 = void 0;
             if (inCount === 7) {
               var paddingCode = operands[inputs[i++]].value[0];
               var padding = PaddingCodeMap.get(paddingCode);
-              strideW = operands[inputs[i++]].value[0];
-              strideH = operands[inputs[i++]].value[0];
+              if (op === _Enums.OperationCode.CONV_2D) {
+                strideW = operands[inputs[i++]].value[0];
+                strideH = operands[inputs[i++]].value[0];
+                dilationW = 1;
+                dilationH = 1;
+              } else {
+                dilationW = operands[inputs[i++]].value[0];
+                dilationH = operands[inputs[i++]].value[0];
+                strideW = 1;
+                strideH = 1;
+              }
               _activation2 = FuseFunctionMap.get(operands[inputs[i++]].value[0]);
-              _output2.assign(_activation2(input.conv2d(filter, [strideH, strideW], padding).add(bias)));
+              _output2.assign(_activation2(input.conv2d(filter, [strideH, strideW], padding, 'NHWC', [dilationH, dilationW]).add(bias)));
             } else {
               var paddingLeft = operands[inputs[i++]].value[0];
               var paddingRight = operands[inputs[i++]].value[0];
               var paddingTop = operands[inputs[i++]].value[0];
               var paddingBottom = operands[inputs[i++]].value[0];
-              strideW = operands[inputs[i++]].value[0];
-              strideH = operands[inputs[i++]].value[0];
+              if (op === _Enums.OperationCode.CONV_2D) {
+                strideW = operands[inputs[i++]].value[0];
+                strideH = operands[inputs[i++]].value[0];
+                dilationW = 1;
+                dilationH = 1;
+              } else {
+                dilationW = operands[inputs[i++]].value[0];
+                dilationH = operands[inputs[i++]].value[0];
+                strideW = 1;
+                strideH = 1;
+              }
               _activation2 = FuseFunctionMap.get(operands[inputs[i++]].value[0]);
-              _output2.assign(_activation2(input.pad([[0, 0], [paddingTop, paddingBottom], [paddingLeft, paddingRight], [0, 0]]).conv2d(filter, [strideH, strideW], 'valid').add(bias)));
+              _output2.assign(_activation2(input.pad([[0, 0], [paddingTop, paddingBottom], [paddingLeft, paddingRight], [0, 0]]).conv2d(filter, [strideH, strideW], 'valid', 'NHWC', [dilationH, dilationW]).add(bias)));
             }
           }break;
         case _Enums.OperationCode.DEPTHWISE_CONV_2D:
+        case _Enums.OperationCode.ATROUS_DEPTHWISE_CONV_2D:
           {
             var _inCount = inputs.length;
             if (_inCount !== 8 && _inCount !== 11) {
-              throw new Error('Invalid parameters number of DEPTHWISE_CONV_2D');
+              throw new Error('Invalid parameters number of DepthwiseConv2d ' + op);
             }
             var _i = 0;
             var _input = operands[inputs[_i++]];
@@ -15129,6 +15151,8 @@ var WebGLModel = function () {
             var _output3 = operands[outputs[0]];
             var _strideW = void 0,
                 _strideH = void 0;
+            var _dilationW = void 0,
+                _dilationH = void 0;
             var depthMultipler = void 0;
             var _activation3 = void 0;
             var paddedInput = _input;
@@ -15140,21 +15164,39 @@ var WebGLModel = function () {
             if (_inCount === 8) {
               var _paddingCode = operands[inputs[_i++]].value[0];
               var _padding = PaddingCodeMap.get(_paddingCode);
-              _strideW = operands[inputs[_i++]].value[0];
-              _strideH = operands[inputs[_i++]].value[0];
+              if (op === _Enums.OperationCode.CONV_2D) {
+                _strideW = operands[inputs[_i++]].value[0];
+                _strideH = operands[inputs[_i++]].value[0];
+                _dilationW = 1;
+                _dilationH = 1;
+              } else {
+                _dilationW = operands[inputs[_i++]].value[0];
+                _dilationH = operands[inputs[_i++]].value[0];
+                _strideW = 1;
+                _strideH = 1;
+              }
               depthMultipler = operands[inputs[_i++]].value[0];
               _activation3 = FuseFunctionMap.get(operands[inputs[_i++]].value[0]);
-              _output3.assign(_activation3(paddedInput.depthwiseConv2D(_filter, [_strideH, _strideW], _padding).add(_bias)));
+              _output3.assign(_activation3(paddedInput.depthwiseConv2D(_filter, [_strideH, _strideW], _padding, 'NHWC', [_dilationH, _dilationW]).add(_bias)));
             } else {
               var _paddingLeft = operands[inputs[_i++]].value[0];
               var _paddingRight = operands[inputs[_i++]].value[0];
               var _paddingTop = operands[inputs[_i++]].value[0];
               var _paddingBottom = operands[inputs[_i++]].value[0];
-              _strideW = operands[inputs[_i++]].value[0];
-              _strideH = operands[inputs[_i++]].value[0];
+              if (op === _Enums.OperationCode.CONV_2D) {
+                _strideW = operands[inputs[_i++]].value[0];
+                _strideH = operands[inputs[_i++]].value[0];
+                _dilationW = 1;
+                _dilationH = 1;
+              } else {
+                _dilationW = operands[inputs[_i++]].value[0];
+                _dilationH = operands[inputs[_i++]].value[0];
+                _strideW = 1;
+                _strideH = 1;
+              }
               depthMultipler = operands[inputs[_i++]].value[0];
               _activation3 = FuseFunctionMap.get(operands[inputs[_i++]].value[0]);
-              _output3.assign(_activation3(paddedInput.pad([[0, 0], [_paddingTop, _paddingBottom], [_paddingLeft, _paddingRight], [0, 0]]).depthwiseConv2D(_filter, [_strideH, _strideW], 'valid').add(_bias)));
+              _output3.assign(_activation3(paddedInput.pad([[0, 0], [_paddingTop, _paddingBottom], [_paddingLeft, _paddingRight], [0, 0]]).depthwiseConv2D(_filter, [_strideH, _strideW], 'valid', 'NHWC', [_dilationH, _dilationW]).add(_bias)));
             }
           }break;
         case _Enums.OperationCode.AVERAGE_POOL_2D:
@@ -15244,6 +15286,17 @@ var WebGLModel = function () {
             var batchSize = utils.product(_input5.shape) / weights.shape[1];
             _output8.assign(_activation5(tf.matMul(_input5.reshape([batchSize, -1]), weights, false, true).add(_bias2)));
           }break;
+        case _Enums.OperationCode.RESIZE_BILINEAR:
+          {
+            if (outputs.length < 1 || inputs.length < 3) {
+              throw new Error('Invalid inputs or outputs');
+            }
+            var _input6 = operands[inputs[0]];
+            var newHeight = operands[inputs[1]].value[0];
+            var newWidth = operands[inputs[2]].value[0];
+            var _output9 = operands[outputs[0]];
+            _output9.assign(_input6.resizeBilinear([newHeight, newWidth], false));
+          }break;
         default:
           {
             throw new Error('Operation ' + op + ' is not supported');
@@ -15280,6 +15333,7 @@ var WebGLModel = function () {
         var op = operation.type;
         switch (op) {
           case _Enums.OperationCode.CONV_2D:
+          case _Enums.OperationCode.ATROUS_CONV_2D:
             {
               // NHWC -> HWCN
               // https://js.tensorflow.org/api/0.13.3/#conv2d
@@ -15289,6 +15343,7 @@ var WebGLModel = function () {
               filter.dispose();
             }break;
           case _Enums.OperationCode.DEPTHWISE_CONV_2D:
+          case _Enums.OperationCode.ATROUS_DEPTHWISE_CONV_2D:
             {
               // [1, filterH, filterW, outChannels] -> [filterH, filterW, inChannels, depthMultipler]
               // https://js.tensorflow.org/api/0.13.3/#depthwiseConv2d
