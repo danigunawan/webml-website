@@ -1173,9 +1173,10 @@ button.xclose {
 
 video {
   border: 1px solid rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: rgba(0, 0, 0, 0.1) 0 0.5rem 0.5rem 0;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 0.5rem 0.5rem 0;
-  box-shadow: rgba(0, 0, 0, 0.1) 0 0.5rem 0.5rem 0;
+  margin-top: -1rem;
+  -moz-box-shadow: rgba(0, 0, 0, 0.1) 0 0.2rem 0.2rem 0;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 0.2rem 0.2rem 0;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0.2rem 0.2rem 0;
 }
 
 #fps {
