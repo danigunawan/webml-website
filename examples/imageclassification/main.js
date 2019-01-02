@@ -50,8 +50,8 @@ const inception_v4_tflite = {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
   },
-  intro: '',
-  introUrl: '',
+  intro: 'Inception architecture that has been shown to achieve very good performance at relatively low computational cost. Loading Inception-v4 model trained by ImageNet in TensorFlow Lite format, constructs and inferences it by WebML API.',
+  introUrl: 'https://arxiv.org/abs/1602.07261',
   netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/inception_v4.tflite'
 };
 const squeezenet_tflite = {
@@ -64,8 +64,8 @@ const squeezenet_tflite = {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
   },
-  intro: '',
-  introUrl: '',
+  intro: 'A light-weight CNN providing Alexnet level accuracy with 50X fewer parameters. Loading SqueezeNet model trained by ImageNet in TensorFlow Lite format, constructs and inferences it by WebML API.',
+  introUrl: 'https://arxiv.org/abs/1602.07360',
   netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/squeezenet.tflite'
 };
 const inception_resnet_v2_tflite = {
@@ -81,8 +81,8 @@ const inception_resnet_v2_tflite = {
   postOptions: {
     softmax: true,
   },
-  intro: '',
-  introUrl: '',
+  intro: 'Inception architecture that has been shown to achieve very good performance at relatively low computational cost, and training with residual connections accelerates the training of Inception networks significantly. There is also some evidence of residual Inception networks outperforming similarly expensive Inception networks without residual connections.',
+  introUrl: 'https://arxiv.org/abs/1602.07261',
   netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/inception_resnet_v2.tflite'
 };
 const squeezenet_onnx = {
@@ -119,8 +119,8 @@ const mobilenet_v2_onnx = {
   postOptions: {
     softmax: true,
   },
-  intro: '',
-  introUrl: '',
+  intro: 'MobileNetV2 improves the state of the art performance of mobile models. Loading MobileNet model v2.0 in ONNX format, constructs and inferences it by WebML API.',
+  introUrl: 'https://arxiv.org/abs/1801.04381',
   netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/mobilenetv2-1.0.onnx'
 };
 const resnet_v1_onnx = {
@@ -138,8 +138,8 @@ const resnet_v1_onnx = {
   postOptions: {
     softmax: true,
   },
-  intro: '',
-  introUrl: '',
+  intro: 'A residual learning framework to ease the training of networks that are substantially deeper than those used previously. This result won the 1st place on the ILSVRC 2015 classification task.',
+  introUrl: 'https://arxiv.org/abs/1512.03385',
   netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/resnet50v1.onnx'
 };
 const resnet_v2_onnx = {
@@ -157,8 +157,8 @@ const resnet_v2_onnx = {
   postOptions: {
     softmax: true,
   },
-  intro: '',
-  introUrl: '',
+  intro: 'Deep residual networks have emerged as a family of extremely deep architectures showing compelling accuracy and nice convergence behaviors. It reports improved results using a 1001-layer ResNet on CIFAR-10 (4.62% error) and CIFAR-100, and a 200-layer ResNet on ImageNet.',
+  introUrl: 'https://arxiv.org/abs/1603.05027',
   netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/resnet50v2.onnx'
 };
 const inception_v2_onnx = {
@@ -167,8 +167,8 @@ const inception_v2_onnx = {
   labelsFile: './model/ilsvrc2012labels.txt',
   inputSize: [224, 224, 3],
   outputSize: 1000,
-  intro: '',
-  introUrl: '',
+  intro: 'Inception-v2 is trained for the ImageNet Large Visual Recognition Challenge. Loading Inception-v2 model trained by ImageNet in ONNX format, constructs and inferences it by WebML API.',
+  introUrl: 'https://arxiv.org/abs/1512.00567',
   netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/inception_v2.onnx'
 };
 const densenet_onnx = {
@@ -187,8 +187,8 @@ const densenet_onnx = {
   postOptions: {
     softmax: true,
   },
-  intro: '',
-  introUrl: '',
+  intro: 'Dense Convolutional Network (DenseNet) connects each layer to every other layer in a feed-forward fashion.  DenseNets have several compelling advantages: they alleviate the vanishing-gradient problem, strengthen feature propagation, encourage feature reuse, and substantially reduce the number of parameters. ',
+  introUrl: 'https://arxiv.org/abs/1608.06993',
   netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/densenet121.onnx'
 };
 
@@ -280,10 +280,6 @@ function main(camera) {
       percentComplete = percentComplete.toFixed(0);
       progressBar.style = `width: ${percentComplete}%`;
       progressBar.innerHTML = `Loading Model: ${percentComplete}%`;
-      // if (ev.loaded === ev.total) {
-      //   progressBar.style = `width: 0%`;
-      //   progressBar.innerHTML = `0%`;
-      // }
     }
   }
 
@@ -351,7 +347,7 @@ function main(camera) {
     // utils.deleteAll();
   } else {
     let stats = new Stats();
-    stats.dom.style.cssText = 'position:fixed;top:60px;left:10px;cursor:pointer;opacity:0.9;z-index:10000';
+    // stats.dom.style.cssText = 'position:fixed;top:60px;left:10px;cursor:pointer;opacity:0.9;z-index:10000';
     stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(stats.dom);
 
@@ -380,49 +376,3 @@ function main(camera) {
     }
   }
 }
-
-let searchParams = new URLSearchParams(location.search);
-let us = searchParams.get('s');
-if(us =='camera') {
-  document.addEventListener('load', main('camera'), false);
-} else {
-  document.addEventListener('load', main(), false);
-}
-
-$(document).ready(function () {
-  $('.model label').each(function(){
-    $(this).on('mouseover touchstart', function() {
-      let modelid = this.id.replace('l-', '');
-      for (model of availableModels) {
-        if(modelid == model.modelName) {
-
-          $('#intro').slideDown();
-          
-          if(model.intro) {
-            $('#introdescription').html(model.intro);
-            $('#introdescription').removeClass('dnone');
-          } else {
-            $('#introdescription').addClass('dnone');
-          }
-
-          if(model.introUrl) {
-            $('#introurl').html('Paper');
-            $('#introurl').attr('href', model.introUrl);
-            $('#introurl').removeClass('dnone');
-          } else {
-            $('#introurl').addClass('dnone');
-          }
-
-          if(model.netronUrl) {
-            $('#netronurl').html(model.modelName + ' Model Viewer');
-            $('#netronurl').attr('href', model.netronUrl);
-            $('#netronurl').removeClass('dnone');
-          } else {
-            $('#netronurl').addClass('dnone');
-          }
-        }
-      }
-      $('#intro').delay(5000).slideUp();
-    })
-  })
-});

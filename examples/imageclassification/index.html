@@ -65,12 +65,12 @@
             preserveAspectRatio="xMidYMid meet" viewBox="-1.2596205660195778 -1.002390572390567 185.26504164633673 39.987210231814544"
             width="181.27" height="35.99">
             <defs>
-              <text id="a1Hhj0hzGw" x="548" y="158.46" font-size="18" font-family="Quicksand" font-weight="400"
+              <text id="a1Hhj0hzGw" x="548" y="158.46" font-size="18" font-weight="200"
                 font-style="normal" letter-spacing="0" alignment-baseline="before-edge" transform="matrix(1 0 0 1 -286.8825161889153 -158.45741702741705)"
                 style="line-height:100%" xml:space="preserve" dominant-baseline="text-before-edge">
                 <tspan x="548" dy="0em" alignment-baseline="before-edge" dominant-baseline="text-before-edge"
                   text-anchor="end">MACHINE LEARNING</tspan>
-                <tspan x="536" dy="1em" alignment-baseline="before-edge" dominant-baseline="text-before-edge"
+                <tspan x="539" dy="1em" alignment-baseline="before-edge" dominant-baseline="text-before-edge"
                   text-anchor="end">FOR WEB</tspan>
               </text>
             </defs>
@@ -156,7 +156,8 @@
         </tbody>
       </table>
       <div id='intro'>
-        <div id='introdescription'></div>
+        <button type="button" id="xclose" class="xclose" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div id='introdescription' class="mb-1"></div>
         <a id='introurl' href='' target="_blank" title='Visit paper for this model'></a> <a id='netronurl' href='' target="_blank" title='View model visualizer via Netron'></a>
       </div>
     </div>
@@ -199,9 +200,6 @@
             </figure>
             <div class="row mt-1">
               <div class="col">
-                <!-- <label id="button" class="btn btn-primary disabled">
-                  Pick Image <input type="file" id="input" accept="image/*" hidden disabled>
-                </label> -->
                 <div class="box">
                   <input type="file" name="f[]" id="input" accept="image/*" class="inputfile inputf" />
                   <label for="input"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17">
@@ -301,8 +299,8 @@
   <script src="../util/onnx/OnnxModelUtils.js"></script>
   <script src="../util/onnx/OnnxModelImporter.js"></script>
   <script src="utils.js"></script>
-  <script src="ui.js"></script>
   <script src="main.js"></script>
+  <script src="ui.js"></script>
 </body>
 
 </html>

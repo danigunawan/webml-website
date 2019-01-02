@@ -22,6 +22,7 @@ function isWebML() {
 }
 
 function componentToggle() {
+  $('#header-sticky-wrapper').attr('style', 'display:block');
   $('#query').slideToggle(300);
   // $('#ictitle').slideToggle(300);
   $('.nav-pills').slideToggle(200);
@@ -38,6 +39,9 @@ function componentToggle() {
   }
 }
 
+function getHash() {
+  return location.hash.replace('#', '');
+}
 
 $(document).ready(function () {
   let searchParams = new URLSearchParams(location.search);
@@ -48,15 +52,15 @@ $(document).ready(function () {
   let us = searchParams.get('s');
   let ud = searchParams.get('d');
 
-  if(ud !='0') {
-    componentToggle();
-  }
-
   $('#img').click(function() {
     if(us !='image'){
       let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'image' + '&d=' + ud;
       location.href = strsearch;
     }
+    $('.nav-pills li').removeClass('active');
+    $('.nav-pills #cam').addClass('active');
+    $('#1a').removeClass('active'); 
+    $('#2a').addClass('active');  
   });
 
   $('#cam').click(function() {
@@ -64,6 +68,10 @@ $(document).ready(function () {
       let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'camera' + '&d=' + ud;
       location.href = strsearch;
     }
+    $('.nav-pills li').removeClass('active');
+    $('.nav-pills #img').addClass('active');  
+    $('#2a').removeClass('active'); 
+    $('#1a').addClass('active');  
   });
   
   if (us == 'camera'){
@@ -160,8 +168,12 @@ $(document).ready(function () {
   });
 
   $('#extra').click(function(){
-    $('#header-sticky-wrapper').slideToggle(400);
+    $('#header-sticky-wrapper').slideToggle(200);
     componentToggle();
+  });
+
+  $('#xclose').click(function(){
+    $('#intro').slideUp();
   });
 
 });
@@ -171,34 +183,6 @@ function getRandom(min, max) {
 }
 
 $(document).ready(function () {
-  // Smooth scrolling
-  // $(function () {
-  //   $('a[href*="#"]:not([href="#"])').click(function () {
-  //     if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-  //       var target = $(this.hash);
-  //       target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-
-  //       if (target.length) {
-  //         $('html, body').animate({
-  //           scrollTop: target.offset().top
-  //         }, 2000, 'easeInOutExpo');
-
-  //         if ($(this).parents('.nav-menu').length) {
-  //           $('.nav-menu .menu-active').removeClass('menu-active');
-  //           $(this).closest('li').addClass('menu-active');
-  //         }
-
-  //         if ($('body').hasClass('mobile-nav-active')) {
-  //           $('body').removeClass('mobile-nav-active');
-  //           $('#mobile-nav-toggle i').toggleClass('fa-times fa-bars');
-  //           $('#mobile-body-overly').fadeOut();
-  //         }
-  //         return false;
-  //       }
-  //     }
-  //   });
-  // });
-
   $('.nav-menu').superfish({
     animation: { opacity: 'show' },
     speed: 400
@@ -265,5 +249,65 @@ $(document).ready(function () {
   $('ul.nav-pills #camera').click(function() {
     $('ul.nav-pills li').removeClass('active');
     $('ul.nav-pills #camera').addClass('active');
-})
+  })
 });
+
+$(document).ready(function () {
+  $('.model label').each(function(){
+    $(this).on('mouseover touchstart', function() {
+      let modelid = this.id.replace('l-', '');
+      for (model of availableModels) {
+        if(modelid == model.modelName) {
+          $('#intro').slideDown();
+          if(model.intro) {
+            $('#introdescription').html(model.intro);
+            $('#introdescription').removeClass('dnone');
+          } else {
+            $('#introdescription').addClass('dnone');
+          }
+
+          if(model.introUrl) {
+            $('#introurl').html('Paper');
+            $('#introurl').attr('href', model.introUrl);
+            $('#introurl').removeClass('dnone');
+          } else {
+            $('#introurl').addClass('dnone');
+          }
+
+          if(model.netronUrl) {
+            $('#netronurl').html(model.modelName + ' Model Viewer');
+            $('#netronurl').attr('href', model.netronUrl);
+            $('#netronurl').removeClass('dnone');
+          } else {
+            $('#netronurl').addClass('dnone');
+          }
+        }
+      }
+    })
+
+    $(this).on('mouseout touchcancel touchend', function() {
+    })
+  })
+});
+
+$(window).load(function () {
+  let searchParams = new URLSearchParams(location.search);
+  let up = searchParams.get('prefer');
+  let ub = searchParams.get('b');
+  let um = searchParams.get('m');
+  let ut = searchParams.get('t');
+  let us = searchParams.get('s');
+  let ud = searchParams.get('d');
+  if(ud != '0') {
+    $('#header-sticky-wrapper').slideToggle();
+    componentToggle();
+  }
+});
+
+let searchParams = new URLSearchParams(location.search);
+let us = searchParams.get('s');
+if(us =='camera') {
+  document.addEventListener('load', main('camera'), false);
+} else {
+  document.addEventListener('load', main(), false);
+}
