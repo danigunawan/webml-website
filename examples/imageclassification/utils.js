@@ -18,8 +18,6 @@ class Utils {
   }
 
   async init(backend, prefer) {
-    console.log(backend)
-    console.log(prefer)
     this.initialized = false;
     let result;
     let kwargs = {
@@ -29,7 +27,6 @@ class Utils {
       softmax: this.postOptions.softmax || false,
     };
 
-    console.log(this.modelFile)
     if (this.modelFile.split('.').pop() === 'tflite') {
       if (!this.rawModel) {
         result = await this.loadModelAndLabels(this.modelFile, this.labelsFile);
