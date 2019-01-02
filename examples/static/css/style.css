@@ -1171,6 +1171,18 @@ button.xclose {
   color: rgba(255, 255, 255, 1.0);
 }
 
+video {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: -1rem;
+}
+
+#fps {
+  position: relative;
+  left: 0px;
+  top: 1rem;
+  font-size: 1rem;
+}
+
 /* 
   color scheme:
   rgba(255, 111, 97, 1.0);

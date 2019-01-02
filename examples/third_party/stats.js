@@ -11,8 +11,6 @@
    */
 
   var fps = document.querySelector('#fps');
-  // var fpsscope = document.querySelector('#fpsscope');
-
   var Stats = function () {
     var beginTime = (performance || Date).now(), prevTime = beginTime, frames = 0;
     var fpsPanel = new Stats.Panel();
@@ -56,8 +54,7 @@
         else if (fpsnow >= 50)
           c = '73, 193, 100, ';
 
-        fps.innerHTML = '<span style="color: rgba(' + c + '0.75);">' + fpsnow + ' <span style="font-size: 3rem;">FPS</span>' + '</span>';
-        // fpsscope.innerHTML = round( min ) + '-' + round( max );
+        fps.innerHTML = '<span style="color: rgba(' + c + '0.5);">' + fpsnow + ' FPS</span>';
       }
     };
   };
