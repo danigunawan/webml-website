@@ -55,13 +55,13 @@ $(document).ready(function () {
   if (us == 'camera'){
     $('.nav-pills li').removeClass('active');
     $('.nav-pills #cam').addClass('active');
-    $('#image').removeClass('active'); 
-    $('#camera').addClass('active');  
+    $('#imagetab').removeClass('active'); 
+    $('#cameratab').addClass('active');  
   } else {
     $('.nav-pills li').removeClass('active');
     $('.nav-pills #img').addClass('active');  
-    $('#camera').removeClass('active'); 
-    $('#image').addClass('active');  
+    $('#cameratab').removeClass('active'); 
+    $('#imagetab').addClass('active');  
   }
 
   if(getOS() != 'Mac OS') {
