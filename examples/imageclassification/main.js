@@ -241,23 +241,12 @@ let streaming = false;
 let utils = new Utils(canvasElement);
 utils.updateProgress = updateProgress;    //register updateProgress function if progressBar element exist
 
-function showAlert(backend) {
+function showAlert(error) {
   let div = document.createElement('div');
   // div.setAttribute('id', 'backendAlert');
   div.setAttribute('class', 'backendAlert alert alert-warning alert-dismissible fade show');
   div.setAttribute('role', 'alert');
-  div.innerHTML = `<strong>Failed to setup ${backend} backend.</strong>`;
-  div.innerHTML += `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
-  let container = document.getElementById('container');
-  container.insertBefore(div, container.firstElementChild);
-}
-
-function showPreferAlert() {
-  let div = document.createElement('div');
-  // div.setAttribute('id', 'preferAlert');
-  div.setAttribute('class', 'preferAlert alert alert-danger alert-dismissible fade show');
-  div.setAttribute('role', 'alert');
-  div.innerHTML = `<strong>Invalid prefer, prefer should be 'fast' or 'sustained'.</strong>`;
+  div.innerHTML = `<strong>${error}</strong>`;
   div.innerHTML += `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
   let container = document.getElementById('container');
   container.insertBefore(div, container.firstElementChild);
@@ -309,7 +298,7 @@ if (getOS() === 'Mac OS' && currentBackend === 'WebML') {
   }
 }
 
-function startPredict() {
+async function startPredict() {
   if (streaming) {
     let stats = new Stats();
     stats.begin();
@@ -317,44 +306,55 @@ function startPredict() {
       stats.end();
       setTimeout(startPredict, 0);
     });
-
-
   }
 }
 
-function updateBackendAndScenario(camera, backend) {
+module.exports = (promise) => {
+  if(!promise || !Promise.prototype.isPrototypeOf(promise)){
+      return new Promise((resolve, reject)=>{
+          reject(new Error("requires promises as the param"));
+      }).catch((err)=>{
+          return [err, null];
+      });
+  }
+  return promise.then(function(){
+      return [null, ...arguments];
+  }).catch(err => {
+      return [err, null];
+  });
+};
+
+async function updateBackendAndScenario(camera, backend) {
   streaming = false;
+  let err, user;
   // utils.deleteAll();
-  setTimeout(() => {
-    utils.init(backend, currentPrefer).then(() => {
-      if (!camera) {
-        utils.predict(imageElement).then(ret => updateResult(ret));
-      } else {
-        streaming = true;
-        navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } }).then((stream) => {
-          video.srcObject = stream;
-          utils.init(currentBackend, currentPrefer).then(() => {
-            startPredict();
-          }).catch((e) => {
-            console.warn(`Failed to init ${utils.model._backend}`);
-            console.error(e);
-            showAlert(utils.model._backend);
-          });
-        }).catch((error) => {
-          console.error('getUserMedia error: ' + error.name, error);
-          showAlert('getUserMedia error: ' + error.name, error);
-        });
+    await utils.init(backend, currentPrefer);
+    if (!camera) {
+      [err, ret] = await utils.predict(imageElement);
+      
+      if (err) {
+        showAlert(err);
       }
-    }).catch((e) => {
-      console.warn(`Failed to change backend ${backend}`);
-      console.log(e);
-      showAlert(backend);
-    });
-  }, 10);
+      
+    } else {
+      streaming = true;
+      let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } });
+      video.srcObject = stream;
+      startPredict();
+
+      // navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } }).then((stream) => {
+      //   video.srcObject = stream;
+      //     startPredict();
+      //   }).catch((error) => {
+      //   console.error(error);
+      //   showAlert(error);
+      // });
+    }
 }
 
-function main(camera) {
-  // image or camera
+async function main(camera) {
+  await utils.init(currentBackend, currentPrefer);
+
   if (!camera) {
     inputElement.addEventListener('change', (e) => {
       let files = e.target.files;
@@ -363,36 +363,21 @@ function main(camera) {
       }
     }, false);
 
-    imageElement.onload = function () {
-      utils.predict(imageElement).then(ret => updateResult(ret));
+    imageElement.onload = async function () {
+      let ret = await utils.predict(imageElement);
+      updateResult(ret);
     }
     console.log(currentBackend)
     console.log(currentPrefer)
-    //utils.changeModelParam(currentModel);
-    // utils.changeModelParam(mobilenet_v1_tflite);
-    utils.init(currentBackend, currentPrefer).then(() => {
-      utils.predict(imageElement).then(ret => updateResult(ret));
-    }).catch((e) => {
-      console.warn(`Failed to init ${utils.model._backend}`);
-      console.error(e);
-      showAlert(utils.model._backend);
-    });
+    
+    let ret = await utils.predict(imageElement);
+    updateResult(ret);
     // utils.deleteAll();
   } else {
     let stats = new Stats();
-    navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } }).then((stream) => {
-      video.srcObject = stream;
-      utils.init(currentBackend, currentPrefer).then(() => {
-        streaming = true;
-        startPredict();
-      }).catch((e) => {
-        console.warn(`Failed to init ${utils.model._backend}`);
-        console.error(e);
-        showAlert(utils.model._backend);
-      });
-    }).catch((error) => {
-      console.error('getUserMedia error: ' + error.name, error);
-      showAlert('getUserMedia error: ' + error.name, error);
-    });
+    let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } });
+    video.srcObject = stream;
+    streaming = true;
+    startPredict();
   }
 }
