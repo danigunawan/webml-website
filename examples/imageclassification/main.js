@@ -317,6 +317,8 @@ function startPredict() {
       stats.end();
       setTimeout(startPredict, 0);
     });
+
+
   }
 }
 
@@ -329,7 +331,19 @@ function updateBackendAndScenario(camera, backend) {
         utils.predict(imageElement).then(ret => updateResult(ret));
       } else {
         streaming = true;
-        startPredict();
+        navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } }).then((stream) => {
+          video.srcObject = stream;
+          utils.init(currentBackend, currentPrefer).then(() => {
+            startPredict();
+          }).catch((e) => {
+            console.warn(`Failed to init ${utils.model._backend}`);
+            console.error(e);
+            showAlert(utils.model._backend);
+          });
+        }).catch((error) => {
+          console.error('getUserMedia error: ' + error.name, error);
+          showAlert('getUserMedia error: ' + error.name, error);
+        });
       }
     }).catch((e) => {
       console.warn(`Failed to change backend ${backend}`);
@@ -377,7 +391,8 @@ function main(camera) {
         showAlert(utils.model._backend);
       });
     }).catch((error) => {
-      console.log('getUserMedia error: ' + error.name, error);
+      console.error('getUserMedia error: ' + error.name, error);
+      showAlert('getUserMedia error: ' + error.name, error);
     });
   }
 }
