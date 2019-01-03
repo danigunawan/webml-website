@@ -311,6 +311,7 @@ if (getOS() === 'Mac OS' && currentBackend === 'WebML') {
 
 function startPredict() {
   if (streaming) {
+    let stats = new Stats();
     stats.begin();
     utils.predict(videoElement).then(ret => updateResult(ret)).then(() => {
       stats.end();

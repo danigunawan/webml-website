@@ -828,6 +828,10 @@ footer {
   background-color: rgba(213, 213, 213, 0.15);
 }
 
+.tab-content {
+  padding : 10px 15px;
+}
+
 .t-filter {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 0.8rem;

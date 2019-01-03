@@ -52,41 +52,16 @@ $(document).ready(function () {
   let us = searchParams.get('s');
   let ud = searchParams.get('d');
 
-  $('#img').click(function() {
-    // if(us !='image'){
-    //   let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'image' + '&d=' + ud;
-    //   location.href = strsearch;
-    // }
-    $('.nav-pills li').removeClass('active');
-    $('.nav-pills #cam').addClass('active');
-    $('#1a').removeClass('active'); 
-    $('#2a').addClass('active');  
-    updateBackendAndScenario(false, rid);
-
-  });
-
-  $('#cam').click(function() {
-    // if(us !='camera'){
-    //   let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'camera' + '&d=' + ud;
-    //   location.href = strsearch;
-    // }
-    $('.nav-pills li').removeClass('active');
-    $('.nav-pills #img').addClass('active');  
-    $('#2a').removeClass('active'); 
-    $('#1a').addClass('active');  
-    updateBackendAndScenario(true, rid);
-  });
-  
   if (us == 'camera'){
     $('.nav-pills li').removeClass('active');
     $('.nav-pills #cam').addClass('active');
-    $('#1a').removeClass('active'); 
-    $('#2a').addClass('active');  
+    $('#image').removeClass('active'); 
+    $('#camera').addClass('active');  
   } else {
     $('.nav-pills li').removeClass('active');
     $('.nav-pills #img').addClass('active');  
-    $('#2a').removeClass('active'); 
-    $('#1a').addClass('active');  
+    $('#camera').removeClass('active'); 
+    $('#image').addClass('active');  
   }
 
   if(getOS() != 'Mac OS') {
@@ -148,25 +123,25 @@ $(document).ready(function () {
   updateTitle(ub);
 
   $('input:radio[name=p]').click(function(){
-    var rid = $("input:radio[name='p']:checked").attr('id');
+    let rid = $("input:radio[name='p']:checked").attr('id');
     let strsearch = '?prefer=' + rid + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
     location.href = strsearch;
   });
 
   $('input:radio[name=b]').click(function(){
-    var rid = $("input:radio[name='b']:checked").attr('id');
+    let rid = $("input:radio[name='b']:checked").attr('id');
 
     $('.backend input').removeAttr('checked');
     $('.backend label').removeClass('cked');
     $('#' + rid).attr('checked', 'checked');
     $('#l-'+ rid).addClass('cked');
-
-    updateTitle(rid);
+    currentBackend = rid;
+    updateTitle(currentBackend);
 
     if(us =='camera') {
-      updateBackendAndScenario(true, rid);
+      updateBackendAndScenario(true, currentBackend);
     } else {
-      updateBackendAndScenario(false, rid);
+      updateBackendAndScenario(false, currentBackend);
     }
     
     // let strsearch = '?prefer=' + up + '&b=' + rid +  '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
@@ -174,7 +149,7 @@ $(document).ready(function () {
   });
 
   $('input:radio[name=m]').click(function(){
-    var rid = $("input:radio[name='m']:checked").attr('id');
+    let rid = $("input:radio[name='m']:checked").attr('id');
     if(rid.indexOf('_onnx')>-1) {
       um = rid.replace('_onnx', '');
       ut = 'onnx';
@@ -263,14 +238,30 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-  $('ul.nav-pills #image').click(function() {
-      $('ul.nav-pills li').removeClass('active');
-      $('ul.nav-pills #image').addClass('active');
-  })
-  $('ul.nav-pills #camera').click(function() {
+  $('#img').click(function(){
+    // if(us !='image'){
+    //   let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'image' + '&d=' + ud;
+    //   location.href = strsearch;
+    // }
     $('ul.nav-pills li').removeClass('active');
-    $('ul.nav-pills #camera').addClass('active');
-  })
+    $('ul.nav-pills #img').addClass('active');
+    $('#imagetab').addClass('active'); 
+    $('#cameratab').removeClass('active');  
+    updateBackendAndScenario(false, currentBackend);
+  });
+
+  $('#cam').click(function(){
+    // if(us !='camera'){
+    //   let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'camera' + '&d=' + ud;
+    //   location.href = strsearch;
+    // }
+    $('ul.nav-pills li').removeClass('active');
+    $('ul.nav-pills #cam').addClass('active');
+    $('#cameratab').addClass('active'); 
+    $('#imagetab').removeClass('active');
+    updateBackendAndScenario(true, currentBackend);
+  });
+
 });
 
 $(document).ready(function () {
