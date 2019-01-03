@@ -1,10 +1,11 @@
 body {
   color: #333 !important;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 .b_bg, .b {
   -webkit-font-smoothing: antialiased;
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   color: #fff;
   border-radius: 50px;
   border: none;
@@ -128,7 +129,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 p {
@@ -168,7 +169,7 @@ a:hover {
 .btn {
   background: rgba(255, 111, 97, 1.0);
   background: linear-gradient(90deg, rgba(233, 99, 96, 1) 7%, rgba(255, 111, 97, 1.0) 100%);
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   font-weight: 800;
   color: #fff;
   padding: 15px 45px;
@@ -290,7 +291,7 @@ a:hover {
   margin: 14px 25px 0 0;
   padding: 2px 0;
   line-height: 1;
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   font-weight: 700;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -420,9 +421,9 @@ a:hover {
   text-decoration: none;
   display: inline-block;
   color: #fff;
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   font-weight: 300;
-  font-size: 15px;
+  font-size: 14px;
   outline: none;
 }
 
@@ -828,8 +829,8 @@ footer {
 }
 
 .t-filter {
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
-  font-size: 15px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.8rem;
 }
 
 #filter img {
@@ -913,6 +914,10 @@ footer {
   height: 1px;
   color: rgba(255, 111, 97, 1.0);
   border: 0px;
+}
+
+.table {
+  font-size: 14px;
 }
 
 .table td, .table th {
