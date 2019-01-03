@@ -53,25 +53,28 @@ $(document).ready(function () {
   let ud = searchParams.get('d');
 
   $('#img').click(function() {
-    if(us !='image'){
-      let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'image' + '&d=' + ud;
-      location.href = strsearch;
-    }
+    // if(us !='image'){
+    //   let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'image' + '&d=' + ud;
+    //   location.href = strsearch;
+    // }
     $('.nav-pills li').removeClass('active');
     $('.nav-pills #cam').addClass('active');
     $('#1a').removeClass('active'); 
     $('#2a').addClass('active');  
+    updateBackendAndScenario(false, rid);
+
   });
 
   $('#cam').click(function() {
-    if(us !='camera'){
-      let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'camera' + '&d=' + ud;
-      location.href = strsearch;
-    }
+    // if(us !='camera'){
+    //   let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'camera' + '&d=' + ud;
+    //   location.href = strsearch;
+    // }
     $('.nav-pills li').removeClass('active');
     $('.nav-pills #img').addClass('active');  
     $('#2a').removeClass('active'); 
     $('#1a').addClass('active');  
+    updateBackendAndScenario(true, rid);
   });
   
   if (us == 'camera'){
@@ -128,18 +131,21 @@ $(document).ready(function () {
     $('#l-' + searchParams.get('prefer')).addClass('cked');
   }
 
-  if(up == 'none' || !up) {
-    $('#ictitle').html('Image Classfication ' + ' / '  + ub + ' / ' + um + ' (' + ut + ')');
-  } else {
-    let macmap;
-    if(up == 'fast') {
-      macmap = 'BNNS'
-    } else if (up == 'sustained'){
-      macmap = 'MPS'
+  function updateTitle(ub){
+    if(up == 'none' || !up) {
+      $('#ictitle').html('Image Classfication ' + ' / '  + ub + ' / ' + um + ' (' + ut + ')');
+    } else {
+      let macmap;
+      if(up == 'fast') {
+        macmap = 'BNNS'
+      } else if (up == 'sustained'){
+        macmap = 'MPS'
+      }
+      $('#ictitle').html('Image Classfication ' + ' / '  + ub + ' / ' + um + ' (' + ut + ') / ' + macmap);
     }
-    $('#ictitle').html('Image Classfication ' + ' / '  + ub + ' / ' + um + ' (' + ut + ') / ' + macmap);
   }
  
+  updateTitle(ub);
 
   $('input:radio[name=p]').click(function(){
     var rid = $("input:radio[name='p']:checked").attr('id');
@@ -149,8 +155,22 @@ $(document).ready(function () {
 
   $('input:radio[name=b]').click(function(){
     var rid = $("input:radio[name='b']:checked").attr('id');
-    let strsearch = '?prefer=' + up + '&b=' + rid +  '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
-    location.href = strsearch;
+
+    $('.backend input').removeAttr('checked');
+    $('.backend label').removeClass('cked');
+    $('#' + rid).attr('checked', 'checked');
+    $('#l-'+ rid).addClass('cked');
+
+    updateTitle(rid);
+
+    if(us =='camera') {
+      updateBackendAndScenario(true, rid);
+    } else {
+      updateBackendAndScenario(false, rid);
+    }
+    
+    // let strsearch = '?prefer=' + up + '&b=' + rid +  '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
+    // location.href = strsearch;
   });
 
   $('input:radio[name=m]').click(function(){
@@ -175,7 +195,6 @@ $(document).ready(function () {
   $('#xclose').click(function(){
     $('#intro').slideUp();
   });
-
 });
 
 function getRandom(min, max) {
@@ -226,8 +245,10 @@ $(document).ready(function () {
 
   $(window).scroll(function () {
     if ($(this).scrollTop() > 10) {
+      $("#header").fadeOut();
       $('.scrolltop').fadeIn();
     } else {
+      $("#header").fadeIn();
       $('.scrolltop').fadeOut();
     }
   });
@@ -307,7 +328,7 @@ $(window).load(function () {
 let searchParams = new URLSearchParams(location.search);
 let us = searchParams.get('s');
 if(us =='camera') {
-  document.addEventListener('load', main('camera'), false);
+  document.addEventListener('load', main(true), false);
 } else {
   document.addEventListener('load', main(), false);
 }

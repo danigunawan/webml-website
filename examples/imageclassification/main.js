@@ -192,19 +192,19 @@ const densenet_onnx = {
   netronUrl: 'https://lutzroeder.github.io/netron/?url=https://ibelem.github.io/webml-website/examples/imageclassification/model/densenet121.onnx'
 };
 
-function getURLSearchParams_prefer(){
+function getURLSearchParams_prefer() {
   let searchParams = new URLSearchParams(location.search);
-  return searchParams.has('prefer')?searchParams.get('prefer'):'';
+  return searchParams.has('prefer') ? searchParams.get('prefer') : '';
 }
 
-function getURLSearchParams_backend(){
+function getURLSearchParams_backend() {
   let searchParams = new URLSearchParams(location.search);
-  return searchParams.has('b')?searchParams.get('b'):'';
+  return searchParams.has('b') ? searchParams.get('b') : '';
 }
 
-function getURLSearchParams_model(){
+function getURLSearchParams_model() {
   let searchParams = new URLSearchParams(location.search);
-  if(searchParams.has('m') && searchParams.has('t')){
+  if (searchParams.has('m') && searchParams.has('t')) {
     return searchParams.get('m') + '_' + searchParams.get('t');
   } else {
     return '';
@@ -226,100 +226,119 @@ const availableModels = [
   densenet_onnx,
 ];
 
-function main(camera) {
-  const videoElement = document.getElementById('video');
-  const imageElement = document.getElementById('image');
-  const inputElement = document.getElementById('input');
-  const canvasElement = document.getElementById('canvas');
-  const progressBar = document.getElementById('progressBar');
 
-  let currentBackend = getURLSearchParams_backend();
-  let currentModel = getURLSearchParams_model();
-  let currentPrefer = getURLSearchParams_prefer();
-  let streaming = false;
+const videoElement = document.getElementById('video');
+const imageElement = document.getElementById('image');
+const inputElement = document.getElementById('input');
+const canvasElement = document.getElementById('canvas');
+const progressBar = document.getElementById('progressBar');
 
-  let utils = new Utils(canvasElement);
-  utils.updateProgress = updateProgress;    //register updateProgress function if progressBar element exist
+let currentBackend = getURLSearchParams_backend();
+let currentModel = getURLSearchParams_model();
+let currentPrefer = getURLSearchParams_prefer();
+let streaming = false;
 
-  function showAlert(backend) {
-    let div = document.createElement('div');
-    div.setAttribute('id', 'backendAlert');
-    div.setAttribute('class', 'alert alert-warning alert-dismissible fade show');
-    div.setAttribute('role', 'alert');
-    div.innerHTML = `<strong>Failed to setup ${backend} backend.</strong>`;
-    div.innerHTML += `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
-    let container = document.getElementById('container');
-    container.insertBefore(div, container.firstElementChild);
+let utils = new Utils(canvasElement);
+utils.updateProgress = updateProgress;    //register updateProgress function if progressBar element exist
+
+function showAlert(backend) {
+  let div = document.createElement('div');
+  // div.setAttribute('id', 'backendAlert');
+  div.setAttribute('class', 'backendAlert alert alert-warning alert-dismissible fade show');
+  div.setAttribute('role', 'alert');
+  div.innerHTML = `<strong>Failed to setup ${backend} backend.</strong>`;
+  div.innerHTML += `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
+  let container = document.getElementById('container');
+  container.insertBefore(div, container.firstElementChild);
+}
+
+function showPreferAlert() {
+  let div = document.createElement('div');
+  // div.setAttribute('id', 'preferAlert');
+  div.setAttribute('class', 'preferAlert alert alert-danger alert-dismissible fade show');
+  div.setAttribute('role', 'alert');
+  div.innerHTML = `<strong>Invalid prefer, prefer should be 'fast' or 'sustained'.</strong>`;
+  div.innerHTML += `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
+  let container = document.getElementById('container');
+  container.insertBefore(div, container.firstElementChild);
+}
+
+function updateProgress(ev) {
+  if (ev.lengthComputable) {
+    let percentComplete = ev.loaded / ev.total * 100;
+    percentComplete = percentComplete.toFixed(0);
+    progressBar.style = `width: ${percentComplete}%`;
+    progressBar.innerHTML = `Loading Model: ${percentComplete}%`;
   }
+}
 
-  function showPreferAlert() {
-    let div = document.createElement('div');
-    div.setAttribute('id', 'preferAlert');
-    div.setAttribute('class', 'alert alert-danger alert-dismissible fade show');
-    div.setAttribute('role', 'alert');
-    div.innerHTML = `<strong>Invalid prefer, prefer should be 'fast' or 'sustained'.</strong>`;
-    div.innerHTML += `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
-    let container = document.getElementById('container');
-    container.insertBefore(div, container.firstElementChild);
+function updateResult(result) {
+  console.log(`Inference time: ${result.time} ms`);
+  let inferenceTimeElement = document.getElementById('inferenceTime');
+  inferenceTimeElement.innerHTML = `inference time: <span class='ir'>${result.time} ms</span>`;
+  console.log(`Classes: `);
+  result.classes.forEach((c, i) => {
+    console.log(`\tlabel: ${c.label}, probability: ${c.prob}%`);
+    let labelElement = document.getElementById(`label${i}`);
+    let probElement = document.getElementById(`prob${i}`);
+    labelElement.innerHTML = `${c.label}`;
+    probElement.innerHTML = `${c.prob}%`;
+  });
+}
+
+if (currentBackend === '') {
+  if (nnNative) {
+    currentBackend = 'WebML';
+  } else {
+    currentBackend = 'WASM';
   }
+}
 
-  function removeAlertElement() {
-    let backendAlertElem =  document.getElementById('backendAlert');
-    if (backendAlertElem !== null) {
-      backendAlertElem.remove();
-    }
-    let preferAlertElem =  document.getElementById('preferAlert');
-    if (preferAlertElem !== null) {
-      preferAlertElem.remove();
-    }
+// register models
+for (let model of availableModels) {
+  if (currentModel == model.modelName) {
+    utils.changeModelParam(model)
   }
+}
 
-  function updateProgress(ev) {
-    if (ev.lengthComputable) {
-      let percentComplete = ev.loaded / ev.total * 100;
-      percentComplete = percentComplete.toFixed(0);
-      progressBar.style = `width: ${percentComplete}%`;
-      progressBar.innerHTML = `Loading Model: ${percentComplete}%`;
-    }
+// register prefers
+if (getOS() === 'Mac OS' && currentBackend === 'WebML') {
+  console.log(currentPrefer)
+  if (!currentPrefer) {
+    currentPrefer = "sustained";
   }
+}
 
-  function updateResult(result) {
-    console.log(`Inference time: ${result.time} ms`);
-    let inferenceTimeElement = document.getElementById('inferenceTime');
-    inferenceTimeElement.innerHTML = `inference time: <span class='ir'>${result.time} ms</span>`;
-    console.log(`Classes: `);
-    result.classes.forEach((c, i) => {
-      console.log(`\tlabel: ${c.label}, probability: ${c.prob}%`);
-      let labelElement = document.getElementById(`label${i}`);
-      let probElement = document.getElementById(`prob${i}`);
-      labelElement.innerHTML = `${c.label}`;
-      probElement.innerHTML = `${c.prob}%`;
+function startPredict() {
+  if (streaming) {
+    stats.begin();
+    utils.predict(videoElement).then(ret => updateResult(ret)).then(() => {
+      stats.end();
+      setTimeout(startPredict, 0);
     });
   }
+}
 
-  if (currentBackend === '') {
-    if (nnNative) {
-      currentBackend = 'WebML';
-    } else {
-      currentBackend = 'WASM';
-    }
-  }
+function updateBackendAndScenario(camera, backend) {
+  streaming = false;
+  // utils.deleteAll();
+  setTimeout(() => {
+    utils.init(backend, currentPrefer).then(() => {
+      if (!camera) {
+        utils.predict(imageElement).then(ret => updateResult(ret));
+      } else {
+        streaming = true;
+        startPredict();
+      }
+    }).catch((e) => {
+      console.warn(`Failed to change backend ${backend}`);
+      console.log(e);
+      showAlert(backend);
+    });
+  }, 10);
+}
 
-  // register models
-  for (let model of availableModels) {
-    if(currentModel == model.modelName) {
-      utils.changeModelParam(model)
-    }
-  }
-
-  // register prefers
-  if (getOS() === 'Mac OS' && currentBackend === 'WebML') {
-    console.log(currentPrefer)
-    if (!currentPrefer) {
-      currentPrefer = "sustained";
-    }
-  }
-
+function main(camera) {
   // image or camera
   if (!camera) {
     inputElement.addEventListener('change', (e) => {
@@ -329,50 +348,35 @@ function main(camera) {
       }
     }, false);
 
-    imageElement.onload = function() {
+    imageElement.onload = function () {
       utils.predict(imageElement).then(ret => updateResult(ret));
     }
     console.log(currentBackend)
     console.log(currentPrefer)
-    console.log(imageElement)
     //utils.changeModelParam(currentModel);
     // utils.changeModelParam(mobilenet_v1_tflite);
     utils.init(currentBackend, currentPrefer).then(() => {
       utils.predict(imageElement).then(ret => updateResult(ret));
     }).catch((e) => {
-      console.warn(`Failed to init ${utils.model._backend}, try to use WASM`);
+      console.warn(`Failed to init ${utils.model._backend}`);
       console.error(e);
       showAlert(utils.model._backend);
     });
     // utils.deleteAll();
   } else {
     let stats = new Stats();
-    // stats.dom.style.cssText = 'position:fixed;top:60px;left:10px;cursor:pointer;opacity:0.9;z-index:10000';
-    // stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-    // document.body.appendChild(stats.dom);
-
-    navigator.mediaDevices.getUserMedia({audio: false, video: {facingMode: "environment"}}).then((stream) => {
+    navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } }).then((stream) => {
       video.srcObject = stream;
       utils.init(currentBackend, currentPrefer).then(() => {
         streaming = true;
         startPredict();
       }).catch((e) => {
-        console.warn(`Failed to init ${utils.model._backend}, try to use WASM`);
+        console.warn(`Failed to init ${utils.model._backend}`);
         console.error(e);
         showAlert(utils.model._backend);
       });
     }).catch((error) => {
       console.log('getUserMedia error: ' + error.name, error);
     });
-
-    function startPredict() {
-      if (streaming) {
-        stats.begin();
-        utils.predict(videoElement).then(ret => updateResult(ret)).then(() => {
-          stats.end();
-          setTimeout(startPredict, 0);
-        });
-      }
-    }
   }
 }

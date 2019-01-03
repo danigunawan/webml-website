@@ -488,7 +488,7 @@ a:hover {
 }
 
 #mobile-nav-toggle i {
-  color: #fff;
+  color: rgba(255, 111, 97, 0.8);
 }
 
 @media (max-width: 768px) {
@@ -950,7 +950,7 @@ footer {
 
 .webmlbadge {
   display: inline-block;
-  font-weight: 200;
+  font-weight: 400;
   text-transform: uppercase;
   font-size: 0.7rem;
   letter-spacing: 0.2em;
