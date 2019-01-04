@@ -1,6 +1,6 @@
-if(!location.search){
+if (!location.search) {
   let strsearch;
-  if(getOS() == 'Mac OS') {
+  if (getOS() == 'Mac OS') {
     strsearch = '?prefer=fast&b=WASM&m=mobilenet_v1&t=tflite&s=image&d=0';
   } else {
     strsearch = '?prefer=none&b=WASM&m=mobilenet_v1&t=tflite&s=image&d=0';
@@ -32,7 +32,7 @@ function componentToggle() {
   $('#mobile-nav-toggle i').slideToggle(100);
   $('footer').slideToggle(500);
 
-  if($('#extraspan').hasClass('fa-angle-up')){
+  if ($('#extraspan').hasClass('fa-angle-up')) {
     $('#extraspan').removeClass('fa-angle-up').addClass('fa-angle-down');
   } else {
     $('#extraspan').removeClass('fa-angle-down').addClass('fa-angle-up');
@@ -52,19 +52,19 @@ $(document).ready(function () {
   let us = searchParams.get('s');
   let ud = searchParams.get('d');
 
-  if (us == 'camera'){
+  if (us == 'camera') {
     $('.nav-pills li').removeClass('active');
     $('.nav-pills #cam').addClass('active');
-    $('#imagetab').removeClass('active'); 
-    $('#cameratab').addClass('active');  
+    $('#imagetab').removeClass('active');
+    $('#cameratab').addClass('active');
   } else {
     $('.nav-pills li').removeClass('active');
-    $('.nav-pills #img').addClass('active');  
-    $('#cameratab').removeClass('active'); 
-    $('#imagetab').addClass('active');  
+    $('.nav-pills #img').addClass('active');
+    $('#cameratab').removeClass('active');
+    $('#imagetab').addClass('active');
   }
 
-  if(getOS() != 'Mac OS') {
+  if (getOS() != 'Mac OS') {
     $('#l-fast').addClass('dnone');
     $('#l-sustained').addClass('dnone');
     $('#l-WebML').removeClass('dnone');
@@ -74,7 +74,7 @@ $(document).ready(function () {
     $('#l-sustained').removeClass('dnone');
   }
 
-  if(!isWebML()){
+  if (!isWebML()) {
     $('#WebML').addClass('dnone');
     $('#l-WebML').addClass('dnone');
     $('#webmlstatus').addClass('webml-status-false').html('not supported');
@@ -83,91 +83,91 @@ $(document).ready(function () {
     $('#l-WebML').removeClass('dnone');
     $('#webmlstatus').addClass('webml-status-true').html('supported');
   }
- 
-  if(searchParams.has('b')){
+
+  if (searchParams.has('b')) {
     $('.backend input').removeAttr('checked');
     $('.backend label').removeClass('cked');
     $('#' + searchParams.get('b')).attr('checked', 'checked');
-    $('#l-'+searchParams.get('b')).addClass('cked');
+    $('#l-' + searchParams.get('b')).addClass('cked');
   }
 
-  if(searchParams.has('m') && searchParams.has('t')){
+  if (searchParams.has('m') && searchParams.has('t')) {
     $('.model input').removeAttr('checked');
     $('.model label').removeClass('cked');
     let m_t = searchParams.get('m') + '_' + searchParams.get('t');
     $('#' + m_t).attr('checked', 'checked');
-    $('#l-'+ m_t).addClass('cked');
+    $('#l-' + m_t).addClass('cked');
   }
 
-  if(searchParams.has('prefer')){
+  if (searchParams.has('prefer')) {
     $('.prefer input').removeAttr('checked');
     $('.prefer label').removeClass('cked');
     $('#' + searchParams.get('prefer')).attr('checked', 'checked');
     $('#l-' + searchParams.get('prefer')).addClass('cked');
   }
 
-  function updateTitle(ub){
-    if(up == 'none' || !up) {
-      $('#ictitle').html('Image Classfication ' + ' / '  + ub + ' / ' + um + ' (' + ut + ')');
+  function updateTitle(ub) {
+    if (up == 'none' || !up) {
+      $('#ictitle').html('Image Classfication ' + ' / ' + ub + ' / ' + um + ' (' + ut + ')');
     } else {
       let macmap;
-      if(up == 'fast') {
+      if (up == 'fast') {
         macmap = 'BNNS'
-      } else if (up == 'sustained'){
+      } else if (up == 'sustained') {
         macmap = 'MPS'
       }
-      $('#ictitle').html('Image Classfication ' + ' / '  + ub + ' / ' + um + ' (' + ut + ') / ' + macmap);
+      $('#ictitle').html('Image Classfication ' + ' / ' + ub + ' / ' + um + ' (' + ut + ') / ' + macmap);
     }
   }
- 
+
   updateTitle(ub);
 
-  $('input:radio[name=p]').click(function(){
+  $('input:radio[name=p]').click(function () {
     let rid = $("input:radio[name='p']:checked").attr('id');
-    let strsearch = '?prefer=' + rid + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
+    let strsearch = '?prefer=' + rid + '&b=' + ub + '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
     location.href = strsearch;
   });
 
-  $('input:radio[name=b]').click(function(){
+  $('input:radio[name=b]').click(function () {
     let rid = $("input:radio[name='b']:checked").attr('id');
 
     $('.backend input').removeAttr('checked');
     $('.backend label').removeClass('cked');
     $('#' + rid).attr('checked', 'checked');
-    $('#l-'+ rid).addClass('cked');
+    $('#l-' + rid).addClass('cked');
     currentBackend = rid;
     updateTitle(currentBackend);
 
-    if(us =='camera') {
-      updateBackendAndScenario(true, currentBackend);
+    if (us == 'camera') {
+      updateBackendAndScenario(true, currentBackend, currentPrefer);
     } else {
-      updateBackendAndScenario(false, currentBackend);
+      updateBackendAndScenario(false, currentBackend, currentPrefer);
     }
-    
+
     // let strsearch = '?prefer=' + up + '&b=' + rid +  '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
     // location.href = strsearch;
   });
 
-  $('input:radio[name=m]').click(function(){
+  $('input:radio[name=m]').click(function () {
     let rid = $("input:radio[name='m']:checked").attr('id');
-    if(rid.indexOf('_onnx')>-1) {
+    if (rid.indexOf('_onnx') > -1) {
       um = rid.replace('_onnx', '');
       ut = 'onnx';
     }
-    if(rid.indexOf('_tflite')>-1) {
+    if (rid.indexOf('_tflite') > -1) {
       um = rid.replace('_tflite', '');
       ut = 'tflite';
     }
-    let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
+    let strsearch = '?prefer=' + up + '&b=' + ub + '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
     location.href = strsearch;
   });
 
-  $('#extra').click(function(){
+  $('#extra').click(function () {
     $('#header-sticky-wrapper').slideToggle(200);
     componentToggle();
   });
 
-  $('#xclose').click(function(){
+  $('#xclose').click(function () {
     $('#intro').slideUp();
   });
 });
@@ -238,26 +238,26 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-  $('#img').click(function(){
+  $('#img').click(function () {
     // if(us !='image'){
     //   let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'image' + '&d=' + ud;
     //   location.href = strsearch;
     // }
     $('ul.nav-pills li').removeClass('active');
     $('ul.nav-pills #img').addClass('active');
-    $('#imagetab').addClass('active'); 
-    $('#cameratab').removeClass('active');  
+    $('#imagetab').addClass('active');
+    $('#cameratab').removeClass('active');
     updateBackendAndScenario(false, currentBackend);
   });
 
-  $('#cam').click(function(){
+  $('#cam').click(function () {
     // if(us !='camera'){
     //   let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'camera' + '&d=' + ud;
     //   location.href = strsearch;
     // }
     $('ul.nav-pills li').removeClass('active');
     $('ul.nav-pills #cam').addClass('active');
-    $('#cameratab').addClass('active'); 
+    $('#cameratab').addClass('active');
     $('#imagetab').removeClass('active');
     updateBackendAndScenario(true, currentBackend);
   });
@@ -265,40 +265,51 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-  $('.model label').each(function(){
-    $(this).on('mouseover touchstart', function() {
-      let modelid = this.id.replace('l-', '');
-      for (model of availableModels) {
-        if(modelid == model.modelName) {
-          $('#intro').slideDown();
-          if(model.intro) {
-            $('#introdescription').html(model.intro);
-            $('#introdescription').removeClass('dnone');
-          } else {
-            $('#introdescription').addClass('dnone');
-          }
+  $('.model label').each(function () {
+    let timeoutObj = null;
+    $(this).on("mouseenter mouseleave touchstart touchcancel touchend", function (e) {
+      let _this = this;
+      if (e.type == "mouseenter" || e.type == "touchstart") {
+        //鼠标进入
+        (function () {
+          timeoutObj = setTimeout(function () {
+            let modelid = _this.id.replace('l-', '');
+            for (model of availableModels) {
+              if (modelid == model.modelName) {
+                $('#intro').slideDown();
+                if (model.intro) {
+                  $('#introdescription').html(model.intro);
+                  $('#introdescription').removeClass('dnone');
+                } else {
+                  $('#introdescription').addClass('dnone');
+                }
 
-          if(model.introUrl) {
-            $('#introurl').html('Paper');
-            $('#introurl').attr('href', model.introUrl);
-            $('#introurl').removeClass('dnone');
-          } else {
-            $('#introurl').addClass('dnone');
-          }
+                if (model.introUrl) {
+                  $('#introurl').html('Paper');
+                  $('#introurl').attr('href', model.introUrl);
+                  $('#introurl').removeClass('dnone');
+                } else {
+                  $('#introurl').addClass('dnone');
+                }
 
-          if(model.netronUrl) {
-            $('#netronurl').html(model.modelName + ' Model Viewer');
-            $('#netronurl').attr('href', model.netronUrl);
-            $('#netronurl').removeClass('dnone');
-          } else {
-            $('#netronurl').addClass('dnone');
-          }
+                if (model.netronUrl) {
+                  $('#netronurl').html(model.modelName + ' Model Viewer');
+                  $('#netronurl').attr('href', model.netronUrl);
+                  $('#netronurl').removeClass('dnone');
+                } else {
+                  $('#netronurl').addClass('dnone');
+                }
+              }
+            }
+          }, 2000);
+        }(this));
+      } else if (e.type == "mouseleave" || e.type == "touchcancel" || e.type == "touchend") {
+        if (timeoutObj != null) {
+          clearTimeout(timeoutObj);
+          $('#intro').delay(3000).slideUp();
         }
       }
-    })
-
-    $(this).on('mouseout touchcancel touchend', function() {
-    })
+    });
   })
 });
 
@@ -310,16 +321,18 @@ $(window).load(function () {
   let ut = searchParams.get('t');
   let us = searchParams.get('s');
   let ud = searchParams.get('d');
-  if(ud != '0') {
+  if (ud != '0') {
     $('#header-sticky-wrapper').slideToggle();
     componentToggle();
   }
 });
 
-let searchParams = new URLSearchParams(location.search);
-let us = searchParams.get('s');
-if(us =='camera') {
-  document.addEventListener('load', main(true), false);
-} else {
-  document.addEventListener('load', main(), false);
-}
+$(window).load(function () {
+  let searchParams = new URLSearchParams(location.search);
+  let us = searchParams.get('s');
+  if (us == 'camera') {
+    main(true);
+  } else {
+    main();
+  }
+})

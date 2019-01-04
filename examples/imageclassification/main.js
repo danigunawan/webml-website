@@ -302,59 +302,66 @@ async function startPredict() {
   if (streaming) {
     let stats = new Stats();
     stats.begin();
-    utils.predict(videoElement).then(ret => updateResult(ret)).then(() => {
-      stats.end();
-      setTimeout(startPredict, 0);
-    });
+    let ret = await utils.predict(videoElement);
+    await updateResult(ret);
+    stats.end();
   }
 }
 
-module.exports = (promise) => {
-  if(!promise || !Promise.prototype.isPrototypeOf(promise)){
-      return new Promise((resolve, reject)=>{
-          reject(new Error("requires promises as the param"));
-      }).catch((err)=>{
-          return [err, null];
-      });
-  }
-  return promise.then(function(){
-      return [null, ...arguments];
-  }).catch(err => {
-      return [err, null];
-  });
-};
+// let promise = (promise) => {
+//   if (!promise || !Promise.prototype.isPrototypeOf(promise)) {
+//     return new Promise((resolve, reject) => {
+//       reject(new Error("requires promises as the param"));
+//     }).catch((err) => {
+//       return [err, null];
+//     });
+//   }
+//   return promise.then(function () {
+//     return [null, ...arguments];
+//   }).catch(err => {
+//     return [err, null];
+//   });
+// };
 
-async function updateBackendAndScenario(camera, backend) {
-  streaming = false;
-  let err, user;
-  // utils.deleteAll();
-    await utils.init(backend, currentPrefer);
-    if (!camera) {
-      [err, ret] = await utils.predict(imageElement);
-      
-      if (err) {
-        showAlert(err);
-      }
-      
-    } else {
-      streaming = true;
+// promise();
+
+async function utilsPredictImage(imageElement, backend, prefer) {
+  try {
+    await utils.init(backend, prefer);
+    let ret = await utils.predict(imageElement);
+    updateResult(ret);
+    // utils.deleteAll();
+  }
+  catch (e) {
+    showAlert(e);
+  }
+}
+
+async function utilsPredictCamera(backend, prefer) {
+  let stats = new Stats();
+    try {
+      await utils.init(backend, prefer);
       let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } });
       video.srcObject = stream;
+      streaming = true;
       startPredict();
-
-      // navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } }).then((stream) => {
-      //   video.srcObject = stream;
-      //     startPredict();
-      //   }).catch((error) => {
-      //   console.error(error);
-      //   showAlert(error);
-      // });
+    } 
+    catch (e) {
+      showAlert(e);
     }
 }
 
-async function main(camera) {
-  await utils.init(currentBackend, currentPrefer);
+async function updateBackendAndScenario(camera, backend, prefer) {
+  streaming = false;
+  // utils.deleteAll();
+  if (!camera) {
+    utilsPredictImage(imageElement, backend, prefer);
+  } else {
+    utilsPredictCamera(backend, prefer);
+  }
+}
 
+async function main(camera) {
   if (!camera) {
     inputElement.addEventListener('change', (e) => {
       let files = e.target.files;
@@ -363,21 +370,12 @@ async function main(camera) {
       }
     }, false);
 
-    imageElement.onload = async function () {
-      let ret = await utils.predict(imageElement);
-      updateResult(ret);
+    imageElement.onload = function () {
+      utilsPredictImage(imageElement, currentBackend, currentPrefer);
     }
-    console.log(currentBackend)
-    console.log(currentPrefer)
-    
-    let ret = await utils.predict(imageElement);
-    updateResult(ret);
-    // utils.deleteAll();
+
+    utilsPredictImage(imageElement, currentBackend, currentPrefer);
   } else {
-    let stats = new Stats();
-    let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } });
-    video.srcObject = stream;
-    streaming = true;
-    startPredict();
+    utilsPredictCamera(currentBackend, currentPrefer);
   }
 }
