@@ -129,8 +129,8 @@ $(document).ready(function () {
   });
 
   $('input:radio[name=b]').click(function () {
+    $('.alert').hide();
     let rid = $("input:radio[name='b']:checked").attr('id');
-
     $('.backend input').removeAttr('checked');
     $('.backend label').removeClass('cked');
     $('#' + rid).attr('checked', 'checked');
@@ -167,9 +167,9 @@ $(document).ready(function () {
     componentToggle();
   });
 
-  $('#xclose').click(function () {
-    $('#intro').slideUp();
-  });
+  // $('#xclose').click(function () {
+  //   $('#intro').slideUp();
+  // });
 });
 
 function getRandom(min, max) {
@@ -243,6 +243,7 @@ $(document).ready(function () {
     //   let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'image' + '&d=' + ud;
     //   location.href = strsearch;
     // }
+    $('.alert').hide();
     $('ul.nav-pills li').removeClass('active');
     $('ul.nav-pills #img').addClass('active');
     $('#imagetab').addClass('active');
@@ -255,6 +256,7 @@ $(document).ready(function () {
     //   let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'camera' + '&d=' + ud;
     //   location.href = strsearch;
     // }
+    $('.alert').hide();
     $('ul.nav-pills li').removeClass('active');
     $('ul.nav-pills #cam').addClass('active');
     $('#cameratab').addClass('active');

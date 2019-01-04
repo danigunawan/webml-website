@@ -258,7 +258,13 @@ function updateProgress(ev) {
     percentComplete = percentComplete.toFixed(0);
     progressBar.style = `width: ${percentComplete}%`;
     progressBar.innerHTML = `Loading Model: ${percentComplete}%`;
+    updateLoading(percentComplete);
   }
+}
+
+function updateLoading(c) {
+  $(".loading-page .counter h1").html(c + "%");
+  $(".loading-page .counter hr").css("width", c + "%");
 }
 
 function updateResult(result) {
@@ -308,47 +314,57 @@ async function startPredict() {
   }
 }
 
-// let promise = (promise) => {
-//   if (!promise || !Promise.prototype.isPrototypeOf(promise)) {
-//     return new Promise((resolve, reject) => {
-//       reject(new Error("requires promises as the param"));
-//     }).catch((err) => {
-//       return [err, null];
-//     });
-//   }
-//   return promise.then(function () {
-//     return [null, ...arguments];
-//   }).catch(err => {
-//     return [err, null];
-//   });
-// };
+function showModelLoading() {
+  $('#progressmodel').fadeIn();
+  $('.shoulddisplay').hide();
+  $('.icdisplay').hide();
+  $('#resulterror').hide();
+}
 
-// promise();
+function showResults() {
+  $('#progressmodel').hide();
+  $('.icdisplay').fadeIn();
+  $('.shoulddisplay').fadeIn();
+  $('#resulterror').hide();
+}
+
+function showError() {
+  $('#progressmodel').hide();
+  $('.icdisplay').fadeIn();
+  $('.shoulddisplay').hide();
+  $('#resulterror').fadeIn();
+}
 
 async function utilsPredictImage(imageElement, backend, prefer) {
+  showModelLoading();
   try {
     await utils.init(backend, prefer);
     let ret = await utils.predict(imageElement);
+    showResults();
     updateResult(ret);
     // utils.deleteAll();
   }
   catch (e) {
     showAlert(e);
+    showError();
   }
 }
 
 async function utilsPredictCamera(backend, prefer) {
   let stats = new Stats();
-    try {
-      await utils.init(backend, prefer);
-      let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } });
-      video.srcObject = stream;
-      streaming = true;
-      startPredict();
-    } 
-    catch (e) {
-      showAlert(e);
-    }
+  showModelLoading();
+  try {
+    await utils.init(backend, prefer);
+    let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } });
+    video.srcObject = stream;
+    streaming = true;
+    startPredict();
+    showResults();
+  } 
+  catch (e) {
+    showAlert(e);
+    showError();
+  }
 }
 
 async function updateBackendAndScenario(camera, backend, prefer) {
