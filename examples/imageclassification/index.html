@@ -140,17 +140,23 @@
           <tr class='backend'>
             <th class='text-center'>Backend</th>
             <td>
+              <div class='g'>
+              <span>Polyfill</span>
               <input type="radio" name="b" class="d-none" id="WASM" value="WASM">
               <label id="l-WASM" for="WASM">WASM</label>
               <input type="radio" name="b" class="d-none" id="WebGL" value="WebGL">
               <label id="l-WebGL" for="WebGL">WebGL</label>
+              </div>
               <div class='g'>
-                <input type="radio" name="b" class="d-none" id="WebML" value="WebML">
-                <label id="l-WebML" for="WebML">WebNN</label>
-                <input type="radio" name="p" class="d-none" id="fast" value="fast">
-                <label id="l-fast" for="fast">BNNS</label>
-                <input type="radio" name="p" class="d-none" id="sustained" value="sustained">
-                <label id="l-sustained" for="sustained">MPS</label>
+                <span>WebNN</span>
+                <!-- <input type="radio" name="b" class="d-none" id="WebML" value="WebML">
+                <label id="l-WebML" for="WebML">WebNN</label> -->
+                <input type="radio" name="b" class="d-none ml" id="fast" value="fast">
+                <label id="l-fast" for="fast" class='lml'>CPU</label>
+                <input type="radio" name="b" class="d-none ml" id="sustained" value="sustained">
+                <label id="l-sustained" for="sustained" class='lml'>GPU</label>
+                <input type="radio" name="b" class="d-none ml" id="low" value="low">
+                <label id="l-low" for="low" class='lml'>Low Power</label>
               </div>
             </td>
           </tr>

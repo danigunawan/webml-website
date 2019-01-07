@@ -1,33 +1,8 @@
 if (!location.search) {
-  let strsearch;
-  if (getOS() == 'Mac OS') {
-    strsearch = '?prefer=sustained&b=WebML&m=mobilenet_v1&t=tflite&s=image&d=0';
-  } else {
-    strsearch = '?prefer=none&b=WASM&m=mobilenet_v1&t=tflite&s=image&d=0';
-  }
+  const strsearch = '?prefer=none&b=WASM&m=mobilenet_v1&t=tflite&s=image&d=0';
   const path = location.href;
   location.href = path + strsearch;
-} else {
-  let searchParams = new URLSearchParams(location.search);
-  let up = searchParams.get('prefer');
-  let ub = searchParams.get('b');
-  let um = searchParams.get('m');
-  let ut = searchParams.get('t');
-  let us = searchParams.get('s');
-  let ud = searchParams.get('d');
-
-  let strsearch;
-  if(ub) {
-    if(ub == 'WASM') {
-      strsearch = '?prefer=none&b=WASM&m=mobilenet_v1&t=tflite&s=image&d=0';
-    } else if (ub == 'WebGL') {
-      strsearch = '?prefer=none&b=WebGL&m=mobilenet_v1&t=tflite&s=image&d=0';
-    } 
-  }
-
-  const path = location.href;
-  location.href = path + strsearch;
-}
+} 
 
 function isWebML() {
   if (navigator.ml && navigator.ml.getNeuralNetworkContext()) {
@@ -124,19 +99,25 @@ $(document).ready(function () {
     $('.prefer label').removeClass('cked');
     $('#' + searchParams.get('prefer')).attr('checked', 'checked');
     $('#l-' + searchParams.get('prefer')).addClass('cked');
+
+    if(ub == 'WASM' || ub == 'WebGL') {
+      $('.ml').removeAttr('checked');
+      $('.lml').removeClass('cked');
+    }
   }
 
   function updateTitle(ub) {
     if (up == 'none' || !up) {
       $('#ictitle').html('Image Classfication ' + ' / ' + ub + ' / ' + um + ' (' + ut + ')');
     } else {
-      let macmap;
       if (up == 'fast') {
-        macmap = 'BNNS'
+        currentPrefer = 'CPU';
       } else if (up == 'sustained') {
-        macmap = 'MPS'
+        currentPrefer = 'GPU';
+      } else if (up == 'low') {
+        currentPrefer = 'Low Power';
       }
-      $('#ictitle').html('Image Classfication ' + ' / ' + ub + ' / ' + um + ' (' + ut + ') / ' + macmap);
+      $('#ictitle').html('Image Classfication ' + ' / ' + ub + ' / ' + currentPrefer + ' / ' + um + ' (' + ut + ')');
     }
   }
 
@@ -155,8 +136,25 @@ $(document).ready(function () {
     $('.backend label').removeClass('cked');
     $('#' + rid).attr('checked', 'checked');
     $('#l-' + rid).addClass('cked');
-    currentBackend = rid;
-    updateTitle(currentBackend);
+
+    if(rid == 'WASM' || rid == 'WebGL') {
+      $('.ml').removeAttr('checked');
+      $('.lml').removeClass('cked');
+    }
+
+    if(rid == 'WASM' || rid == 'WebGL') {
+      currentBackend = rid;
+      currentPrefer = 'none';
+    } else if (rid == 'fast' || rid == 'sustained' || rid == 'low') {
+      currentBackend = 'WebML';
+      currentPrefer = rid;
+    }
+
+    if(currentPrefer != 'none') {
+      updateTitle(currentBackend + ' / ' + $('#l-' + currentPrefer).text());
+    } else {
+      updateTitle(currentBackend);
+    }
 
     if (us == 'camera') {
       updateBackendAndScenario(true, currentBackend, currentPrefer);

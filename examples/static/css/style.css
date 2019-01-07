@@ -867,7 +867,7 @@ footer {
 }
 
 .t-filter label {
-  margin: 4px 8px 4px 0px;
+  margin: 0px 6px 0px 0px;
   cursor: pointer;
   display: inline-block;
   max-width: 100%;
@@ -885,8 +885,6 @@ footer {
 }
 
 .cked:hover {
-  padding: 0px 6px;
-  color: rgb(255, 255, 255);
   background-color: rgba(255, 111, 97, 0.9);
   border: 1px solid rgba(255, 111, 97, 1.0);
 }
@@ -896,6 +894,29 @@ footer {
 }
 
 #input { display: none; }
+
+
+.g {
+  border: 1px solid rgba(25, 190, 225, 0.1);
+  display: inline-block;
+}
+
+.g:hover {
+  border: 1px solid rgba(25, 190, 225, 0.4);
+}
+
+.g span {
+  margin: 0;
+  padding: 2px 8px 2px 8px;
+  display: inline-block;
+  background-color: rgba(25, 190, 225, 1.0);
+  color: rgba(255, 255, 255, 0.9); 
+}
+
+.g span:hover {
+  background-color: rgba(25, 190, 225, 1.0);
+  color: rgba(255, 255, 255, 1.0); 
+}
 
 .alert {
   border-radius: 0px;
@@ -1285,14 +1306,25 @@ video {
   display: block;
   position: relative;
   font-size: 1rem;
+  .g {
+    border: 1px solid rgba(255, 111, 97, 1.0);
+    display: inline-block;
+  }
+  
+  .g span {
+    margin: 0;
+    background-color: rgba(25, 190, 225, 1.0);
+    color: rgba(255, 255, 255, 0.9); 
+  }
+  
+  .g span:hover {
+    background-color: rgba(25, 190, 225, 1.0);
+    color: rgba(255, 255, 255, 1.0); 
+  }
   font-weight: 100;
 }
 
-.g {
-  border: 1px solid rgba(255, 111, 97, 1.0);
-  padding: 2px;
-  display: inline-block;
-}
+
 /* 
   color scheme:
   rgba(255, 111, 97, 1.0);
