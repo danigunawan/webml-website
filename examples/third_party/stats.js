@@ -45,7 +45,7 @@
         min = Math.min(min, value);
         max = Math.max(max, value);
         var fpsnow = round(value);
-        fps.innerHTML = '<span style="color: rgba(255, 255, 255, 0.8);">' + fpsnow + ' FPS</span>';
+        fps.innerHTML = '<span style="color: rgba(255, 255, 255, 0.8);background-color: red;">' + fpsnow + ' FPS</span>';
       }
     };
   };
