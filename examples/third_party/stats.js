@@ -17,6 +17,7 @@
 
     return {
       begin: function () {
+        console.log('FPS started')
         beginTime = (performance || Date).now();
       },
       end: function () {
@@ -27,6 +28,7 @@
           prevTime = time;
           frames = 0;
         }
+        console.log('FPS end')
         return time;
       },
       update: function () {

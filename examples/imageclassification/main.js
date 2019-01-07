@@ -299,7 +299,7 @@ if (getOS() === 'Mac OS' && currentBackend === 'WebML') {
   }
 }
 
-async function startPredict() {
+async function startPredictCamera() {
   if (streaming) {
     let stats = new Stats();
     stats.begin();
@@ -330,14 +330,13 @@ async function utilsPredictImage(imageElement, backend, prefer) {
 }
 
 async function utilsPredictCamera(backend, prefer) {
-  let stats = new Stats();
   showProgress();
   try {
     await utils.init(backend, prefer);
     let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } });
     video.srcObject = stream;
     streaming = true;
-    startPredict();
+    startPredictCamera();
     showResults();
   } 
   catch (e) {

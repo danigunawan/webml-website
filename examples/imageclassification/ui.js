@@ -1,10 +1,30 @@
 if (!location.search) {
   let strsearch;
   if (getOS() == 'Mac OS') {
-    strsearch = '?prefer=fast&b=WebML&m=mobilenet_v1&t=tflite&s=image&d=0';
+    strsearch = '?prefer=sustained&b=WebML&m=mobilenet_v1&t=tflite&s=image&d=0';
   } else {
     strsearch = '?prefer=none&b=WASM&m=mobilenet_v1&t=tflite&s=image&d=0';
   }
+  const path = location.href;
+  location.href = path + strsearch;
+} else {
+  let searchParams = new URLSearchParams(location.search);
+  let up = searchParams.get('prefer');
+  let ub = searchParams.get('b');
+  let um = searchParams.get('m');
+  let ut = searchParams.get('t');
+  let us = searchParams.get('s');
+  let ud = searchParams.get('d');
+
+  let strsearch;
+  if(ub) {
+    if(ub == 'WASM') {
+      strsearch = '?prefer=none&b=WASM&m=mobilenet_v1&t=tflite&s=image&d=0';
+    } else if (ub == 'WebGL') {
+      strsearch = '?prefer=none&b=WebGL&m=mobilenet_v1&t=tflite&s=image&d=0';
+    } 
+  }
+
   const path = location.href;
   location.href = path + strsearch;
 }
@@ -345,7 +365,7 @@ function showResults() {
 
 function showError() {
   $('#progressmodel').hide();
-  $('.icdisplay').fadeIn();
+  $('.icdisplay').hide();
   $('.shoulddisplay').hide();
   $('#resulterror').fadeIn();
 }
