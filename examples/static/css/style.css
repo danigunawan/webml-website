@@ -92,7 +92,7 @@ body {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 2001;
+  z-index: 1001;
 }
 
 .github-corner:hover .octo-arm {
@@ -1191,6 +1191,7 @@ video {
   left: 0px;
   top: 1rem;
   font-size: 1rem;
+  z-index: 2002;
 }
 
 .hide {
@@ -1213,10 +1214,11 @@ video {
   width: 100%;
 }
 .loading-page .counter p {
-  margin-top: 1rem; 
+  margin-top: 0rem; 
   font-size: 1rem;
 }
 .loading-page .counter h1 {
+  margin-top: 1rem; 
   color: rgba(25, 190, 225, 1.0);
   font-size: 2rem;
 }
@@ -1273,7 +1275,6 @@ video {
   font-size: 1.4rem;
   position: relative;
   display: inline-block;
-  z-index: 2;
   letter-spacing: 12px;
   text-transform: uppercase;
   color: rgba(255, 111, 97, 1.0);
@@ -1287,18 +1288,11 @@ video {
   font-weight: 100;
 }
 
-hr {
-  padding: 0;
-  border: none;
-  border-top: 5px solid #fff;
-  color: #fff;
-  text-align: center;
-  margin: 0px auto;
-  width: 420px;
-  height: 10px;
-  z-index: -10;
+.g {
+  border: 1px solid rgba(255, 111, 97, 1.0);
+  padding: 2px;
+  display: inline-block;
 }
-
 /* 
   color scheme:
   rgba(255, 111, 97, 1.0);

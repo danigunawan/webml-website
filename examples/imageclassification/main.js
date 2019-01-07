@@ -262,11 +262,6 @@ function updateProgress(ev) {
   }
 }
 
-function updateLoading(c) {
-  $(".loading-page .counter h1").html(c + "%");
-  $(".loading-page .counter hr").css("width", c + "%");
-}
-
 function updateResult(result) {
   console.log(`Inference time: ${result.time} ms`);
   let inferenceTimeElement = document.getElementById('inferenceTime');
@@ -308,35 +303,19 @@ async function startPredict() {
   if (streaming) {
     let stats = new Stats();
     stats.begin();
-    let ret = await utils.predict(videoElement);
-    await updateResult(ret);
+    try {
+      let ret = await utils.predict(videoElement);
+      await updateResult(ret);
+    } catch (e) {
+      showAlert(e);
+      showError();
+    }
     stats.end();
   }
 }
 
-function showModelLoading() {
-  $('#progressmodel').fadeIn();
-  $('.shoulddisplay').hide();
-  $('.icdisplay').hide();
-  $('#resulterror').hide();
-}
-
-function showResults() {
-  $('#progressmodel').hide();
-  $('.icdisplay').fadeIn();
-  $('.shoulddisplay').fadeIn();
-  $('#resulterror').hide();
-}
-
-function showError() {
-  $('#progressmodel').hide();
-  $('.icdisplay').fadeIn();
-  $('.shoulddisplay').hide();
-  $('#resulterror').fadeIn();
-}
-
 async function utilsPredictImage(imageElement, backend, prefer) {
-  showModelLoading();
+  showProgress();
   try {
     await utils.init(backend, prefer);
     let ret = await utils.predict(imageElement);
@@ -352,7 +331,7 @@ async function utilsPredictImage(imageElement, backend, prefer) {
 
 async function utilsPredictCamera(backend, prefer) {
   let stats = new Stats();
-  showModelLoading();
+  showProgress();
   try {
     await utils.init(backend, prefer);
     let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } });
