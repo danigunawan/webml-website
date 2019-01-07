@@ -32,6 +32,7 @@
         return time;
       },
       update: function () {
+        console.log('FPS Updating')
         beginTime = this.end();
       }
     };

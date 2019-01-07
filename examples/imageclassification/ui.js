@@ -59,16 +59,6 @@ $(document).ready(function () {
     $('#imagetab').addClass('active');
   }
 
-  // if (getOS() != 'Mac OS') {
-  //   $('#l-fast').addClass('dnone');
-  //   $('#l-sustained').addClass('dnone');
-  //   $('#l-WebML').removeClass('dnone');
-  // } else {
-  //   $('#l-WebML').addClass('dnone');
-  //   $('#l-fast').removeClass('dnone');
-  //   $('#l-sustained').removeClass('dnone');
-  // }
-
   if (!isWebML()) {
     $('#WebML').addClass('dnone');
     $('#l-WebML').addClass('dnone');
@@ -257,10 +247,6 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('#img').click(function () {
-    // if(us !='image'){
-    //   let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'image' + '&d=' + ud;
-    //   location.href = strsearch;
-    // }
     $('.alert').hide();
     $('ul.nav-pills li').removeClass('active');
     $('ul.nav-pills #img').addClass('active');
@@ -270,10 +256,6 @@ $(document).ready(function () {
   });
 
   $('#cam').click(function () {
-    // if(us !='camera'){
-    //   let strsearch = '?prefer=' + up + '&b=' + ub +  '&m=' + um + '&t=' + ut + '&s=' + 'camera' + '&d=' + ud;
-    //   location.href = strsearch;
-    // }
     $('.alert').hide();
     $('ul.nav-pills li').removeClass('active');
     $('ul.nav-pills #cam').addClass('active');
