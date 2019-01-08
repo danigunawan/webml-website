@@ -147,9 +147,9 @@ $(document).ready(function () {
     }
 
     if (us == 'camera') {
-      updateBackendAndScenario(true, currentBackend, currentPrefer);
+      updateScenario(true, currentBackend, currentPrefer);
     } else {
-      updateBackendAndScenario(false, currentBackend, currentPrefer);
+      updateScenario(false, currentBackend, currentPrefer);
     }
 
     // let strsearch = '?prefer=' + up + '&b=' + rid +  '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
@@ -252,7 +252,7 @@ $(document).ready(function () {
     $('ul.nav-pills #img').addClass('active');
     $('#imagetab').addClass('active');
     $('#cameratab').removeClass('active');
-    updateBackendAndScenario(false, currentBackend);
+    updateScenario(false, currentBackend);
   });
 
   $('#cam').click(function () {
@@ -261,7 +261,7 @@ $(document).ready(function () {
     $('ul.nav-pills #cam').addClass('active');
     $('#cameratab').addClass('active');
     $('#imagetab').removeClass('active');
-    updateBackendAndScenario(true, currentBackend);
+    updateScenario(true, currentBackend);
   });
 
 });

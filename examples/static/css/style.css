@@ -1194,6 +1194,10 @@ button.xclose {
   color: rgba(255, 255, 255, 1.0);
 }
 
+.icdisplay {
+  margin-top: -1rem;
+}
+
 video {
   border: 1px solid rgba(0, 0, 0, 0.1);
   margin-top: -1rem;
@@ -1203,9 +1207,11 @@ video {
 #fps {
   position: relative;
   left: 0px;
-  top: 1rem;
-  font-size: 1rem;
-  z-index: 2002;
+  top: 2rem;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.4); 
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+  font-weight: 200;
 }
 
 .hide {

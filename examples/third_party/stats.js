@@ -17,7 +17,6 @@
 
     return {
       begin: function () {
-        console.log('FPS started')
         beginTime = (performance || Date).now();
       },
       end: function () {
@@ -28,11 +27,9 @@
           prevTime = time;
           frames = 0;
         }
-        console.log('FPS end')
         return time;
       },
       update: function () {
-        console.log('FPS Updating')
         beginTime = this.end();
       }
     };
@@ -45,7 +42,7 @@
         min = Math.min(min, value);
         max = Math.max(max, value);
         var fpsnow = round(value);
-        fps.innerHTML = '<span style="color: rgba(255, 255, 255, 0.8);background-color: red;">' + fpsnow + ' FPS</span>';
+        fps.innerHTML = fpsnow + ' FPS';
       }
     };
   };

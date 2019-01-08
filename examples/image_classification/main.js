@@ -88,29 +88,30 @@ if (getOS() === 'Mac OS' && currentBackend === 'WebML') {
   }
 }
 
+let stats = new Stats();
+
 async function startPredictCamera() {
   if (streaming) {
-    let stats = new Stats();
-    stats.begin();
     try {
+      stats.begin();
       let ret = await utils.predict(videoElement);
-      await updateResult(ret);
+      updateResult(ret);
+      stats.end();
+      setTimeout(startPredictCamera, 0);
     } catch (e) {
       showAlert(e);
       showError();
     }
-    stats.end();
   }
 }
 
-async function utilsPredictImage(imageElement, backend, prefer) {
+async function utilsPredict(imageElement, backend, prefer) {
   showProgress();
   try {
     await utils.init(backend, prefer);
     let ret = await utils.predict(imageElement);
     showResults();
     updateResult(ret);
-    // utils.deleteAll();
   }
   catch (e) {
     showAlert(e);
@@ -134,11 +135,15 @@ async function utilsPredictCamera(backend, prefer) {
   }
 }
 
-async function updateBackendAndScenario(camera, backend, prefer) {
+async function updateScenario(camera, backend, prefer) {
   streaming = false;
-  // utils.deleteAll();
+  try {
+    utils.deleteAll();
+  } catch (e) {
+     console.log('utils.deleteAll(): ' + e);
+  }
   if (!camera) {
-    utilsPredictImage(imageElement, backend, prefer);
+    utilsPredict(imageElement, backend, prefer);
   } else {
     utilsPredictCamera(backend, prefer);
   }
@@ -154,10 +159,10 @@ async function main(camera) {
     }, false);
 
     imageElement.onload = function () {
-      utilsPredictImage(imageElement, currentBackend, currentPrefer);
+      utilsPredict(imageElement, currentBackend, currentPrefer);
     }
 
-    utilsPredictImage(imageElement, currentBackend, currentPrefer);
+    utilsPredict(imageElement, currentBackend, currentPrefer);
   } else {
     utilsPredictCamera(currentBackend, currentPrefer);
   }
