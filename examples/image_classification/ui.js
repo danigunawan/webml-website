@@ -4,6 +4,14 @@ if (!location.search) {
   location.href = path + strsearch;
 } 
 
+let searchParams = new URLSearchParams(location.search);
+let up = searchParams.get('prefer');
+let ub = searchParams.get('b');
+let um = searchParams.get('m');
+let ut = searchParams.get('t');
+let us = searchParams.get('s');
+let ud = searchParams.get('d');
+
 function isWebML() {
   if (navigator.ml && navigator.ml.getNeuralNetworkContext()) {
     if (!navigator.ml.isPolyfill) {
@@ -34,18 +42,7 @@ function componentToggle() {
   }
 }
 
-function getHash() {
-  return location.hash.replace('#', '');
-}
-
 $(document).ready(function () {
-  let searchParams = new URLSearchParams(location.search);
-  let up = searchParams.get('prefer');
-  let ub = searchParams.get('b');
-  let um = searchParams.get('m');
-  let ut = searchParams.get('t');
-  let us = searchParams.get('s');
-  let ud = searchParams.get('d');
 
   if (us == 'camera') {
     $('.nav-pills li').removeClass('active');
@@ -276,7 +273,7 @@ $(document).ready(function () {
         (function () {
           timeoutObj = setTimeout(function () {
             let modelid = _this.id.replace('l-', '');
-            for (model of availableModels) {
+            for (model of imageClassificationModels) {
               if (modelid == model.modelName) {
                 $('#intro').slideDown();
                 if (model.intro) {
@@ -316,13 +313,6 @@ $(document).ready(function () {
 });
 
 $(window).load(function () {
-  let searchParams = new URLSearchParams(location.search);
-  let up = searchParams.get('prefer');
-  let ub = searchParams.get('b');
-  let um = searchParams.get('m');
-  let ut = searchParams.get('t');
-  let us = searchParams.get('s');
-  let ud = searchParams.get('d');
   if (ud != '0') {
     $('#header-sticky-wrapper').slideToggle();
     componentToggle();
@@ -356,8 +346,6 @@ function updateLoading(c) {
 }
 
 $(window).load(function () {
-  let searchParams = new URLSearchParams(location.search);
-  let us = searchParams.get('s');
   if (us == 'camera') {
     main(true);
   } else {

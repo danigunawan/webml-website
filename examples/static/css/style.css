@@ -1194,13 +1194,9 @@ button.xclose {
   color: rgba(255, 255, 255, 1.0);
 }
 
-.icdisplay {
-  margin-top: -1rem;
-}
-
 video {
   border: 1px solid rgba(0, 0, 0, 0.1);
-  margin-top: -1rem;
+  margin-top: -2rem;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), inset 0 0 1px 0 rgba(255, 255, 255, 1);
 }
 
