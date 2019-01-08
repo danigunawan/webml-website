@@ -1,14 +1,14 @@
-function getURLSearchParams_prefer() {
+function getSearchParams_prefer() {
   let searchParams = new URLSearchParams(location.search);
   return searchParams.has('prefer') ? searchParams.get('prefer') : '';
 }
 
-function getURLSearchParams_backend() {
+function getSearchParams_backend() {
   let searchParams = new URLSearchParams(location.search);
   return searchParams.has('b') ? searchParams.get('b') : '';
 }
 
-function getURLSearchParams_model() {
+function getSearchParams_model() {
   let searchParams = new URLSearchParams(location.search);
   if (searchParams.has('m') && searchParams.has('t')) {
     return searchParams.get('m') + '_' + searchParams.get('t');
@@ -23,10 +23,12 @@ const inputElement = document.getElementById('input');
 const canvasElement = document.getElementById('canvas');
 const progressBar = document.getElementById('progressBar');
 
-let currentBackend = getURLSearchParams_backend();
-let currentModel = getURLSearchParams_model();
-let currentPrefer = getURLSearchParams_prefer();
+let currentBackend = getSearchParams_backend();
+let currentModel = getSearchParams_model();
+let currentPrefer = getSearchParams_prefer();
 let streaming = false;
+let stats = new Stats();
+let track;
 
 let utils = new Utils(canvasElement);
 utils.updateProgress = updateProgress;    //register updateProgress function if progressBar element exist
@@ -88,8 +90,6 @@ if (getOS() === 'Mac OS' && currentBackend === 'WebML') {
   }
 }
 
-let stats = new Stats();
-
 async function startPredictCamera() {
   if (streaming) {
     try {
@@ -106,7 +106,17 @@ async function startPredictCamera() {
 }
 
 async function utilsPredict(imageElement, backend, prefer) {
+  streaming = false;
+  // Stop webcam opened by navigator.getUserMedia if user visits 'LIVE CAMERA' tab before
+  if(track) {
+    track.stop();
+  }
   showProgress();
+  try {
+    utils.deleteAll();
+  } catch (e) {
+     console.log('utils.deleteAll(): ' + e);
+  }
   try {
     await utils.init(backend, prefer);
     let ret = await utils.predict(imageElement);
@@ -120,12 +130,13 @@ async function utilsPredict(imageElement, backend, prefer) {
 }
 
 async function utilsPredictCamera(backend, prefer) {
+  streaming = true;
   showProgress();
   try {
     await utils.init(backend, prefer);
     let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } });
     video.srcObject = stream;
-    streaming = true;
+    track = stream.getTracks()[0];
     startPredictCamera();
     showResults();
   } 

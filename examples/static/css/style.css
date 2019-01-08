@@ -1123,6 +1123,8 @@ footer {
 
 video {
   text-align: center;
+  max-width: 470px;
+  max-height: 280px;
 }
 
 @media (max-width: 768px) {

@@ -11,6 +11,7 @@ let um = searchParams.get('m');
 let ut = searchParams.get('t');
 let us = searchParams.get('s');
 let ud = searchParams.get('d');
+let currenttab = us;
 
 function isWebML() {
   if (navigator.ml && navigator.ml.getNeuralNetworkContext()) {
@@ -94,27 +95,21 @@ $(document).ready(function () {
   }
 
   function updateTitle(ub) {
+    let currentprefertext;
     if (up == 'none' || !up) {
       $('#ictitle').html('Image Classfication ' + ' / ' + ub + ' / ' + um + ' (' + ut + ')');
     } else {
       if (up == 'fast') {
-        currentPrefer = 'CPU';
+        currentprefertext = 'FAST_SINGLE_ANSWER';
       } else if (up == 'sustained') {
-        currentPrefer = 'GPU';
+        currentprefertext = 'SUSTAINED_SPEED';
       } else if (up == 'low') {
-        currentPrefer = 'Low Power';
+        currentprefertext = 'LOW_POWER';
       }
-      $('#ictitle').html('Image Classfication ' + ' / ' + ub + ' / ' + currentPrefer + ' / ' + um + ' (' + ut + ')');
+      $('#ictitle').html('Image Classfication ' + ' / ' + ub + ' / ' + currentprefertext + ' / ' + um + ' (' + ut + ')');
     }
   }
-
   updateTitle(ub);
-
-  $('input:radio[name=p]').click(function () {
-    let rid = $("input:radio[name='p']:checked").attr('id');
-    let strsearch = '?prefer=' + rid + '&b=' + ub + '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
-    location.href = strsearch;
-  });
 
   $('input:radio[name=b]').click(function () {
     $('.alert').hide();
@@ -137,20 +132,20 @@ $(document).ready(function () {
       currentPrefer = rid;
     }
 
+    let strsearch = '?prefer=' + currentPrefer + '&b=' + currentBackend + '&m=' + um + '&t=' + ut + '&s=image&d=' + ud;
+    window.history.pushState(null, null, strsearch);
+
     if(currentPrefer != 'none') {
       updateTitle(currentBackend + ' / ' + $('#l-' + currentPrefer).text());
     } else {
       updateTitle(currentBackend);
     }
 
-    if (us == 'camera') {
+    if (currenttab == 'camera') {
       updateScenario(true, currentBackend, currentPrefer);
     } else {
       updateScenario(false, currentBackend, currentPrefer);
     }
-
-    // let strsearch = '?prefer=' + up + '&b=' + rid +  '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
-    // location.href = strsearch;
   });
 
   $('input:radio[name=m]').click(function () {
@@ -171,15 +166,7 @@ $(document).ready(function () {
     $('#header-sticky-wrapper').slideToggle(200);
     componentToggle();
   });
-
-  // $('#xclose').click(function () {
-  //   $('#intro').slideUp();
-  // });
 });
-
-function getRandom(min, max) {
-  return Math.random() * (max - min) + min;
-}
 
 $(document).ready(function () {
   $('.nav-menu').superfish({
@@ -249,7 +236,10 @@ $(document).ready(function () {
     $('ul.nav-pills #img').addClass('active');
     $('#imagetab').addClass('active');
     $('#cameratab').removeClass('active');
-    updateScenario(false, currentBackend);
+    let strsearch = '?prefer=' + up + '&b=' + ub + '&m=' + um + '&t=' + ut + '&s=image&d=' + ud;
+    window.history.pushState(null, null, strsearch)
+    currenttab = 'image';
+    updateScenario(false, currentBackend, currentPrefer);
   });
 
   $('#cam').click(function () {
@@ -258,7 +248,10 @@ $(document).ready(function () {
     $('ul.nav-pills #cam').addClass('active');
     $('#cameratab').addClass('active');
     $('#imagetab').removeClass('active');
-    updateScenario(true, currentBackend);
+    let strsearch = '?prefer=' + up + '&b=' + ub + '&m=' + um + '&t=' + ut + '&s=camera&d=' + ud;
+    window.history.pushState(null, null, strsearch)
+    currenttab = 'camera';
+    updateScenario(true, currentBackend, currentPrefer);
   });
 
 });
