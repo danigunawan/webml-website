@@ -1,4 +1,4 @@
-WebML Image Classification URL Parameters
+URL Parameters for Image Classification Example
 ==
 
 Example
