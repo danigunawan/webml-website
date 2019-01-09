@@ -55,17 +55,26 @@ function updateProgress(ev) {
 }
 
 function updateResult(result) {
-  console.log(`Inference time: ${result.time} ms`);
-  let inferenceTimeElement = document.getElementById('inferenceTime');
-  inferenceTimeElement.innerHTML = `inference time: <span class='ir'>${result.time} ms</span>`;
-  console.log(`Classes: `);
-  result.classes.forEach((c, i) => {
-    console.log(`\tlabel: ${c.label}, probability: ${c.prob}%`);
-    let labelElement = document.getElementById(`label${i}`);
-    let probElement = document.getElementById(`prob${i}`);
-    labelElement.innerHTML = `${c.label}`;
-    probElement.innerHTML = `${c.prob}%`;
-  });
+  try {
+    console.log(`Inference time: ${result.time} ms`);
+    let inferenceTimeElement = document.getElementById('inferenceTime');
+    inferenceTimeElement.innerHTML = `inference time: <span class='ir'>${result.time} ms</span>`;
+  } catch(e) {
+    console.log(e);
+  }
+  try {
+    console.log(`Classes: `);
+    result.classes.forEach((c, i) => {
+      console.log(`\tlabel: ${c.label}, probability: ${c.prob}%`);
+      let labelElement = document.getElementById(`label${i}`);
+      let probElement = document.getElementById(`prob${i}`);
+      labelElement.innerHTML = `${c.label}`;
+      probElement.innerHTML = `${c.prob}%`;
+    });
+  }
+  catch(e) {
+    console.log(e);
+  }
 }
 
 if (currentBackend === '') {

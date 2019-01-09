@@ -47,6 +47,13 @@ $(document).ready(function () {
     $('#l-' + getUrlParam('b')).addClass('cked');
   }
 
+  if(currentOS != 'Mac OS') {
+    $('#fast').hide();
+    $('#l-fast').hide();
+    $('#low').hide();
+    $('#l-low').hide();
+  }
+
   if (hasUrlParam('m') && hasUrlParam('t')) {
     $('.model input').removeAttr('checked');
     $('.model label').removeClass('cked');
@@ -134,6 +141,14 @@ $(document).ready(function () {
   $('#extra').click(function () {
     $('#header-sticky-wrapper').slideToggle(200);
     componentToggle();
+    let display;
+    if (ud == '0') {
+      display = '1';
+    } else {
+      display = '0';
+    }
+    let strsearch = '?prefer=' + up + '&b=' + ub + '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + display;
+    window.history.pushState(null, null, strsearch);
   });
 });
 

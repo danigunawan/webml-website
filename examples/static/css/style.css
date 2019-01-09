@@ -773,7 +773,7 @@ footer {
   cursor: pointer;
   display: inline-block;
   overflow: hidden;
-  padding: 0.625rem 1.25rem;
+  padding: 0.25rem 1.25rem;
   /* 10px 20px */
 }
 
@@ -803,6 +803,10 @@ footer {
   /* 4px */
 }
 
+.inputfile + label span {
+  font-size: 0.8rem;
+}
+
 .inputf + label {
   color: rgba(255, 111, 97, 1.0);
   border: 1px solid currentColor;
@@ -823,7 +827,7 @@ footer {
 }
 
 .nav-pills li {
-  padding: 1rem;
+  padding: 0.6rem 1rem;
   width: 50%;
   text-align: center;
   text-transform: uppercase;
@@ -958,7 +962,7 @@ footer {
 }
 
 .table {
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .table td, .table th {
