@@ -4,14 +4,13 @@ if (!location.search) {
   location.href = path + strsearch;
 } 
 
-let searchParams = new URLSearchParams(location.search);
-let up = searchParams.get('prefer');
-let ub = searchParams.get('b');
-let um = searchParams.get('m');
-let ut = searchParams.get('t');
-let us = searchParams.get('s');
-let ud = searchParams.get('d');
-let currenttab = us;
+let up = getUrlParam('prefer');
+let ub = getUrlParam('b');
+let um = getUrlParam('m');
+let ut = getUrlParam('t');
+let us = getUrlParam('s');
+let ud = getUrlParam('d');
+let currenttab = getUrlParam('s');
 
 function componentToggle() {
   $('#header-sticky-wrapper').attr('style', 'display:block');
@@ -45,26 +44,26 @@ $(document).ready(function () {
     $('#imagetab').addClass('active');
   }
 
-  if (searchParams.has('b')) {
+  if (hasUrlParam('b')) {
     $('.backend input').removeAttr('checked');
     $('.backend label').removeClass('cked');
-    $('#' + searchParams.get('b')).attr('checked', 'checked');
-    $('#l-' + searchParams.get('b')).addClass('cked');
+    $('#' + getUrlParam('b')).attr('checked', 'checked');
+    $('#l-' + getUrlParam('b')).addClass('cked');
   }
 
-  if (searchParams.has('m') && searchParams.has('t')) {
+  if (hasUrlParam('m') && hasUrlParam('t')) {
     $('.model input').removeAttr('checked');
     $('.model label').removeClass('cked');
-    let m_t = searchParams.get('m') + '_' + searchParams.get('t');
+    let m_t = getUrlParam('m') + '_' + getUrlParam('t');
     $('#' + m_t).attr('checked', 'checked');
     $('#l-' + m_t).addClass('cked');
   }
 
-  if (searchParams.has('prefer')) {
+  if (hasUrlParam('prefer')) {
     $('.prefer input').removeAttr('checked');
     $('.prefer label').removeClass('cked');
-    $('#' + searchParams.get('prefer')).attr('checked', 'checked');
-    $('#l-' + searchParams.get('prefer')).addClass('cked');
+    $('#' + getUrlParam('prefer')).attr('checked', 'checked');
+    $('#l-' + getUrlParam('prefer')).addClass('cked');
 
     if(ub == 'WASM' || ub == 'WebGL') {
       $('.ml').removeAttr('checked');
@@ -72,22 +71,22 @@ $(document).ready(function () {
     }
   }
 
-  function updateTitle(ub) {
+  function updateTitle(backend, prefer) {
     let currentprefertext;
-    if (up == 'none' || !up) {
-      $('#ictitle').html('Image Classfication ' + ' / ' + ub + ' / ' + um + ' (' + ut + ')');
-    } else {
-      if (up == 'fast') {
-        currentprefertext = 'FAST_SINGLE_ANSWER';
-      } else if (up == 'sustained') {
-        currentprefertext = 'SUSTAINED_SPEED';
-      } else if (up == 'low') {
-        currentprefertext = 'LOW_POWER';
+    if (backend == 'WASM' || backend == 'WebGL') {
+      $('#ictitle').html('Image Classfication ' + ' / ' + backend + ' / ' + um + ' (' + ut + ')');
+    } else if (backend == 'WebML') {
+      if (getUrlParam('p') == 'fast') {
+        prefer = 'FAST_SINGLE_ANSWER';
+      } else if (getUrlParam('p') == 'sustained') {
+        prefer = 'SUSTAINED_SPEED';
+      } else if (getUrlParam('p') == 'low') {
+        prefer = 'LOW_POWER';
       }
-      $('#ictitle').html('Image Classfication ' + ' / ' + ub + ' / ' + currentprefertext + ' / ' + um + ' (' + ut + ')');
+      $('#ictitle').html('Image Classfication ' + ' / ' + backend + ' / ' + prefer + ' / ' + um + ' (' + ut + ')');
     }
   }
-  updateTitle(ub);
+  updateTitle(ub, up);
 
   $('input:radio[name=b]').click(function () {
     $('.alert').hide();
@@ -110,10 +109,10 @@ $(document).ready(function () {
       currentPrefer = rid;
     }
 
+    updateTitle(currentBackend, currentPrefer);
+
     let strsearch = '?prefer=' + currentPrefer + '&b=' + currentBackend + '&m=' + um + '&t=' + ut + '&s=image&d=' + ud;
     window.history.pushState(null, null, strsearch);
-
-    updateTitle(currentBackend);
 
     if (currenttab == 'camera') {
       updateScenario(true, currentBackend, currentPrefer);

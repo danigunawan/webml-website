@@ -17,6 +17,6 @@ Description
 | d | 0, 1  | Display model<br>// full view <br>0<br>// compact view<br>1  | |
 
 
-Note
------------
-For getting better performance, checking radio button for backend and switching "image" and "camera" tabs will not update URL parameters in browser address box.
+Netron URLs
+==
+It supports to use Netron Visualizer for deep learning and machine learning models, hover the model name two seconds, there will be a block to show the model description and Netron links, please upload [these models](model/README.md) to your website and update the links in [webml-polyfill/examples/util/base.js](../../util/base.js). E.g. https://lutzroeder.github.io/netron/?url=https://yourhost/resnet50v2.onnx
