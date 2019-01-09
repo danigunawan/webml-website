@@ -1,5 +1,5 @@
 if (!location.search) {
-  const strsearch = '?prefer=none&b=WASM&m=mobilenet_v1&t=tflite&s=image&d=0';
+  const strsearch = `?prefer=none&b=WASM&m=mobilenet_v1&t=tflite&s=image&d=0`;
   const path = location.href;
   location.href = path + strsearch;
 } 
@@ -77,7 +77,7 @@ $(document).ready(function () {
   function updateTitle(backend, prefer) {
     let currentprefertext;
     if (backend == 'WASM' || backend == 'WebGL') {
-      $('#ictitle').html('Image Classfication ' + ' / ' + backend + ' / ' + um + ' (' + ut + ')');
+      $('#ictitle').html(`Image Classfication / ${backend} / ${um} (${ut})`);
     } else if (backend == 'WebML') {
       if (getUrlParam('p') == 'fast') {
         prefer = 'FAST_SINGLE_ANSWER';
@@ -86,7 +86,7 @@ $(document).ready(function () {
       } else if (getUrlParam('p') == 'low') {
         prefer = 'LOW_POWER';
       }
-      $('#ictitle').html('Image Classfication ' + ' / ' + backend + ' / ' + prefer + ' / ' + um + ' (' + ut + ')');
+      $('#ictitle').html(`Image Classfication / ${backend} / ${prefer} / ${um} (${ut})`);
     }
   }
   updateTitle(ub, up);
@@ -114,7 +114,7 @@ $(document).ready(function () {
 
     updateTitle(currentBackend, currentPrefer);
 
-    let strsearch = '?prefer=' + currentPrefer + '&b=' + currentBackend + '&m=' + um + '&t=' + ut + '&s=image&d=' + ud;
+    let strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&m=${um}&t=${ut}&s=image&d=${ud}`;
     window.history.pushState(null, null, strsearch);
 
     if (currenttab == 'camera') {
@@ -134,7 +134,7 @@ $(document).ready(function () {
       um = rid.replace('_tflite', '');
       ut = 'tflite';
     }
-    let strsearch = '?prefer=' + up + '&b=' + ub + '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + ud;
+    let strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=${us}&d=${ud}`;
     location.href = strsearch;
   });
 
@@ -147,7 +147,7 @@ $(document).ready(function () {
     } else {
       display = '0';
     }
-    let strsearch = '?prefer=' + up + '&b=' + ub + '&m=' + um + '&t=' + ut + '&s=' + us + '&d=' + display;
+    let strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=${us}&d=${display}`;
     window.history.pushState(null, null, strsearch);
   });
 });
@@ -159,7 +159,7 @@ $(document).ready(function () {
     $('ul.nav-pills #img').addClass('active');
     $('#imagetab').addClass('active');
     $('#cameratab').removeClass('active');
-    let strsearch = '?prefer=' + up + '&b=' + ub + '&m=' + um + '&t=' + ut + '&s=image&d=' + ud;
+    let strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=${us}&d=image&d=${ud}`;
     window.history.pushState(null, null, strsearch)
     currenttab = 'image';
     updateScenario(false, currentBackend, currentPrefer);
@@ -171,7 +171,7 @@ $(document).ready(function () {
     $('ul.nav-pills #cam').addClass('active');
     $('#cameratab').addClass('active');
     $('#imagetab').removeClass('active');
-    let strsearch = '?prefer=' + up + '&b=' + ub + '&m=' + um + '&t=' + ut + '&s=camera&d=' + ud;
+    let strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=${us}&d=camera&d=${ud}`;
     window.history.pushState(null, null, strsearch)
     currenttab = 'camera';
     updateScenario(true, currentBackend, currentPrefer);
@@ -258,7 +258,6 @@ function showError() {
 
 function updateLoading(c) {
   $(".loading-page .counter h1").html(c + "%");
-  // $(".loading-page .counter hr").css("width", c + "%");
 }
 
 $(window).load(function () {
