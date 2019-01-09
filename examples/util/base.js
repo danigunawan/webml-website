@@ -49,7 +49,7 @@ const inception_v3_tflite = {
   modelName: 'inception_v3_tflite',
   inputSize: [299, 299, 3],
   outputSize: 1001,
-  modelFile: '../image_classification/model/inception_v3.tflite',
+  modelFile: 'https://belem.oss-cn-shanghai.aliyuncs.com/webml/model/ic/inception_v3.tflite',
   labelsFile: '../image_classification/model/labels1001.txt',
   preOptions: {
     mean: [127.5, 127.5, 127.5],
@@ -63,7 +63,7 @@ const inception_v4_tflite = {
   modelName: 'inception_v4_tflite',
   inputSize: [299, 299, 3],
   outputSize: 1001,
-  modelFile: '../image_classification/model/inception_v4.tflite',
+  modelFile: 'https://belem.oss-cn-shanghai.aliyuncs.com/webml/model/ic/inception_v4.tflite',
   labelsFile: '../image_classification/model/labels1001.txt',
   preOptions: {
     mean: [127.5, 127.5, 127.5],
@@ -91,7 +91,7 @@ const inception_resnet_v2_tflite = {
   modelName: 'inception_resnet_v2_tflite',
   inputSize: [299, 299, 3],
   outputSize: 1001,
-  modelFile: '../image_classification/model/inception_resnet_v2.tflite',
+  modelFile: 'https://belem.oss-cn-shanghai.aliyuncs.com/webml/model/ic/inception_v4.tflite',
   labelsFile: '../image_classification/model/labels1001.txt',
   preOptions: {
     mean: [127.5, 127.5, 127.5],
