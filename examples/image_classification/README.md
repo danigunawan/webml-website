@@ -1,5 +1,13 @@
-URL Parameters for Image Classification Example
+WebML Image classification Examples
 ==
+This sample loads Image classification models trained by ImageNet, constructs and inferences it by WebML API.
+
+Download Model
+-----------
+Before launch this sample, you need to download the model. Please check out [README.md](model/README.md) in model folder for details.
+
+URL Parameters for Image Classification Example
+====
 
 Example
 -----------
@@ -18,5 +26,5 @@ Description
 
 
 Netron URLs
-==
+====
 It supports to use Netron Visualizer for deep learning and machine learning models, hover the model name two seconds, there will be a block to show the model description and Netron links, please upload [these models](model/README.md) to your website and update the links in [webml-polyfill/examples/util/base.js](../util/base.js). E.g. https://lutzroeder.github.io/netron/?url=https://yourhost/resnet50v2.onnx

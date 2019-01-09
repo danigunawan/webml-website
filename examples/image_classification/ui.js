@@ -159,7 +159,7 @@ $(document).ready(function () {
     $('ul.nav-pills #img').addClass('active');
     $('#imagetab').addClass('active');
     $('#cameratab').removeClass('active');
-    let strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=${us}&d=image&d=${ud}`;
+    let strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=image&d=${ud}`;
     window.history.pushState(null, null, strsearch)
     currenttab = 'image';
     updateScenario(false, currentBackend, currentPrefer);
@@ -171,7 +171,7 @@ $(document).ready(function () {
     $('ul.nav-pills #cam').addClass('active');
     $('#cameratab').addClass('active');
     $('#imagetab').removeClass('active');
-    let strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=${us}&d=camera&d=${ud}`;
+    let strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=camera&d=${ud}`;
     window.history.pushState(null, null, strsearch)
     currenttab = 'camera';
     updateScenario(true, currentBackend, currentPrefer);

@@ -56,7 +56,7 @@ class Utils {
     result = await this.model.createCompiledModel();
     console.log(`compilation result: ${result}`);
     let start = performance.now();
-    result = await this.model.compute(this.inputTensor, this.outputTensor);
+    result = await this.model.compute([this.inputTensor], [this.outputTensor]);
     let elapsed = performance.now() - start;
     console.log(`warmup time: ${elapsed.toFixed(2)} ms`);
     this.initialized = true;
@@ -69,7 +69,7 @@ class Utils {
                                  this.canvasElement.height);
     this.prepareInputTensor(this.inputTensor, this.canvasElement);
     let start = performance.now();
-    let result = await this.model.compute(this.inputTensor, this.outputTensor);
+    let result = await this.model.compute([this.inputTensor], [this.outputTensor]);
     let elapsed = performance.now() - start;
     return {
       time: elapsed.toFixed(2),

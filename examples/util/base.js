@@ -21,8 +21,8 @@ const mobilenet_v1_tflite = {
   modelName: 'mobilenet_v1_tflite',
   inputSize: [224, 224, 3],
   outputSize: 1001,
-  modelFile: './model/mobilenet_v1_1.0_224.tflite',
-  labelsFile: './model/labels1001.txt',
+  modelFile: '../image_classification/model/mobilenet_v1_1.0_224.tflite',
+  labelsFile: '../image_classification/model/labels1001.txt',
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
@@ -35,8 +35,8 @@ const mobilenet_v2_tflite = {
   modelName: 'mobilenet_v2_tflite',
   inputSize: [224, 224, 3],
   outputSize: 1001,
-  modelFile: './model/mobilenet_v2_1.0_224.tflite',
-  labelsFile: './model/labels1001.txt',
+  modelFile: '../image_classification/model/mobilenet_v2_1.0_224.tflite',
+  labelsFile: '../image_classification/model/labels1001.txt',
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
@@ -49,8 +49,8 @@ const inception_v3_tflite = {
   modelName: 'inception_v3_tflite',
   inputSize: [299, 299, 3],
   outputSize: 1001,
-  modelFile: './model/inception_v3.tflite',
-  labelsFile: './model/labels1001.txt',
+  modelFile: '../image_classification/model/inception_v3.tflite',
+  labelsFile: '../image_classification/model/labels1001.txt',
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
@@ -63,8 +63,8 @@ const inception_v4_tflite = {
   modelName: 'inception_v4_tflite',
   inputSize: [299, 299, 3],
   outputSize: 1001,
-  modelFile: './model/inception_v4.tflite',
-  labelsFile: './model/labels1001.txt',
+  modelFile: '../image_classification/model/inception_v4.tflite',
+  labelsFile: '../image_classification/model/labels1001.txt',
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
@@ -77,8 +77,8 @@ const squeezenet_tflite = {
   modelName: 'squeezenet_tflite',
   inputSize: [224, 224, 3],
   outputSize: 1001,
-  modelFile: './model/squeezenet.tflite',
-  labelsFile: './model/labels1001.txt',
+  modelFile: '../image_classification/model/squeezenet.tflite',
+  labelsFile: '../image_classification/model/labels1001.txt',
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
@@ -91,8 +91,8 @@ const inception_resnet_v2_tflite = {
   modelName: 'inception_resnet_v2_tflite',
   inputSize: [299, 299, 3],
   outputSize: 1001,
-  modelFile: './model/inception_resnet_v2.tflite',
-  labelsFile: './model/labels1001.txt',
+  modelFile: '../image_classification/model/inception_resnet_v2.tflite',
+  labelsFile: '../image_classification/model/labels1001.txt',
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
@@ -106,8 +106,8 @@ const inception_resnet_v2_tflite = {
 };
 const squeezenet_onnx = {
   modelName: 'squeezenet_onnx',
-  modelFile: './model/squeezenet1.1.onnx',
-  labelsFile: './model/labels1000.txt',
+  modelFile: '../image_classification/model/squeezenet1.1.onnx',
+  labelsFile: '../image_classification/model/labels1000.txt',
   inputSize: [224, 224, 3],
   outputSize: 1000,
   preOptions: {
@@ -125,8 +125,8 @@ const squeezenet_onnx = {
 };
 const mobilenet_v2_onnx = {
   modelName: 'mobilenet_v2_onnx',
-  modelFile: './model/mobilenetv2-1.0.onnx',
-  labelsFile: './model/labels1000.txt',
+  modelFile: '../image_classification/model/mobilenetv2-1.0.onnx',
+  labelsFile: '../image_classification/model/labels1000.txt',
   inputSize: [224, 224, 3],
   outputSize: 1000,
   preOptions: {
@@ -144,8 +144,8 @@ const mobilenet_v2_onnx = {
 };
 const resnet_v1_onnx = {
   modelName: 'resnet_v1_onnx',
-  modelFile: './model/resnet50v1.onnx',
-  labelsFile: './model/labels1000.txt',
+  modelFile: '../image_classification/model/resnet50_v1.onnx',
+  labelsFile: '../image_classification/model/labels1000.txt',
   inputSize: [224, 224, 3],
   outputSize: 1000,
   preOptions: {
@@ -159,12 +159,12 @@ const resnet_v1_onnx = {
   },
   intro: 'A residual learning framework to ease the training of networks that are substantially deeper than those used previously. This result won the 1st place on the ILSVRC 2015 classification task.',
   introUrl: 'https://arxiv.org/abs/1512.03385',
-  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://yourhost/resnet50v1.onnx'
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://yourhost/resnet50_v1.onnx'
 };
 const resnet_v2_onnx = {
   modelName: 'resnet_v2_onnx',
-  modelFile: './model/resnet50v2.onnx',
-  labelsFile: './model/labels1000.txt',
+  modelFile: '../image_classification/model/resnet50_v2.onnx',
+  labelsFile: '../image_classification/model/labels1000.txt',
   inputSize: [224, 224, 3],
   outputSize: 1000,
   preOptions: {
@@ -178,12 +178,12 @@ const resnet_v2_onnx = {
   },
   intro: 'Deep residual networks have emerged as a family of extremely deep architectures showing compelling accuracy and nice convergence behaviors. It reports improved results using a 1001-layer ResNet on CIFAR-10 (4.62% error) and CIFAR-100, and a 200-layer ResNet on ImageNet.',
   introUrl: 'https://arxiv.org/abs/1603.05027',
-  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://yourhost/resnet50v2.onnx'
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://yourhost/resnet50_v2.onnx'
 };
 const inception_v2_onnx = {
   modelName: 'inception_v2_onnx',
-  modelFile: './model/inception_v2.onnx',
-  labelsFile: './model/ilsvrc2012labels.txt',
+  modelFile: '../image_classification/model/inception_v2.onnx',
+  labelsFile: '../image_classification/model/ilsvrc2012labels.txt',
   inputSize: [224, 224, 3],
   outputSize: 1000,
   intro: 'Inception-v2 is trained for the ImageNet Large Visual Recognition Challenge. Loading Inception-v2 model trained by ImageNet in ONNX format, constructs and inferences it by WebML API.',
@@ -192,8 +192,8 @@ const inception_v2_onnx = {
 };
 const densenet_onnx = {
   modelName: 'densenet_onnx',
-  modelFile: './model/densenet121.onnx',
-  labelsFile: './model/labels1000.txt',
+  modelFile: '../image_classification/model/densenet121.onnx',
+  labelsFile: '../image_classification/model/labels1000.txt',
   inputSize: [224, 224, 3],
   outputSize: 1000,
   preOptions: {
@@ -213,8 +213,8 @@ const densenet_onnx = {
 
 const ssd_mobilenet_tflite = {
   modelName: 'SSD MobileNet(TFlite)',
-  modelFile: '../ssd_mobilenet/model/ssd_mobilenet.tflite',
-  labelsFile: '../ssd_mobilenet/model/coco_labels_list.txt',
+  modelFile: '../object_detection/model/ssd_mobilenet.tflite',
+  labelsFile: '../object_detection/model/coco_labels_list.txt',
   box_size: 4,
   num_classes: 91,
   num_boxes: 1083 + 600 + 150 + 54 + 24 + 6,
