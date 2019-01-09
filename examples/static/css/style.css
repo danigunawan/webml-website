@@ -244,6 +244,16 @@ a:hover {
   color: rgba(255, 111, 97, 0.8);
 }
 
+#extra span svg {
+  width: 12px;
+  height: 12px;
+  color: rgba(255, 111, 97, 0.8);
+}
+
+#extra span svg:hover {
+  color: rgba(255, 111, 97, 1.0);
+}
+
 .hero {
   display: table;
   position: relative;

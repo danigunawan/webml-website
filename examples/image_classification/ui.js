@@ -23,11 +23,7 @@ function componentToggle() {
   $('#mobile-nav-toggle i').slideToggle(100);
   $('footer').slideToggle(500);
 
-  if ($('#extraspan').hasClass('fa-angle-up')) {
-    $('#extraspan').removeClass('fa-angle-up').addClass('fa-angle-down');
-  } else {
-    $('#extraspan').removeClass('fa-angle-down').addClass('fa-angle-up');
-  }
+  $('#extra span').toggle();
 }
 
 $(document).ready(function () {
