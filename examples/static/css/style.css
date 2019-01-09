@@ -233,6 +233,17 @@ a:hover {
   background: rgba(255, 111, 97, 0.8);
 }
 
+.scrolltop svg {
+  margin-top: 9px;
+  width: 22px;
+  height: 22px;
+  color: #fff !important;
+}
+
+.scrolltop svg:hover {
+  color: rgba(255, 111, 97, 0.8);
+}
+
 .hero {
   display: table;
   position: relative;
@@ -407,6 +418,25 @@ a:hover {
   #nav-container {
     display: none;
   }
+}
+
+#mobile-nav-toggle svg, .menu-has-children svg {
+  color: rgba(255, 111, 97, 0.8);
+  display: inline-block;
+}
+
+#mobile-nav-toggle svg:hover, .menu-has-children svg:hover {
+  color: rgba(255, 111, 97, 1.0);
+}
+
+#mobile-nav-toggle svg {
+  height: 22px;
+  width: 22px;
+}
+
+.menu-has-children svg {
+  height: 12px;
+  width: 16px;
 }
 
 .nav-menu li svg {

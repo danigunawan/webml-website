@@ -26,9 +26,7 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="static/img/favicon/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
-  <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:200,400,900" rel="stylesheet"> -->
   <link href="static/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="static/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <link href="static/css/style.css" rel="stylesheet">
 </head>
 
@@ -250,30 +248,9 @@
   </a>
 
   <script src="static/lib/jquery/jquery.min.js"></script>
-
-  <script>
-  function isWebML() {
-  if (navigator.ml && navigator.ml.getNeuralNetworkContext()) {
-    if (!navigator.ml.isPolyfill) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
-}
-
-  if(!isWebML()){
-    $('#WebML').addClass('dnone');
-    $('#l-WebML').addClass('dnone');
-    $('#webmlstatus').addClass('webml-status-false').html('not supported');
-  } else {
-    $('#WebML').removeClass('dnone');
-    $('#l-WebML').removeClass('dnone');
-    $('#webmlstatus').addClass('webml-status-true').html('supported');
-  }
-  </script>
-
+  <script src='static/lib/superfish/superfish.min.js'></script>
+  <script src='static/lib/stickyjs/sticky.js'></script>
+  <script src='util/uicommon.js'></script>
+  
 </body>
 </html>
