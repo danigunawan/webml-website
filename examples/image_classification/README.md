@@ -6,14 +6,14 @@ Download Model
 -----------
 Before launch this sample, you need to download the model. Please check out [README.md](model/README.md) in model folder for details.
 
-URL Parameters for Image Classification Example
-====
+URL Parameters
+-----------
 
-Example
+URL Example
 -----------
 https://127.0.0.1/examples/image_classification/index.html?prefer=none&b=WASM&m=mobilenet_v1&t=tflite&s=image&d=0
 
-Description
+URL Parameters Description
 -----------
 | Parameter | Value | Description | Note |
 |----|------|------|-----------|
@@ -26,5 +26,5 @@ Description
 
 
 Netron URLs
-====
+-----------
 It supports to use Netron Visualizer for deep learning and machine learning models, hover the model name two seconds, there will be a block to show the model description and Netron links, please upload [these models](model/README.md) to your website and update the links in [webml-polyfill/examples/util/base.js](../util/base.js). E.g. https://lutzroeder.github.io/netron/?url=https://yourhost/resnet50v2.onnx
