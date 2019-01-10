@@ -1,3 +1,1 @@
-examples/image_classification/model/inception_v3.tflite filter=lfs diff=lfs merge=lfs -text
-examples/image_classification/model/inception_resnet_v2.tflite filter=lfs diff=lfs merge=lfs -text
-examples/image_classification/model/inception_v4.tflite filter=lfs diff=lfs merge=lfs -text
+
