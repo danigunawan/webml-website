@@ -144,7 +144,7 @@ const mobilenet_v2_onnx = {
 };
 const resnet_v1_onnx = {
   modelName: 'resnet_v1_onnx',
-  modelFile: '../image_classification/model/resnet50_v1.onnx',
+  modelFile: '../image_classification/model/resnet50v1.onnx',
   labelsFile: '../image_classification/model/labels1000.txt',
   inputSize: [224, 224, 3],
   outputSize: 1000,
@@ -159,11 +159,11 @@ const resnet_v1_onnx = {
   },
   intro: 'A residual learning framework to ease the training of networks that are substantially deeper than those used previously. This result won the 1st place on the ILSVRC 2015 classification task.',
   introUrl: 'https://arxiv.org/abs/1512.03385',
-  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://yourhost/resnet50_v1.onnx'
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://yourhost/resnet50v1.onnx'
 };
 const resnet_v2_onnx = {
   modelName: 'resnet_v2_onnx',
-  modelFile: '../image_classification/model/resnet50_v2.onnx',
+  modelFile: '../image_classification/model/resnet50v2.onnx',
   labelsFile: '../image_classification/model/labels1000.txt',
   inputSize: [224, 224, 3],
   outputSize: 1000,
@@ -178,17 +178,17 @@ const resnet_v2_onnx = {
   },
   intro: 'Deep residual networks have emerged as a family of extremely deep architectures showing compelling accuracy and nice convergence behaviors. It reports improved results using a 1001-layer ResNet on CIFAR-10 (4.62% error) and CIFAR-100, and a 200-layer ResNet on ImageNet.',
   introUrl: 'https://arxiv.org/abs/1603.05027',
-  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://yourhost/resnet50_v2.onnx'
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://yourhost/resnet50v2.onnx'
 };
 const inception_v2_onnx = {
   modelName: 'inception_v2_onnx',
-  modelFile: '../image_classification/model/inception_v2.onnx',
+  modelFile: '../image_classification/model/inceptionv2.onnx',
   labelsFile: '../image_classification/model/ilsvrc2012labels.txt',
   inputSize: [224, 224, 3],
   outputSize: 1000,
   intro: 'Inception-v2 is trained for the ImageNet Large Visual Recognition Challenge. Loading Inception-v2 model trained by ImageNet in ONNX format, constructs and inferences it by WebML API.',
   introUrl: 'https://arxiv.org/abs/1512.00567',
-  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://yourhost/inception_v2.onnx'
+  netronUrl: 'https://lutzroeder.github.io/netron/?url=https://yourhost/inceptionv2.onnx'
 };
 const densenet_onnx = {
   modelName: 'densenet_onnx',

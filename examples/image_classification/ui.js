@@ -40,35 +40,28 @@ $(document).ready(function () {
 
   if (hasUrlParam('b')) {
     $('.backend input').removeAttr('checked');
-    $('.backend label').removeClass('cked');
+    $('.backend label').removeClass('checked');
     $('#' + getUrlParam('b')).attr('checked', 'checked');
-    $('#l-' + getUrlParam('b')).addClass('cked');
-  }
-
-  if(currentOS != 'Mac OS') {
-    $('#fast').hide();
-    $('#l-fast').hide();
-    $('#low').hide();
-    $('#l-low').hide();
+    $('#l-' + getUrlParam('b')).addClass('checked');
   }
 
   if (hasUrlParam('m') && hasUrlParam('t')) {
     $('.model input').removeAttr('checked');
-    $('.model label').removeClass('cked');
+    $('.model label').removeClass('checked');
     let m_t = getUrlParam('m') + '_' + getUrlParam('t');
     $('#' + m_t).attr('checked', 'checked');
-    $('#l-' + m_t).addClass('cked');
+    $('#l-' + m_t).addClass('checked');
   }
 
   if (hasUrlParam('prefer')) {
     $('.prefer input').removeAttr('checked');
-    $('.prefer label').removeClass('cked');
+    $('.prefer label').removeClass('checked');
     $('#' + getUrlParam('prefer')).attr('checked', 'checked');
-    $('#l-' + getUrlParam('prefer')).addClass('cked');
+    $('#l-' + getUrlParam('prefer')).addClass('checked');
 
     if(ub == 'WASM' || ub == 'WebGL') {
       $('.ml').removeAttr('checked');
-      $('.lml').removeClass('cked');
+      $('.lml').removeClass('checked');
     }
   }
 
@@ -93,13 +86,13 @@ $(document).ready(function () {
     $('.alert').hide();
     let rid = $("input:radio[name='b']:checked").attr('id');
     $('.backend input').removeAttr('checked');
-    $('.backend label').removeClass('cked');
+    $('.backend label').removeClass('checked');
     $('#' + rid).attr('checked', 'checked');
-    $('#l-' + rid).addClass('cked');
+    $('#l-' + rid).addClass('checked');
 
     if(rid == 'WASM' || rid == 'WebGL') {
       $('.ml').removeAttr('checked');
-      $('.lml').removeClass('cked');
+      $('.lml').removeClass('checked');
     }
 
     if(rid == 'WASM' || rid == 'WebGL') {
