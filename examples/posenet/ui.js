@@ -1,13 +1,11 @@
 let up = getUrlParam('prefer');
 let ub = getUrlParam('b');
-let um = getUrlParam('m');
-let ut = getUrlParam('t');
 let us = getUrlParam('s');
 let ud = getUrlParam('d');
 let strsearch;
 
 if (!location.search) {
-  strsearch = `?prefer=none&b=WASM&m=mobilenet_v1&t=tflite&s=image&d=0`;
+  strsearch = `?prefer=none&b=WASM&s=image&d=0`;
   let path = location.href;
   location.href = path + strsearch;
 }
@@ -21,26 +19,6 @@ const componentToggle = () => {
   // $('#mobile-nav-toggle').slideToggle(100);
   $('footer').slideToggle();
   $('#extra span').toggle();
-}
-
-const disableModel = () => {
-  if (`${um}` && `${ut}`) {
-    let m_t = `${um}` + '_' + `${ut}`;
-    $('.model input').attr('disabled', false)
-    $('.model label').removeClass('cursordefault');
-    $('#' + m_t).attr('disabled', true)
-    $('#l-' + m_t).addClass('cursordefault');
-  }
-}
-
-const checkedModelStyle = () => {
-  if (`${um}` && `${ut}`) {
-    $('.model input').removeAttr('checked');
-    $('.model label').removeClass('checked');
-    let m_t = `${um}` + '_' + `${ut}`;
-    $('#' + m_t).attr('checked', 'checked');
-    $('#l-' + m_t).addClass('checked');
-  }
 }
 
 $(document).ready(() => {
@@ -65,10 +43,6 @@ $(document).ready(() => {
     $('#l-' + getUrlParam('b')).addClass('checked');
   }
 
-  if (hasUrlParam('m') && hasUrlParam('t')) {
-    checkedModelStyle();
-  }
-
   if (hasUrlParam('prefer')) {
     $('.prefer input').removeAttr('checked');
     $('.prefer label').removeClass('checked');
@@ -81,10 +55,10 @@ $(document).ready(() => {
     }
   }
 
-  const updateTitle = (backend, prefer, model, modeltype) => {
+  const updateTitle = (backend, prefer) => {
     let currentprefertext;
     if (backend == 'WASM' || backend == 'WebGL') {
-      $('#ictitle').html(`Image Classfication / ${backend} / ${model} (${modeltype})`);
+      $('#ictitle').html(`Image Classfication / ${backend}`);
     } else if (backend == 'WebML') {
       if (getUrlParam('p') == 'fast') {
         prefer = 'FAST_SINGLE_ANSWER';
@@ -93,10 +67,10 @@ $(document).ready(() => {
       } else if (getUrlParam('p') == 'low') {
         prefer = 'LOW_POWER';
       }
-      $('#ictitle').html(`Image Classfication / ${backend} / ${prefer} / ${model} (${modeltype})`);
+      $('#ictitle').html(`Image Classfication / ${backend} / ${prefer}`);
     }
   }
-  updateTitle(ub, up, um, ut);
+  updateTitle(ub, up);
 
   $('input:radio[name=b]').click(() => {
     $('.alert').hide();
@@ -119,36 +93,15 @@ $(document).ready(() => {
       currentPrefer = rid;
     }
 
-    updateTitle(currentBackend, currentPrefer, `${um}`, `${ut}`);
-    strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&m=${um}&t=${ut}&s=${us}&d=${ud}`;
+    updateTitle(currentBackend, currentPrefer);
+    strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&s=${us}&d=${ud}`;
     window.history.pushState(null, null, strsearch);
-    updateScenario(us === 'camera');
-  });
 
-  $('input:radio[name=m]').click(() => {
-    $('.alert').hide();
-    let rid = $("input:radio[name='m']:checked").attr('id');
-    if (rid.indexOf('_onnx') > -1) {
-      um = rid.replace('_onnx', '');
-      ut = 'onnx';
-    }
-    if (rid.indexOf('_tflite') > -1) {
-      um = rid.replace('_tflite', '');
-      ut = 'tflite';
-    }
-    if (currentBackend && currentPrefer) {
-      strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&m=${um}&t=${ut}&s=${us}&d=${ud}`;
+    if (us == 'camera') {
+      updateScenario(true);
     } else {
-      strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=${us}&d=${ud}`;
+      updateScenario(false);
     }
-    // location.href = strsearch;
-    window.history.pushState(null, null, strsearch);
-
-    checkedModelStyle();
-    disableModel();
-    currentModel = `${um}_${ut}`;
-    updateTitle(currentBackend, currentPrefer, `${um}`, `${ut}`);
-    (us == 'camera') ? main(true) : main();
   });
 
   $('#extra').click(() => {
@@ -183,7 +136,7 @@ $(document).ready(() => {
     us = 'image';
     strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=${us}&d=${ud}`;
     window.history.pushState(null, null, strsearch)
-    updateScenario(false);
+    updateScenario(false, currentBackend, currentPrefer);
   });
 
   $('#cam').click(() => {
@@ -195,7 +148,7 @@ $(document).ready(() => {
     us = 'camera';
     strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=${us}&d=${ud}`;
     window.history.pushState(null, null, strsearch)
-    updateScenario(true);
+    updateScenario(true, currentBackend, currentPrefer);
   });
 
   $('#fullscreen i svg').click(() => {
@@ -244,6 +197,5 @@ const updateLoading = (c) => {
 }
 
 $(window).load(() => {
-  disableModel();
   (us == 'camera') ? main(true) : main();
 })
