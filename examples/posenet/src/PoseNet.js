@@ -1,4 +1,4 @@
-class PoseNet{
+class PoseNet {
   constructor(modelArch, version, outputStride, inputShape, type, cacheMap, backend, prefer) {
     this._modelArch = modelArch;
     this._model = null;
@@ -363,7 +363,7 @@ class PoseNet{
       let percentComplete = current / length *100;
       percentComplete = percentComplete.toFixed(0);
       progressBar.style = `width: ${percentComplete}%`;
-      progressBar.innerHTML = `${percentComplete}%`;
+      updateLoading(percentComplete);
     }
   }
 }

@@ -58,7 +58,7 @@ $(document).ready(() => {
   const updateTitle = (backend, prefer) => {
     let currentprefertext;
     if (backend == 'WASM' || backend == 'WebGL') {
-      $('#ictitle').html(`Image Classfication / ${backend}`);
+      $('#ictitle').html(`Human Pose Estimation / ${backend}`);
     } else if (backend == 'WebML') {
       if (getUrlParam('p') == 'fast') {
         prefer = 'FAST_SINGLE_ANSWER';
@@ -67,7 +67,7 @@ $(document).ready(() => {
       } else if (getUrlParam('p') == 'low') {
         prefer = 'LOW_POWER';
       }
-      $('#ictitle').html(`Image Classfication / ${backend} / ${prefer}`);
+      $('#ictitle').html(`Human Pose Estimation / ${backend} / ${prefer}`);
     }
   }
   updateTitle(ub, up);
@@ -97,11 +97,9 @@ $(document).ready(() => {
     strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&s=${us}&d=${ud}`;
     window.history.pushState(null, null, strsearch);
 
-    if (us == 'camera') {
-      updateScenario(true);
-    } else {
-      updateScenario(false);
-    }
+    main(false, false);
+
+    // updateScenario(us === 'camera');
   });
 
   $('#extra').click(() => {
@@ -117,9 +115,9 @@ $(document).ready(() => {
 
     let strsearch;
     if (currentBackend && currentPrefer) {
-      strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&m=${um}&t=${ut}&s=${us}&d=${display}`;
+      strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&s=${us}&d=${display}`;
     } else {
-      strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=${us}&d=${display}`;
+      strsearch = `?prefer=${up}&b=${ub}&s=${us}&d=${display}`;
     }
     window.history.pushState(null, null, strsearch);
   });
@@ -134,9 +132,10 @@ $(document).ready(() => {
     $('#imagetab').addClass('active');
     $('#cameratab').removeClass('active');
     us = 'image';
-    strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=${us}&d=${ud}`;
-    window.history.pushState(null, null, strsearch)
-    updateScenario(false, currentBackend, currentPrefer);
+    strsearch = `?prefer=${up}&b=${ub}&s=${us}&d=${ud}`;
+    window.history.pushState(null, null, strsearch);
+
+    main(false, true);
   });
 
   $('#cam').click(() => {
@@ -146,9 +145,10 @@ $(document).ready(() => {
     $('#cameratab').addClass('active');
     $('#imagetab').removeClass('active');
     us = 'camera';
-    strsearch = `?prefer=${up}&b=${ub}&m=${um}&t=${ut}&s=${us}&d=${ud}`;
-    window.history.pushState(null, null, strsearch)
-    updateScenario(true, currentBackend, currentPrefer);
+    strsearch = `?prefer=${up}&b=${ub}&s=${us}&d=${ud}`;
+    window.history.pushState(null, null, strsearch);
+
+    updateScenario(true);
   });
 
   $('#fullscreen i svg').click(() => {
@@ -162,12 +162,6 @@ $(document).ready(() => {
     $('#inference').toggleClass('fullscreen');
   });
 
-});
-
-$(window).load(() => {
-  if (ud != '0') {
-    componentToggle();
-  }
 });
 
 const showProgress = async (text) => {
@@ -185,11 +179,18 @@ const showResults = () => {
   $('#resulterror').hide();
 }
 
-const showError = () => {
+const showError = (title, description) => {
   $('#progressmodel').hide();
   $('.icdisplay').hide();
   $('.shoulddisplay').hide();
   $('#resulterror').fadeIn();
+  if (title && description) {
+    $('.errortitle').html(title);
+    $('.errordescription').html(description);
+  } else {
+    $('.errortitle').html('Prediction Failed');
+    $('.errordescription').html('Please check error log for more details');
+  }
 }
 
 const updateLoading = (c) => {
@@ -197,5 +198,8 @@ const updateLoading = (c) => {
 }
 
 $(window).load(() => {
-  (us == 'camera') ? main(true) : main();
+  if (ud != '0') {
+    componentToggle();
+  }
+  (us === 'camera') ? main(true, false) : main(false, false);
 })

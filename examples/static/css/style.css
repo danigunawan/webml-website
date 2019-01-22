@@ -1551,6 +1551,26 @@ button.xclose {
   font-weight: 100;
 }
 
+#posenet canvas {
+  width: 100%;
+  height: 100%;
+  display: block; 
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  #posenet canvas {
+    width: 100%;
+  }
+  #posenet .col {
+    display: block;
+    flex-basis: auto;
+  }
+  .multi {
+    margin-top: 1.3rem;
+  }
+}
+
 /* 
   color scheme:
   rgba(255, 111, 97, 1.0);

@@ -91,10 +91,6 @@ class Utils{
     this._type;
     this.initialized = false;
     this._cacheMap = new Map();
-
-    this.container = document.getElementById('container');
-    this.progressBar = document.getElementById('progressBar');
-    this.progressContainer = document.getElementById('progressContainer');
   }
   
   async init(backend, prefer, inputSize) {
@@ -108,9 +104,6 @@ class Utils{
     this._nmsRadius = guiState.multiPoseDetection.nmsRadius;
     this._maxDetection = guiState.multiPoseDetection.maxDetections;
     this._type = "Multiperson";
-    progressContainer.style.display = 'inline';
-    progressBar.style = `width: ${0}%`;
-    progressBar.innerHTML = `${0}%`;
     let result;
 
     this.modelArch = ModelArch.get(Number(this._version));
@@ -135,13 +128,10 @@ class Utils{
                              this.scaleInputSize, this._type, this._cacheMap, backend, prefer);
     let start = performance.now();
     result = await this.model.createCompiledModel();
-    console.log('compilation result: ${result}');
+    console.log(`compilation result: ${result}`);
     let elapsed = performance.now() - start;
     console.log(`Compilation time: ${elapsed.toFixed(2)} ms`);
     this.initialized = true;
-    if (this.initialized == true) {
-      progressContainer.style.display = 'none';
-    }
   }
 
   async predict(scaleCanvas, type) {

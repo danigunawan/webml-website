@@ -84,7 +84,7 @@ $(document).ready(() => {
   const updateTitle = (backend, prefer, model, modeltype) => {
     let currentprefertext;
     if (backend == 'WASM' || backend == 'WebGL') {
-      $('#ictitle').html(`Image Classfication / ${backend} / ${model} (${modeltype})`);
+      $('#ictitle').html(`Image Classification / ${backend} / ${model} (${modeltype})`);
     } else if (backend == 'WebML') {
       if (getUrlParam('p') == 'fast') {
         prefer = 'FAST_SINGLE_ANSWER';
@@ -93,7 +93,7 @@ $(document).ready(() => {
       } else if (getUrlParam('p') == 'low') {
         prefer = 'LOW_POWER';
       }
-      $('#ictitle').html(`Image Classfication / ${backend} / ${prefer} / ${model} (${modeltype})`);
+      $('#ictitle').html(`Image Classification / ${backend} / ${prefer} / ${model} (${modeltype})`);
     }
   }
   updateTitle(ub, up, um, ut);
