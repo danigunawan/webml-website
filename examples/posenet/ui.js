@@ -55,6 +55,11 @@ $(document).ready(() => {
     }
   }
 
+  $('#my-gui-container ul li select').after('<div class=\'select__arrow\'></div>');
+  $('#my-gui-container ul li input[type=checkbox]').after('<label class=\'\'></label>');
+  // $('#my-gui-container ul li .slider').remove();
+  
+
   const updateTitle = (backend, prefer) => {
     let currentprefertext;
     if (backend == 'WASM' || backend == 'WebGL') {
@@ -148,7 +153,7 @@ $(document).ready(() => {
     strsearch = `?prefer=${up}&b=${ub}&s=${us}&d=${ud}`;
     window.history.pushState(null, null, strsearch);
 
-    updateScenario(true);
+    main(true, true);
   });
 
   $('#fullscreen i svg').click(() => {

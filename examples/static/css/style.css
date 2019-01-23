@@ -1217,7 +1217,7 @@ video.fullscreen {
 }
 
 
-#fps {
+#fps, .obv {
   color: rgba(255, 255, 255, 0.9);
   background: rgba(25, 190, 225, 0.9);
   display: inline-block;
@@ -1227,7 +1227,7 @@ video.fullscreen {
   text-shadow: 1px 2px 3px rgba(25, 190, 225, 0.5), 0 0 0 rgba(255, 255, 255, 0.5), 1px 2px 3px rgba(25, 190, 225, 0.5);
 }
 
-#fps:hover {
+#fps:hover, .obv:hover {
   color: rgba(255, 255, 255, 1.0);
   background: rgba(25, 190, 225, 1.0);
 }
@@ -1558,6 +1558,155 @@ button.xclose {
   margin-bottom: 0.5rem;
 }
 
+#posenet #canvasvideo {
+  width: 50%;
+  height: 50%;
+}
+
+#posenet .close-button {
+  display: none;
+}
+
+#posenet #my-gui-container ul {
+  margin: 0px;
+  padding: 0px;
+  text-transform: capitalize;
+}
+
+#posenet #my-gui-container ul li {
+  list-style: none;
+  display: inline-block;
+  text-align: left;
+  margin: 0 0.5rem 0.5rem 0;
+}
+
+#posenet #my-gui-container ul li span {
+  margin-right: 0.5rem;
+}
+
+#posenet #my-gui-container ul li .title {
+  display: none;
+}
+
+#posenet #my-gui-container ul li input {
+  width: 60px;
+  border: 1px solid rgba(255, 111, 97, 0.1);
+  padding: 2px 8px;
+  background: transparent;
+}
+
+#posenet #my-gui-container ul li input:hover {
+  border: 1px solid rgba(255, 111, 97, 0.2);
+  background: rgba(255, 111, 97, 0.2);
+}
+
+#posenet ul li .c {
+  display: inline;
+}
+
+#posenet ul li .c input[type=checkbox] {
+  width: 0px !important;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+#posenet ul li .c input[type=checkbox]:before {
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  content: "";
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid rgba(255, 111, 97, 0.1);
+  background: transparent;
+  cursor: pointer;
+}
+
+#posenet ul li .c input[type=checkbox]:hover::before {
+  border: 1px solid rgba(255, 111, 97, 0.2);
+  background: rgba(255, 111, 97, 0.2);
+}
+
+#posenet ul li .c input[type=checkbox]:checked:before {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  height: .5rem;
+  border-color: rgba(255, 111, 97, 0.9);
+  border-top-style: none;
+  border-right-style: none;
+}
+#posenet ul li .c input[type=checkbox]:after {
+  content: "";
+  position: absolute;
+  top: -0.125rem;
+  left: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+
+#posenet ul li .c div {
+  display: inline;
+}
+
+#posenet ul li select {
+  display: inline-block;
+}
+#posenet ul li select {
+  display: inline-block;
+  width: 60px;
+  cursor: pointer;
+  padding: 2px 8px;
+  outline: 0;
+  border: 0;
+  border-radius: 0;
+  border: 1px solid rgba(255, 111, 97, 0.1);
+  background: transparent;
+  color: #333;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+#posenet ul li select::-ms-expand {
+  display: none;
+}
+#posenet ul li select:hover,
+#posenet ul li select:focus {
+  border: 1px solid rgba(255, 111, 97, 0.2);
+  background: rgba(255, 111, 97, 0.1);
+}
+#posenet ul li select:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.select__arrow {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  border-style: solid;
+  border-width: 8px 5px 0 5px;
+  border-color: rgba(255, 111, 97, 0.1) transparent transparent transparent;
+}
+#posenet ul li select:hover ~ .select__arrow,
+#posenet ul li select:focus ~ .select__arrow {
+  border-top-color: rgba(255, 111, 97, 0.2);
+}
+#posenet ul li select:disabled ~ .select__arrow {
+  border-top-color: rgba(255, 111, 97, 0.1);
+}
+
+
 @media (max-width: 768px) {
   #posenet canvas {
     width: 100%;
@@ -1570,6 +1719,7 @@ button.xclose {
     margin-top: 1.3rem;
   }
 }
+ 
 
 /* 
   color scheme:

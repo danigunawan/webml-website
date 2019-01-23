@@ -31,6 +31,7 @@ gui.close();
 let customContainer = document.getElementById('my-gui-container');
 customContainer.appendChild(gui.domElement);
 guiState.scaleFactor = 0.75;
+guiState.scoreThreshold = 0.15;
 
 const getSearchParamsPrefer = () => {
   let searchParams = new URLSearchParams(location.search);
@@ -46,7 +47,7 @@ const inputElement = document.getElementById('input');
 const progressBar = document.getElementById('progressBar');
 
 const video = document.getElementById('video');
-const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('canvasvideo');
 // const scaleCanvas = document.getElementById('scaleCanvas');
 // const scaleCtx = scaleCanvas.getContext('2d');
 
@@ -112,48 +113,48 @@ inputElement.addEventListener('change', () => {
   drawResult();
 })
 
-// model.onFinishChange((model) => {
-//   guiState.model = model;
-//   initModel();
-// });
+model.onFinishChange((model) => {
+  guiState.model = model;
+  initModel();
+});
 
-// outputStride.onFinishChange((outputStride) => {
-//   guiState.outputStride = parseInt(outputStride);
-//   initModel();
-// });
+outputStride.onFinishChange((outputStride) => {
+  guiState.outputStride = parseInt(outputStride);
+  initModel();
+});
 
-// scaleFactor.onFinishChange((scaleFactor) => {
-//   guiState.scaleFactor = parseFloat(scaleFactor);
-//   initModel();
-// });
+scaleFactor.onFinishChange((scaleFactor) => {
+  guiState.scaleFactor = parseFloat(scaleFactor);
+  initModel();
+});
 
-// scoreThreshold.onChange((scoreThreshold) => {
-//   guiState.scoreThreshold = parseFloat(scoreThreshold);
-//   util._minScore = guiState.scoreThreshold;
-//   drawResult(false, false);
-// });
+scoreThreshold.onChange((scoreThreshold) => {
+  guiState.scoreThreshold = parseFloat(scoreThreshold);
+  util._minScore = guiState.scoreThreshold;
+  drawResult(false, false);
+});
 
-// nmsRadius.onChange((nmsRadius) => {
-//   guiState.multiPoseDetection.nmsRadius = parseInt(nmsRadius);
-//   util._nmsRadius = guiState.multiPoseDetection.nmsRadius;
-//   drawResult(false, true);
-// });
+nmsRadius.onChange((nmsRadius) => {
+  guiState.multiPoseDetection.nmsRadius = parseInt(nmsRadius);
+  util._nmsRadius = guiState.multiPoseDetection.nmsRadius;
+  drawResult(false, true);
+});
 
-// maxDetections.onChange((maxDetections) => {
-//   guiState.multiPoseDetection.maxDetections = parseInt(maxDetections);
-//   util._maxDetection = guiState.multiPoseDetection.maxDetections;
-//   drawResult(false, true);
-// });
+maxDetections.onChange((maxDetections) => {
+  guiState.multiPoseDetection.maxDetections = parseInt(maxDetections);
+  util._maxDetection = guiState.multiPoseDetection.maxDetections;
+  drawResult(false, true);
+});
 
-// showPose.onChange((showPose) => {
-//   guiState.showPose = showPose;
-//   drawResult(false, false);
-// });
+showPose.onChange((showPose) => {
+  guiState.showPose = showPose;
+  drawResult(false, false);
+});
 
-// showBoundingBox.onChange((showBoundingBox) => {
-//   guiState.showBoundingBox = showBoundingBox;
-//   drawResult(false, false);
-// });
+showBoundingBox.onChange((showBoundingBox) => {
+  guiState.showBoundingBox = showBoundingBox;
+  drawResult(false, false);
+});
 
 function drawImage(image, canvas, w, h) {
   const ctx = canvas.getContext('2d');
@@ -214,7 +215,7 @@ async function drawResult(predict = true, decode = true) {
     if (predict && decode) {
       const elapsed = predictTime + decodeTime;
       const inferenceTimeElement = document.getElementById('inferenceTime');
-      inferenceTimeElement.innerHTML = `inference time: <span class='ir'>${elapsed.toFixed(2)} ms</span><br>predicting time: <span class='ir'>${predictTime.toFixed(2)} ms</span> decoding time: <span class='ir'>${decodeTime.toFixed(2)} ms</span>`;
+      inferenceTimeElement.innerHTML = `inference: <span class='ir'>${elapsed.toFixed(2)} ms</span><br>compilation: <span class='ir'>${util.compilationTime}</span><br>predicting: <span class='ir'>${predictTime.toFixed(2)} ms</span> decoding: <span class='ir'>${decodeTime.toFixed(2)} ms</span>`;
     }
     util.drawPoses(canvassingle, singlePose);
     util.drawPoses(canvasmulti, multiPoses);
@@ -226,11 +227,11 @@ async function drawResult(predict = true, decode = true) {
 }
 
 async function setupCamera() {
-  const stream = await navigator.mediaDevices.getUserMedia({
-    'audio': false,
-    'video': {facingMode: 'user'},
-  });
+  await showProgress('Camera inferencing ...');
+  const stream = await navigator.mediaDevices.getUserMedia({ 'audio': false, 'video': {facingMode: 'user'}});
   video.srcObject = stream;
+  track = stream.getTracks()[0];
+
   return new Promise((resolve) => {
     video.onloadedmetadata = () => {
       resolve(video);
@@ -260,6 +261,15 @@ async function predict(video) {
   stats.end();
 }
 
+function drawVideo(video, canvas, w, h) {
+  const ctx = canvas.getContext('2d');
+  ctx.save();
+  ctx.scale(-1, 1);
+  ctx.translate(-w, 0);
+  ctx.drawImage(video, 0, 0, w, h);
+  ctx.restore();
+}
+
 async function poseDetectionFrame() {
   if (streaming) {
     if (util.initialized) {
@@ -267,9 +277,11 @@ async function poseDetectionFrame() {
     }
     setTimeout(poseDetectionFrame, 0);
   }
+  showResults();
 }
 
 async function main(camera, initstatus) {
+  streaming = false;
   try {
     if(!camera){
       if (initstatus) {

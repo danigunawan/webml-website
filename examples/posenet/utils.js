@@ -91,6 +91,7 @@ class Utils{
     this._type;
     this.initialized = false;
     this._cacheMap = new Map();
+    this.compilationTime;
   }
   
   async init(backend, prefer, inputSize) {
@@ -131,6 +132,7 @@ class Utils{
     console.log(`compilation result: ${result}`);
     let elapsed = performance.now() - start;
     console.log(`Compilation time: ${elapsed.toFixed(2)} ms`);
+    this.compilationTime = elapsed.toFixed(2);
     this.initialized = true;
   }
 

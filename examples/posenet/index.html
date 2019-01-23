@@ -102,6 +102,12 @@
               </div>
             </td>
           </tr>
+          <tr>
+            <th class='text-center'>Option</th>
+            <td>
+                <div id='my-gui-container'></div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -219,18 +225,17 @@
                 </svg>
               </i>
             </div>
-            <canvas id ='canvas' width = "500" height = "500"></canvas>
+            <div>
+              <canvas id ='canvasvideo'></canvas>
+            </div>
             <video id='video' autoplay playsinline hidden></video>
-            <canvas hidden id = "scaleCanvas" width = "500" height = "500"></canvas>
+            <canvas hidden id = 'scaleCanvas'></canvas>
           </div>
         </div>
       </div>
     </div>
   </section>
   <canvas hidden id='scaleimage'></canvas>
-
-  <div class="my-gui-container" id="my-gui-container"></div>
-
   <footer>
     <div class='container'>
       <div class='row'>
@@ -272,15 +277,15 @@
   <script src='../static/lib/stickyjs/sticky.js'></script>
   <script src='../static/lib/greensock/tweenmax.js'></script>
   <script src='../third_party/stats.customized.min.js'></script>
-  <script src="../third_party/dat.gui.js"></script>
+  <script src='../third_party/dat.gui.js'></script>
 
   <script src='../../dist/webml-polyfill.js'></script>
   <script src='../util/base.js'></script>
-  <script src="src/helperFunc.js"></script>
-  <script src="src/PoseNet.js"></script>
-  <script src="src/MaxHeap.js"></script>
-  <script src="src/decodePose.js"></script>
-  <script src="src/DrawOutputs.js"></script>
+  <script src='src/helperFunc.js'></script>
+  <script src='src/PoseNet.js'></script>
+  <script src='src/MaxHeap.js'></script>
+  <script src='src/decodePose.js'></script>
+  <script src='src/DrawOutputs.js'></script>
 
   <script src='utils.js'></script>
   <script src='main.js'></script>
