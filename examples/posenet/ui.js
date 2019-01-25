@@ -5,18 +5,17 @@ let ud = getUrlParam('d');
 let strsearch;
 
 if (!location.search) {
-  strsearch = `?prefer=none&b=WASM&s=image&d=0`;
+  strsearch = `?prefer=none&b=none&s=image&d=0`;
+  currentBackend = 'none';
   let path = location.href;
   location.href = path + strsearch;
 }
 
 const componentToggle = () => {
-  // $('#header-sticky-wrapper').attr('style', 'display:block');
   $('#header-sticky-wrapper').slideToggle();
   $('#query').slideToggle();
   $('.nav-pills').slideToggle();
   $('.github-corner').slideToggle();
-  // $('#mobile-nav-toggle').slideToggle(100);
   $('footer').slideToggle();
   $('#extra span').toggle();
 }
@@ -28,12 +27,14 @@ $(document).ready(() => {
     $('.nav-pills #cam').addClass('active');
     $('#imagetab').removeClass('active');
     $('#cameratab').addClass('active');
+    currentTab = 'camera';
   } else {
     $('.nav-pills li').removeClass('active');
     $('.nav-pills #img').addClass('active');
     $('#cameratab').removeClass('active');
     $('#imagetab').addClass('active');
     $('#fps').html('');
+    currentTab = 'image';
   }
 
   if (hasUrlParam('b')) {
@@ -58,7 +59,19 @@ $(document).ready(() => {
   $('#my-gui-container ul li select').after('<div class=\'select__arrow\'></div>');
   $('#my-gui-container ul li input[type=checkbox]').after('<label class=\'\'></label>');
   // $('#my-gui-container ul li .slider').remove();
-  
+  $('#posenet ul li .c input[type=text]').attr('title', 'Update value by dragging mouse up/down on inputbox');
+  $('#my-gui-container ul li.string').remove();
+
+  for (s of $('#my-gui-container ul li .property-name')) {
+    if(s.innerText == 'UseAtrousConv' || s.innerText == 'useAtrousConv') { s.innerText = 'AtrousConv'; s.setAttribute('title', 'UseAtrousConvOps'); }
+    if(s.innerText == 'OutputStride') { s.innerText = 'Stride'; s.setAttribute('title', 'OutputStride'); }
+    if(s.innerText == 'ScaleFactor') { s.innerText = 'Scale'; s.setAttribute('title', 'ScaleFactor'); }
+    if(s.innerText == 'ScoreThreshold') { s.innerText = 'Threshold'; s.setAttribute('title', 'ScoreThreshold'); }
+    if(s.innerText == 'NmsRadius') { s.innerText = 'Radius'; s.setAttribute('title', 'NmsRadius'); }
+    if(s.innerText == 'MaxDetections') { s.innerText = 'Detections'; s.setAttribute('title', 'MaxDetections'); }
+    if(s.innerText == 'ShowPose') { s.innerText = 'Pose'; s.setAttribute('title', 'ShowPose'); }
+    if(s.innerText == 'ShowBoundingBox') { s.innerText = 'Bounding'; s.setAttribute('title', 'ShowBoundingBox'); }
+  }
 
   const updateTitle = (backend, prefer) => {
     let currentprefertext;
@@ -102,9 +115,7 @@ $(document).ready(() => {
     strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&s=${us}&d=${ud}`;
     window.history.pushState(null, null, strsearch);
 
-    main(false, false);
-
-    // updateScenario(us === 'camera');
+    (us === 'image') ? main(false) : main(true);
   });
 
   $('#extra').click(() => {
@@ -137,10 +148,15 @@ $(document).ready(() => {
     $('#imagetab').addClass('active');
     $('#cameratab').removeClass('active');
     us = 'image';
-    strsearch = `?prefer=${up}&b=${ub}&s=${us}&d=${ud}`;
+    strsearch = `?prefer=${up}&b=${currentBackend}&s=${us}&d=${ud}`;
     window.history.pushState(null, null, strsearch);
 
-    main(false, true);
+    if(currentBackend === 'none') {
+      showError('No backend selected', 'Please select a backend to start prediction.');
+      return;
+    }
+    currentTab = 'image';
+    main(false);
   });
 
   $('#cam').click(() => {
@@ -150,21 +166,27 @@ $(document).ready(() => {
     $('#cameratab').addClass('active');
     $('#imagetab').removeClass('active');
     us = 'camera';
-    strsearch = `?prefer=${up}&b=${ub}&s=${us}&d=${ud}`;
+    strsearch = `?prefer=${up}&b=${currentBackend}&s=${us}&d=${ud}`;
     window.history.pushState(null, null, strsearch);
 
-    main(true, true);
+    if(currentBackend === 'none') {
+      showError('No backend selected', 'Please select a backend to start prediction.');
+      return;
+    }
+    currentTab = 'camera';
+    main(true);
   });
 
   $('#fullscreen i svg').click(() => {
     $('#fullscreen i').toggle();
     toggleFullScreen();
-    $('video').toggleClass('fullscreen');
+    $('#canvasvideo').toggleClass('fullscreen');
     $('#overlay').toggleClass('video-overlay');
     $('#fps').toggleClass('fullscreen');
     $('#fullscreen i').toggleClass('fullscreen');
     $('#ictitle').toggleClass('fullscreen');
     $('#inference').toggleClass('fullscreen');
+    $('#my-gui-container').toggleClass('fullscreen');
   });
 
 });
@@ -206,5 +228,9 @@ $(window).load(() => {
   if (ud != '0') {
     componentToggle();
   }
-  (us === 'camera') ? main(true, false) : main(false, false);
+  if(currentBackend === 'none') {
+    showError('No backend selected', 'Please select a backend to start prediction.');
+    return;
+  }
+  (us === 'camera') ? main(true) : main(false);
 })
