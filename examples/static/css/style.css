@@ -197,6 +197,14 @@ section {
   padding: 85px 0;
 }
 
+#posenet section {
+  padding: 0px 0;
+}
+
+#model section {
+  padding: 20px 0;
+}
+
 .card {
   position: relative;
   padding: 0;
