@@ -1,5 +1,5 @@
 # WebML PoseNet Example   
-This sample loads a pretrained posenet model, constructs and infers it by WebML API.  
+This example loads a pretrained posenet model, constructs and infers it by WebML API.  
 
 ## Screenshot   
 ![PoseNet Screenshot](./img/posenet.png)
