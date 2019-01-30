@@ -33,11 +33,11 @@ function showModel(div, modelcategory) {
       row += '<td scope=\'col\'></td>';
     }
 
-    let modelUrl = new URL(model.modelFile.replace('../', '../examples/'), window.location.href).href;
+    let modelUrl = new URL(model.modelFile.replace('../', '../examples/'), location.href).href;
 
-    if(window.location.hostname.indexOf('.github.io') >-1) {
+    if(location.hostname.indexOf('.github.io') >-1) {
       let user = location.replace('.github.io', '');
-      let path = window.location.pathname.split('/')[1];
+      let path = location.pathname.split('/')[1];
       let newlocation = `https://${user}.github.io/${path}/raw/master`;
       modelUrl = new URL(model.modelFile.replace('../', '../examples/'), newlocation).href;
     }
