@@ -241,6 +241,7 @@ const ssdlite_mobilenetv2_tflite = {
 
 const posenet = {
   modelName: 'PoseNet',
+  modelFile: '../skeleton_detection/model/mobilenet_v1_101',
   inputSize: [513, 513, 3],
   preOptions: {
     mean: [127.5, 127.5, 127.5],
@@ -252,8 +253,8 @@ const posenet = {
 
 const deeplab_mobilenet_v2_513_tflite = {
   modelName: 'deeplab_mobilenet_v2_513_tflite',
-  modelFile: './model/deeplab_mobilenetv2_513.tflite',
-  labelsFile: './model/labels.txt',
+  modelFile: '../semantic_segmentation/model/deeplab_mobilenetv2_513.tflite',
+  labelsFile: '../semantic_segmentation/model/labels.txt',
   inputSize: [513, 513, 3],
   outputSize: [513, 513, 21],
   intro: 'DeepLab is a state-of-art deep learning model for semantic image segmentation, where the goal is to assign semantic labels (e.g., person, dog, cat and so on) to every pixel in the input image.',
@@ -262,8 +263,8 @@ const deeplab_mobilenet_v2_513_tflite = {
   
 const deeplab_mobilenet_v2_513_dilated_tflite = {
   modelName: 'deeplab_mobilenet_v2_513_dilated_tflite',
-  modelFile: './model/deeplab_mobilenetv2_513_dilated.tflite',
-  labelsFile: './model/labels.txt',
+  modelFile: '../semantic_segmentation/model/deeplab_mobilenetv2_513_dilated.tflite',
+  labelsFile: '../semantic_segmentation/model/labels.txt',
   inputSize: [513, 513, 3],
   outputSize: [513, 513, 21],
   intro: 'Extend DeepLabv3 to include a simple yet effective decoder module to refine the segmentation results especially along object boundaries. Furthermore, in this encoder-decoder structure one can arbitrarily control the resolution of extracted encoder features by atrous convolution to trade-off precision and runtime.',
