@@ -38,8 +38,8 @@ function showModel(div, modelcategory) {
     if(window.location.hostname.indexOf('.github.io') >-1) {
       let user = location.replace('.github.io', '');
       let path = window.location.pathname.split('/')[1];
-      let location = `https://${user}.github.io/${path}/raw/master`;
-      modelUrl = new URL(model.modelFile.replace('../', '../examples/'), location).href;
+      let newlocation = `https://${user}.github.io/${path}/raw/master`;
+      modelUrl = new URL(model.modelFile.replace('../', '../examples/'), newlocation).href;
     }
 
     let netronUrl = `https://lutzroeder.github.io/netron/?url=${modelUrl}`;

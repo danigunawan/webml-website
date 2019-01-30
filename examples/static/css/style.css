@@ -1320,6 +1320,9 @@ video.fullscreen, #canvasvideo.fullscreen {
     top: 10rem;
     right: 0rem;
   }
+  .webmlbadge {
+    letter-spacing: 0;
+  }
 }
 
 .video-overlay {
