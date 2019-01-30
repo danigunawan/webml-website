@@ -1478,7 +1478,13 @@ button.xclose {
 
 .loading-page .counter h1 {
   color: rgba(25, 190, 225, 1.0);
-  font-size: 2rem;
+  font-size: 1.4rem;
+}
+
+@media (max-width: 768px) {
+  .loading-page .counter h1 {
+    font-size: 1.2rem;
+  }
 }
 
 .loading-page .counter hr {
