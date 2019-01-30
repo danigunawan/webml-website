@@ -209,11 +209,9 @@
           row += '<td scope=\'col\'></td>';
         }
 
-        if (model.modelCDNUrl) {
-          row += `<td scope=\'col\'><a title='View visualized model by Netron' href='https://lutzroeder.github.io/netron/?url=${model.modelCDNUrl}'>netron</a></td>`;
-        } else {
-          row += '<td scope=\'col\'></td>';
-        }
+        let modelUrl = new URL(model.modelFile, window.location.href).href;
+        let netronUrl = `https://lutzroeder.github.io/netron/?url=${modelUrl}`;
+        row += `<td scope=\'col\'><a title='View visualized model by Netron' href='${netronUrl}'>netron</a></td>`;
 
         if (model.intro) {
           row += `<td scope=\'col\' class='des'>${model.intro}</td>`;

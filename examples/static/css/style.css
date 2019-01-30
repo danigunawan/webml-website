@@ -856,7 +856,7 @@ footer {
 }
 
 .nav-pills li:hover {
-  background-color: rgba(255, 111, 97, 0.05) !important;
+  background-color: rgba(213, 213, 213, 0.15) !important;
 }
 
 .nav-pills li.active {
@@ -1099,7 +1099,7 @@ footer {
 }
 
 .webml-status-true:hover {
-  background: rgba(255, 111, 97, 0.1);
+  background: rgba(213, 213, 213, 0.15);
 }
 
 #extra {
@@ -1961,7 +1961,7 @@ button.xclose {
 
 #semanticsegmentation .controls .btn:hover {
   color: rgba(255, 111, 97, 1.0);
-  background: rgba(255, 255, 255, 0.1) !important;
+  background: rgba(213, 213, 213, 0.15) !important;
   border: 1px rgba(255, 111, 97, 1.0) solid;
 }
 

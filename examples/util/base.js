@@ -26,8 +26,7 @@ const mobilenet_v1_tflite = {
     std: [127.5, 127.5, 127.5],
   },
   intro: 'An efficient Convolutional Neural Networks for Mobile Vision Applications.',
-  paperUrl: 'https://arxiv.org/pdf/1704.04861.pdf',
-  modelCDNUrl: 'https://cdn_host_and_path/mobilenet_v1_1.0_224.tflite'
+  paperUrl: 'https://arxiv.org/pdf/1704.04861.pdf'
 };
 const mobilenet_v2_tflite = {
   modelName: 'mobilenet_v2_tflite',
@@ -40,8 +39,7 @@ const mobilenet_v2_tflite = {
     std: [127.5, 127.5, 127.5],
   },
   intro: 'MobileNetV2 improves the state of the art performance of mobile models.',
-  paperUrl: 'https://arxiv.org/abs/1801.04381',
-  modelCDNUrl: 'https://cdn_host_and_path/mobilenet_v2_1.0_224.tflite'
+  paperUrl: 'https://arxiv.org/abs/1801.04381'
 };
 const inception_v3_tflite = {
   modelName: 'inception_v3_tflite',
@@ -54,8 +52,7 @@ const inception_v3_tflite = {
     std: [127.5, 127.5, 127.5],
   },
   intro: 'Inception-v3 is trained for the ImageNet Large Visual Recognition Challenge.',
-  paperUrl: 'http://arxiv.org/abs/1512.00567',
-  modelCDNUrl: 'https://cdn_host_and_path/inception_v3.tflite'
+  paperUrl: 'http://arxiv.org/abs/1512.00567'
 };
 const inception_v4_tflite = {
   modelName: 'inception_v4_tflite',
@@ -68,8 +65,7 @@ const inception_v4_tflite = {
     std: [127.5, 127.5, 127.5],
   },
   intro: 'Inception architecture that has been shown to achieve very good performance at relatively low computational cost.',
-  paperUrl: 'https://arxiv.org/abs/1602.07261',
-  modelCDNUrl: 'https://cdn_host_and_path/inception_v4.tflite'
+  paperUrl: 'https://arxiv.org/abs/1602.07261'
 };
 const squeezenet_tflite = {
   modelName: 'squeezenet_tflite',
@@ -82,8 +78,7 @@ const squeezenet_tflite = {
     std: [127.5, 127.5, 127.5],
   },
   intro: 'A light-weight CNN providing Alexnet level accuracy with 50X fewer parameters.',
-  paperUrl: 'https://arxiv.org/abs/1602.07360',
-  modelCDNUrl: 'https://cdn_host_and_path/squeezenet.tflite'
+  paperUrl: 'https://arxiv.org/abs/1602.07360'
 };
 const inception_resnet_v2_tflite = {
   modelName: 'inception_resnet_v2_tflite',
@@ -99,8 +94,7 @@ const inception_resnet_v2_tflite = {
     softmax: true,
   },
   intro: 'Inception architecture that has been shown to achieve very good performance at relatively low computational cost, and training with residual connections accelerates the training of Inception networks significantly. There is also some evidence of residual Inception networks outperforming similarly expensive Inception networks without residual connections.',
-  paperUrl: 'https://arxiv.org/abs/1602.07261',
-  modelCDNUrl: 'https://cdn_host_and_path/inception_resnet_v2.tflite'
+  paperUrl: 'https://arxiv.org/abs/1602.07261'
 };
 const squeezenet_onnx = {
   modelName: 'squeezenet_onnx',
@@ -118,8 +112,7 @@ const squeezenet_onnx = {
     softmax: true,
   },
   intro: 'A light-weight CNN providing Alexnet level accuracy with 50X fewer parameters.',
-  paperUrl: 'https://arxiv.org/abs/1602.07360',
-  modelCDNUrl: 'https://cdn_host_and_path/squeezenet1.1.onnx'
+  paperUrl: 'https://arxiv.org/abs/1602.07360'
 };
 const mobilenet_v2_onnx = {
   modelName: 'mobilenet_v2_onnx',
@@ -137,8 +130,7 @@ const mobilenet_v2_onnx = {
     softmax: true,
   },
   intro: 'MobileNetV2 improves the state of the art performance of mobile models.',
-  paperUrl: 'https://arxiv.org/abs/1801.04381',
-  modelCDNUrl: 'https://cdn_host_and_path/mobilenetv2-1.0.onnx'
+  paperUrl: 'https://arxiv.org/abs/1801.04381'
 };
 const resnet_v1_onnx = {
   modelName: 'resnet_v1_onnx',
@@ -156,8 +148,7 @@ const resnet_v1_onnx = {
     softmax: true,
   },
   intro: 'A residual learning framework to ease the training of networks that are substantially deeper than those used previously. This result won the 1st place on the ILSVRC 2015 classification task.',
-  paperUrl: 'https://arxiv.org/abs/1512.03385',
-  modelCDNUrl: 'https://cdn_host_and_path/resnet50v1.onnx'
+  paperUrl: 'https://arxiv.org/abs/1512.03385'
 };
 const resnet_v2_onnx = {
   modelName: 'resnet_v2_onnx',
@@ -175,8 +166,7 @@ const resnet_v2_onnx = {
     softmax: true,
   },
   intro: 'Deep residual networks have emerged as a family of extremely deep architectures showing compelling accuracy and nice convergence behaviors. It reports improved results using a 1001-layer ResNet on CIFAR-10 (4.62% error) and CIFAR-100, and a 200-layer ResNet on ImageNet.',
-  paperUrl: 'https://arxiv.org/abs/1603.05027',
-  modelCDNUrl: 'https://cdn_host_and_path/resnet50v2.onnx'
+  paperUrl: 'https://arxiv.org/abs/1603.05027'
 };
 const inception_v2_onnx = {
   modelName: 'inception_v2_onnx',
@@ -185,8 +175,7 @@ const inception_v2_onnx = {
   inputSize: [224, 224, 3],
   outputSize: 1000,
   intro: 'Inception-v2 is trained for the ImageNet Large Visual Recognition Challenge.',
-  paperUrl: 'https://arxiv.org/abs/1512.00567',
-  modelCDNUrl: 'https://cdn_host_and_path/inceptionv2.onnx'
+  paperUrl: 'https://arxiv.org/abs/1512.00567'
 };
 const densenet_onnx = {
   modelName: 'densenet_onnx',
@@ -205,8 +194,7 @@ const densenet_onnx = {
     softmax: true,
   },
   intro: 'Dense Convolutional Network (DenseNet) connects each layer to every other layer in a feed-forward fashion. DenseNets have several compelling advantages: they alleviate the vanishing-gradient problem, strengthen feature propagation, encourage feature reuse, and substantially reduce the number of parameters. ',
-  paperUrl: 'https://arxiv.org/abs/1608.06993',
-  modelCDNUrl: 'https://cdn_host_and_path/densenet121.onnx'
+  paperUrl: 'https://arxiv.org/abs/1608.06993'
 };
 
 const ssd_mobilenetv1_tflite = {
@@ -259,8 +247,7 @@ const posenet = {
     std: [127.5, 127.5, 127.5],
   },
   intro: 'PoseNet is a machine learning model that allows for Real-time Human Pose Estimation which can be used to estimate either a single pose or multiple poses.',
-  paperUrl: 'https://arxiv.org/abs/1803.08225',
-  modelCDNUrl: 'https://cdn_host_and_path/'
+  paperUrl: 'https://arxiv.org/abs/1803.08225'
 };
 
 const deeplab_mobilenet_v2_513_tflite = {
@@ -270,8 +257,7 @@ const deeplab_mobilenet_v2_513_tflite = {
   inputSize: [513, 513, 3],
   outputSize: [513, 513, 21],
   intro: 'DeepLab is a state-of-art deep learning model for semantic image segmentation, where the goal is to assign semantic labels (e.g., person, dog, cat and so on) to every pixel in the input image.',
-  paperUrl: 'https://arxiv.org/abs/1802.02611',
-  modelCDNUrl: 'https://cdn_host_and_path/deeplab_mobilenetv2_513.tflite'
+  paperUrl: 'https://arxiv.org/abs/1802.02611'
 }
   
 const deeplab_mobilenet_v2_513_dilated_tflite = {
@@ -281,8 +267,7 @@ const deeplab_mobilenet_v2_513_dilated_tflite = {
   inputSize: [513, 513, 3],
   outputSize: [513, 513, 21],
   intro: 'Extend DeepLabv3 to include a simple yet effective decoder module to refine the segmentation results especially along object boundaries. Furthermore, in this encoder-decoder structure one can arbitrarily control the resolution of extracted encoder features by atrous convolution to trade-off precision and runtime.',
-  paperUrl: 'https://arxiv.org/abs/1802.02611',
-  modelCDNUrl: 'https://cdn_host_and_path/deeplab_mobilenetv2_513_dilated.tflite'
+  paperUrl: 'https://arxiv.org/abs/1802.02611'
 }
 
 const imageClassificationModels = [
