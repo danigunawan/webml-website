@@ -62,8 +62,8 @@
             <ul>
               <li><a href='image_classification/index.html'>Image Classification</a></li>
               <li><a href='object_detection/index.html'>Object Detection</a></li>
-              <li><a href='posenet/index.html'>Human Pose Estimation</a></li>
-              <li><a href='deeplab/index.html'>Semantic Segmentation</a></li>
+              <li><a href='skeleton_detection/index.html'>Skeleton Detection</a></li>
+              <li><a href='semantic_segmentation/index.html'>Semantic Segmentation</a></li>
             </ul>
           </li>
           <li><a href='model.html'>Models</a></li>
@@ -73,15 +73,36 @@
   </header>
   <section class='models' id='models'>
     <div class='container'>
-      <h3 class='text-center mb-4 mt-1'>
+      <h2 class='text-center mb-4 mt-1'>
           Supported Models
-      </h3>
+      </h2>
+
       <h4 class='text-center'>
-          Human Pose Estimation
+          Semantic Segmentation
+      </h4>
+      <div class="table-responsive-sm">
+        <table id='modelcv-ss' class='modelcv table table-borderless table-hover'>
+          <caption>Semantic Segmentation - Computer Vision based models</caption>
+          <thead>
+            <tr>
+              <th scope='col'>Model</th>
+              <th scope='col'>Format</th>
+              <th scope='col'>Paper</th>
+              <th scope='col' title='Netron Model Visualizer'>Netron</th>
+              <th scope='col'>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 class='text-center'>
+          Skeleton Detection
       </h4>
       <div class="table-responsive-sm">
         <table id='modelcv-hpe' class='modelcv table table-borderless table-hover'>
-          <caption>Human Pose Estimation - Computer Vision based models</caption>
+          <caption>Skeleton Detection - Computer Vision based models</caption>
           <thead>
             <tr>
               <th scope='col'>Model</th>
@@ -124,6 +145,10 @@
           <div class='webmlbadge mb-4'>
             <div class='webml-title'>WebNN API</div>
             <div id='webmlstatus'>Supported</div>
+          </div>
+          <div class='webmlbadge mb-4'>
+            <div class='webml-title'>W3C Spec</div>
+            <div class='webml-status-true'><a href='https://webmachinelearning.github.io/webnn/#usecases' title='W3C Web Neural Network API Use Cases'>Use Cases</a></div>
           </div>
           <p>&copy;2019 <a href='index.html'>WebNN API</a></p>
         </div>
@@ -205,6 +230,7 @@
     $(document).ready(function () {
       showModel('#modelcv-ic tbody', imageClassificationModels)
       showModel('#modelcv-hpe tbody', humanPoseEstimationModels)
+      showModel('#modelcv-ss tbody', semanticSegmentationModels)
     });
   </script>
   
