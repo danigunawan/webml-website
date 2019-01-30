@@ -17,6 +17,7 @@ const preferMap = {
 
 const mobilenet_v1_tflite = {
   modelName: 'mobilenet_v1_tflite',
+  modelSize: '16.9MB',
   inputSize: [224, 224, 3],
   outputSize: 1001,
   modelFile: '../image_classification/model/mobilenet_v1_1.0_224.tflite',
@@ -30,6 +31,7 @@ const mobilenet_v1_tflite = {
 };
 const mobilenet_v2_tflite = {
   modelName: 'mobilenet_v2_tflite',
+  modelSize: '14.0MB',
   inputSize: [224, 224, 3],
   outputSize: 1001,
   modelFile: '../image_classification/model/mobilenet_v2_1.0_224.tflite',
@@ -43,6 +45,7 @@ const mobilenet_v2_tflite = {
 };
 const inception_v3_tflite = {
   modelName: 'inception_v3_tflite',
+  modelSize: '95.3MB',
   inputSize: [299, 299, 3],
   outputSize: 1001,
   modelFile: '../image_classification/model/inception_v3.tflite',
@@ -56,6 +59,7 @@ const inception_v3_tflite = {
 };
 const inception_v4_tflite = {
   modelName: 'inception_v4_tflite',
+  modelSize: '170.7MB',
   inputSize: [299, 299, 3],
   outputSize: 1001,
   modelFile: '../image_classification/model/inception_v4.tflite',
@@ -69,6 +73,7 @@ const inception_v4_tflite = {
 };
 const squeezenet_tflite = {
   modelName: 'squeezenet_tflite',
+  modelSize: '5.0MB',
   inputSize: [224, 224, 3],
   outputSize: 1001,
   modelFile: '../image_classification/model/squeezenet.tflite',
@@ -82,6 +87,7 @@ const squeezenet_tflite = {
 };
 const inception_resnet_v2_tflite = {
   modelName: 'inception_resnet_v2_tflite',
+  modelSize: '121.0MB',
   inputSize: [299, 299, 3],
   outputSize: 1001,
   modelFile: '../image_classification/model/inception_resnet_v2.tflite',
@@ -98,6 +104,7 @@ const inception_resnet_v2_tflite = {
 };
 const squeezenet_onnx = {
   modelName: 'squeezenet_onnx',
+  modelSize: '5.0MB',
   modelFile: '../image_classification/model/squeezenet1.1.onnx',
   labelsFile: '../image_classification/model/labels1000.txt',
   inputSize: [224, 224, 3],
@@ -116,6 +123,7 @@ const squeezenet_onnx = {
 };
 const mobilenet_v2_onnx = {
   modelName: 'mobilenet_v2_onnx',
+  modelSize: '14.2MB',
   modelFile: '../image_classification/model/mobilenetv2-1.0.onnx',
   labelsFile: '../image_classification/model/labels1000.txt',
   inputSize: [224, 224, 3],
@@ -134,6 +142,7 @@ const mobilenet_v2_onnx = {
 };
 const resnet_v1_onnx = {
   modelName: 'resnet_v1_onnx',
+  modelSize: '46.8MB',
   modelFile: '../image_classification/model/resnet50v1.onnx',
   labelsFile: '../image_classification/model/labels1000.txt',
   inputSize: [224, 224, 3],
@@ -152,6 +161,7 @@ const resnet_v1_onnx = {
 };
 const resnet_v2_onnx = {
   modelName: 'resnet_v2_onnx',
+  modelSize: '46.8MB',
   modelFile: '../image_classification/model/resnet50v2.onnx',
   labelsFile: '../image_classification/model/labels1000.txt',
   inputSize: [224, 224, 3],
@@ -170,6 +180,7 @@ const resnet_v2_onnx = {
 };
 const inception_v2_onnx = {
   modelName: 'inception_v2_onnx',
+  modelSize: '45.0MB',
   modelFile: '../image_classification/model/inceptionv2.onnx',
   labelsFile: '../image_classification/model/ilsvrc2012labels.txt',
   inputSize: [224, 224, 3],
@@ -179,6 +190,7 @@ const inception_v2_onnx = {
 };
 const densenet_onnx = {
   modelName: 'densenet_onnx',
+  modelSize: '32.7MB',
   modelFile: '../image_classification/model/densenet121.onnx',
   labelsFile: '../image_classification/model/labels1000.txt',
   inputSize: [224, 224, 3],
@@ -199,6 +211,7 @@ const densenet_onnx = {
 
 const ssd_mobilenetv1_tflite = {
   modelName: 'SSD MobileNetV1(TFlite)',
+  modelSize: '27.3MB',
   modelFile: '../object_detection/model/ssd_mobilenet_v1.tflite',
   labelsFile: '../object_detection/model/coco_labels_list.txt',
   box_size: 4,
@@ -213,6 +226,7 @@ const ssd_mobilenetv1_tflite = {
 
 const ssd_mobilenetv2_tflite = {
   modelName: 'SSD MobileNetV2(TFlite)',
+  modelSize: '17.9MB',
   modelFile: '../object_detection/model/ssd_mobilenet_v2.tflite',
   labelsFile: '../object_detection/model/coco_labels_list.txt',
   box_size: 4,
@@ -227,6 +241,7 @@ const ssd_mobilenetv2_tflite = {
 
 const ssdlite_mobilenetv2_tflite = {
   modelName: 'SSDLite MobileNetV2(TFlite)',
+  modelSize: '67.3MB',
   modelFile: '../object_detection/model/ssdlite_mobilenet_v2.tflite',
   labelsFile: '../object_detection/model/coco_labels_list.txt',
   box_size: 4,
@@ -241,6 +256,7 @@ const ssdlite_mobilenetv2_tflite = {
 
 const posenet = {
   modelName: 'PoseNet',
+  modelSize: '13.3MB',
   modelFile: '../skeleton_detection/model/mobilenet_v1_101',
   inputSize: [513, 513, 3],
   preOptions: {
@@ -253,6 +269,7 @@ const posenet = {
 
 const deeplab_mobilenet_v2_513_tflite = {
   modelName: 'deeplab_mobilenet_v2_513_tflite',
+  modelSize: '9.5MB',
   modelFile: '../semantic_segmentation/model/deeplab_mobilenetv2_513.tflite',
   labelsFile: '../semantic_segmentation/model/labels.txt',
   inputSize: [513, 513, 3],
@@ -263,6 +280,7 @@ const deeplab_mobilenet_v2_513_tflite = {
   
 const deeplab_mobilenet_v2_513_dilated_tflite = {
   modelName: 'deeplab_mobilenet_v2_513_dilated_tflite',
+  modelSize: '8.4MB',
   modelFile: '../semantic_segmentation/model/deeplab_mobilenetv2_513_dilated.tflite',
   labelsFile: '../semantic_segmentation/model/labels.txt',
   inputSize: [513, 513, 3],

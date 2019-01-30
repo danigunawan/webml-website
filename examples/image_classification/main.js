@@ -43,11 +43,12 @@ const showAlert = (error) => {
 
 const updateProgress = (ev) => {
   if (ev.lengthComputable) {
-    let percentComplete = ev.loaded / ev.total * 100;
+    let totalSize = ev.total / (1000 * 1000);
+    let loadedSize = ev.loaded / (1000 * 1000);
+    let percentComplete = ev.loaded / ev.total * 100;    
     percentComplete = percentComplete.toFixed(0);
     progressBar.style = `width: ${percentComplete}%`;
-    progressBar.innerHTML = `Loading Model: ${percentComplete}%`;
-    updateLoading(percentComplete);
+    updateLoading(loadedSize.toFixed(1), totalSize.toFixed(1), percentComplete);
   }
 }
 

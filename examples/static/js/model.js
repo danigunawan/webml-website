@@ -19,28 +19,31 @@ function showModel(div, modelcategory) {
 
     let modeltype;
     if(isTFLite(model.modelName)) {
-      modeltype = '<td scope=\'col\'>' + 'TFLite' + '';
+      modeltype = `<td scope='col' class='format'>TFLite</td>`;
     } else if(isONNX(model.modelName)) {
-      modeltype = '<td scope=\'col\'>' + 'ONNX' + '';
+      modeltype = `<td scope='col' class='format'>ONNX</td>`;
     } else {
-      modeltype = '<td scope=\'col\'></td>';
+      modeltype = `<td scope='col' class='format'></td>`;
     }
     row += modeltype;
 
+    let size = `<td scope='col' class='size'>${model.modelSize}</td>`;
+    row += size;
+
     if (model.paperUrl) {
-      row += `<td scope=\'col\'><a title='View paper' href='${model.paperUrl}'>paper</a></td>`;
+      row += `<td scope='col' class='paper'><a title='View paper' href='${model.paperUrl}'>paper</a></td>`;
     } else {
-      row += '<td scope=\'col\'></td>';
+      row += `<td scope='col'></td>`;
     }
 
     let modelUrl = new URL(model.modelFile.replace('../', '../examples/'), location.href);
     let netronUrl = `https://lutzroeder.github.io/netron/?url=${modelUrl}`;
-    row += `<td scope=\'col\'><a title='View visualized model by Netron' href='${netronUrl}'>netron</a></td>`;
+    row += `<td scope='col' class='netron'><a title='View visualized model by Netron' href='${netronUrl}'>netron</a></td>`;
 
     if (model.intro) {
-      row += `<td scope=\'col\' class='des'>${model.intro}</td>`;
+      row += `<td scope='col' class='des'>${model.intro}</td>`;
     } else {
-      row += '<td scope=\'col\'></td>';
+      row += `<td scope='col'></td>`;
     }
 
     row = row + '</tr>';

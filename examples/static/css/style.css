@@ -897,13 +897,33 @@ footer {
 .modelcv tbody td.name {
   text-transform: capitalize;
   min-width: 100px;
+  width: 100px;
+}
+
+.modelcv .format, .modelcv .paper, .modelcv .netron  {
+  width: 60px;
+}
+
+.modelcv .size {
+  width: 77px;
+  text-align: right;
 }
 
 .modelcv th {
   text-align: center;
 }
 
+.modelcv .paper, .modelcv .netron {
+  text-transform: capitalize;
+}
+
 @media (max-width: 768px) {
+  .table td, .table th {
+    padding: .25rem
+  }
+  .modelcv .des {
+    min-width: 94vw;
+  }
 }
 
 .t-filter tr:hover {
