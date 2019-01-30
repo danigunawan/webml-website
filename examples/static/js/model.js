@@ -36,7 +36,7 @@ function showModel(div, modelcategory) {
     let modelUrl = new URL(model.modelFile.replace('../', '../examples/'), location.href);
 
     if(location.hostname.indexOf('.github.io') >-1) {
-      let user = location.replace('.github.io', '');
+      let user = location.hostname.replace('.github.io', '');
       let path = location.pathname.split('/')[1];
       let newlocation = `https://${user}.github.io/${path}/raw/master`;
       modelUrl = new URL(model.modelFile.replace('../', '../examples/'), newlocation);
