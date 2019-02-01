@@ -43,6 +43,18 @@ const checkedModelStyle = () => {
   }
 }
 
+const buttonUI = (camera = false) => {
+  if(camera) {
+    $('#pickimage').addClass('dnone');
+    $('#fps').removeClass('dnone');
+    $('#fullscreen').removeClass('dnone');
+  } else {
+    $('#pickimage').removeClass('dnone');
+    $('#fps').addClass('dnone');
+    $('#fullscreen').addClass('dnone');
+  }
+}
+
 $(document).ready(() => {
 
   if (us == 'camera') {
@@ -84,6 +96,7 @@ $(document).ready(() => {
   }
 
   const updateTitle = (backend, prefer, model, modeltype) => {
+    model = model.replace(/_/g, ' ');
     let currentprefertext;
     if (backend == 'WASM' || backend == 'WebGL') {
       $('#ictitle').html(`Semantic Segmentation / ${backend} / ${model} (${modeltype})`);
@@ -129,7 +142,7 @@ $(document).ready(() => {
       showError('No model selected', 'Please select a model to start prediction.');
       return;
     }
-    (currentTab == 'camera') ? updateScenario(true) : updateScenario(false);
+    updateScenario(currentTab == 'camera');
   });
 
   $('input:radio[name=m]').click(() => {
@@ -155,7 +168,7 @@ $(document).ready(() => {
     disableModel();
     currentModel = `${um}_${ut}`;
     updateTitle(currentBackend, currentPrefer, `${um}`, `${ut}`);
-    (currentTab == 'camera') ? main(true) : main(false);
+    main(currentTab == 'camera');
   });
 
   $('#extra').click(() => {
@@ -197,6 +210,7 @@ $(document).ready(() => {
     }
 
     updateScenario(false);
+    buttonUI(currentTab === 'camera');
   });
 
   $('#cam').click(() => {
@@ -215,17 +229,19 @@ $(document).ready(() => {
     }
 
     updateScenario(true);
+    buttonUI(currentTab === 'camera');
   });
 
   $('#fullscreen i svg').click(() => {
     $('#fullscreen i').toggle();
     toggleFullScreen();
-    $('video').toggleClass('fullscreen');
+    $('#canvasvideo').toggleClass('fullscreen');
     $('#overlay').toggleClass('video-overlay');
     $('#fps').toggleClass('fullscreen');
     $('#fullscreen i').toggleClass('fullscreen');
     $('#ictitle').toggleClass('fullscreen');
     $('#inference').toggleClass('fullscreen');
+    $('.zoom-wrapper').toggle();
   });
 
 });
@@ -240,9 +256,10 @@ const showProgress = async (text) => {
 
 const showResults = () => {
   $('#progressmodel').hide();
-  $('.icdisplay').fadeIn();
-  $('.shoulddisplay').fadeIn();
+  $('.icdisplay').show();
+  $('.shoulddisplay').show();
   $('#resulterror').hide();
+  buttonUI(currentTab === 'camera');
 }
 
 const showError = (title, description) => {
@@ -388,5 +405,5 @@ $(window).load(() => {
     showError('No model selected', 'Please select a model to start prediction.');
     return;
   }
-  (us === 'camera') ? main(true) : main();
+  main(us === 'camera');
 })

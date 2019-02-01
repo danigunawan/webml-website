@@ -82,6 +82,7 @@ $(document).ready(() => {
   }
 
   const updateTitle = (backend, prefer, model, modeltype) => {
+    model = model.replace(/_/g, ' ');
     let currentprefertext;
     if (backend == 'WASM' || backend == 'WebGL') {
       $('#ictitle').html(`Image Classification / ${backend} / ${model} (${modeltype})`);

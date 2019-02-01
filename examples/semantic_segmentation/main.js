@@ -19,12 +19,13 @@ const getSearchParamsModel = () => {
 const videoElement = document.getElementById('video');
 const imageElement = document.getElementById('image');
 const inputElement = document.getElementById('input');
-const outputCanvas = document.getElementById('canvas');
+const outputCanvas = document.getElementById('canvasvideo');
 const progressBar = document.getElementById('progressBar');
 
 let currentBackend = getSearchParamsBackend();
 let currentModel = getSearchParamsModel();
 let currentPrefer = getSearchParamsPrefer();
+let currentTab = 'image';
 
 let clippedSize = [];
 let hoverPos = null;
@@ -114,45 +115,61 @@ const errorHandler = (e) => {
   showError(null, null);
 }
 
-const startPredictCamera = async () => {
+const startPredict = async () => {
   if (streaming) {
     try {
       stats.begin();
-      let ret = await utils.predict(videoElement);
-      updateResult(ret);
+      await predictAndDraw(videoElement, currentBackend, currentPrefer, true);
       stats.end();
-      setTimeout(startPredictCamera, 0);
+      setTimeout(startPredict, 0);
     } catch (e) {
       errorHandler(e);
     }
   }
 }
 
-function setCamResolution(resolution) {
-  return navigator.mediaDevices.getUserMedia({
-    audio: false,
-    video: { facingMode: 'user' }
-  }).then((stream) => {
-    videoElement.srcObject = stream;
-    return new Promise((resolve) => {
-      // video cannot be uploaded to texture until being loaded
-      videoElement.onloadeddata = resolve;
-    });
-  }).catch((error) => {
-    console.log('getUserMedia error: ' + error.name, error);
-  });
+const predictCamera = async () => {
+  try {
+    let res = utils.getFittedResolution(4 / 3);
+    setCamResolution(res);
+    streaming = true;
+    startPredict();
+  } catch (e) {
+    errorHandler(e);
+  }
 }
 
-async function predictAndDraw(imageSource, backend, prefer) {
-  streaming = false;
-  // Stop webcam opened by navigator.getUserMedia if user visits 'LIVE CAMERA' tab before
-  if(track) {
-    track.stop();
+const setCamResolution = async (resolution) => {
+  let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "user" } });
+  videoElement.srcObject = stream;
+  track = stream.getTracks()[0];
+}
+// const setCamResolution = (resolution) => {
+//   return navigator.mediaDevices.getUserMedia({
+//     audio: false,
+//     video: { facingMode: 'user' }
+//   }).then((stream) => {
+//     videoElement.srcObject = stream;
+//     return new Promise((resolve) => {
+//       // video cannot be uploaded to texture until being loaded
+//       track = stream.getTracks()[0];
+//       videoElement.onloadeddata = resolve;
+//     });
+//   }).catch((error) => {
+//     errorHandler(e);
+//   });
+//   
+// }
+
+const predictAndDraw = async (source, backend, prefer, camera = false) => {
+  if(!camera) {
+    streaming = false;
+    if(track) track.stop();
   }
-  await showProgress('Image inferencing ...');
+  await showProgress('Inferencing ...');
   try {
-    clippedSize = utils.prepareInput(imageSource);
-    renderer.uploadNewTexture(imageSource, clippedSize);
+    clippedSize = utils.prepareInput(source);
+    renderer.uploadNewTexture(source, clippedSize);
     let result = await utils.predict();
     let inferTime = result.time;
     console.log(`Inference time: ${inferTime.toFixed(2)} ms`);
@@ -166,30 +183,11 @@ async function predictAndDraw(imageSource, backend, prefer) {
   }
 }
 
-const utilsPredictCamera = async (backend, prefer) => {
-  streaming = true;
-  await showProgress('Camera inferencing ...');
-  try {
-    let init = await utils.init(backend, prefer);    
-    if (init == 'NOT_LOADED') {
-      return;
-    }
-    let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } });
-    video.srcObject = stream;
-    track = stream.getTracks()[0];
-    startPredictCamera();
-    showResults();
-  } 
-  catch (e) {
-    errorHandler(e);
-  }
-}
-
 const predictPath = (camera) => {
-  (!camera) ? predictAndDraw(imageElement, currentBackend, currentPrefer) : predictAndDraw(videoElement, currentBackend, currentPrefer);
+  camera ? predictCamera(): predictAndDraw(imageElement, currentBackend, currentPrefer, false);
 }
 
-const updateScenario = async (camera) => {
+const updateScenario = async (camera = false) => {
   streaming = false;
   logConfig();
   try { utils.deleteAll(); } catch (e) {}
@@ -215,10 +213,10 @@ inputElement.addEventListener('change', (e) => {
 }, false);
 
 imageElement.addEventListener('load', () => {
-  predictAndDraw(imageElement, currentBackend, currentPrefer);
+  predictAndDraw(imageElement, currentBackend, currentPrefer, false);
 }, false);
 
-const main = async (camera) => {
+const main = async (camera = false) => {
   streaming = false;
   try { utils.deleteAll(); } catch (e) {}
   logConfig();
