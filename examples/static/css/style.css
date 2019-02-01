@@ -1319,9 +1319,10 @@ video.fullscreen, #canvasvideo.fullscreen {
 
 #posenet #inference.fullscreen {
   background-color: transparent;
-  top: 4rem;
+  top: 4.1rem;
   right: 1rem;
   font-weight: 200;
+  width: 186px;
 }
 
 #my-gui-container.fullscreen {
@@ -1332,6 +1333,7 @@ video.fullscreen, #canvasvideo.fullscreen {
   text-transform: capitalize;
   z-index: 3006;
   color: rgba(255, 255, 255, 0.70);
+  padding: 10px;
 }
 
 @media (max-width: 768px) {
@@ -1624,7 +1626,7 @@ button.xclose {
 }
 
 #posenet #fullscreen i svg {
-  left: 66%;
+  left: 65%;
   top: 2.2rem;
 }
 

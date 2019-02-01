@@ -154,7 +154,7 @@ $(document).ready(() => {
     disableModel();
     currentModel = `${um}_${ut}`;
     updateTitle(currentBackend, currentPrefer, `${um}`, `${ut}`);
-    (us == 'camera') ? main(true) : main();
+    main(us === 'camera');
   });
 
   $('#extra').click(() => {
@@ -195,7 +195,7 @@ $(document).ready(() => {
       return;
     }
 
-    updateScenario(false);
+    updateScenario();
   });
 
   $('#cam').click(() => {
@@ -271,5 +271,5 @@ $(window).load(() => {
     showError('No model selected', 'Please select a model to start prediction.');
     return;
   }
-  (us === 'camera') ? main(true) : main();
+  main(us === 'camera');
 })

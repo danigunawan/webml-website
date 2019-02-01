@@ -161,7 +161,7 @@ const predictPath = (camera) => {
   (!camera) ? utilsPredict(imageElement, currentBackend, currentPrefer) : utilsPredictCamera(currentBackend, currentPrefer);
 }
 
-const updateScenario = async (camera) => {
+const updateScenario = async (camera = false) => {
   streaming = false;
   logConfig();
   predictPath(camera);
@@ -178,13 +178,9 @@ imageElement.addEventListener('load', () => {
   utilsPredict(imageElement, currentBackend, currentPrefer);
 }, false);
 
-const main = async (camera) => {
+const main = async (camera = false) => {
   streaming = false;
-  try {
-    utils.deleteAll();
-  } catch (e) {
-    // console.log('utils.deleteAll(): ' + e);
-  }
+  try { utils.deleteAll(); } catch (e) {}
   logConfig();
   await showProgress('Loading model ...');
   for (let model of imageClassificationModels) {

@@ -112,50 +112,50 @@ inputElement.addEventListener('change', () => {
 
 model.onFinishChange((model) => {
   guiState.model = model;
-  (currentTab == 'image') ? main(false) : main(true);
+  main(currentTab === 'camera');
 });
 
 outputStride.onFinishChange((outputStride) => {
   guiState.outputStride = parseInt(outputStride);
-  (currentTab == 'image') ? main(false) : main(true);
+  main(currentTab === 'camera');
 });
 
 scaleFactor.onFinishChange((scaleFactor) => {
   guiState.scaleFactor = parseFloat(scaleFactor);
-  (currentTab == 'image') ? main(false) : main(true);
+  main(currentTab === 'camera');
 });
 
 useAtrousConv.onFinishChange((useAtrousConv) => {
   guiState.useAtrousConv = useAtrousConv;
-  (currentTab == 'image') ? main(false) : main(true);
+  main(currentTab === 'camera');
 });
 
 scoreThreshold.onChange((scoreThreshold) => {
   guiState.scoreThreshold = parseFloat(scoreThreshold);
   util._minScore = guiState.scoreThreshold;
-  (currentTab == 'image') ? drawResult(false, false) : poseDetectionFrame();
+  (currentTab === 'camera') ? poseDetectionFrame() : drawResult(false, false);
 });
 
 nmsRadius.onChange((nmsRadius) => {
   guiState.multiPoseDetection.nmsRadius = parseInt(nmsRadius);
   util._nmsRadius = guiState.multiPoseDetection.nmsRadius;
-  (currentTab == 'image') ? drawResult(false, true) : poseDetectionFrame();
+  (currentTab === 'camera') ? poseDetectionFrame() : drawResult(false, true);
 });
 
 maxDetections.onChange((maxDetections) => {
   guiState.multiPoseDetection.maxDetections = parseInt(maxDetections);
   util._maxDetection = guiState.multiPoseDetection.maxDetections;
-  (currentTab == 'image') ? drawResult(false, true) : poseDetectionFrame();
+  (currentTab === 'camera') ? poseDetectionFrame() : drawResult(false, true);
 });
 
 showPose.onChange((showPose) => {
   guiState.showPose = showPose;
-  (currentTab == 'image') ? drawResult(false, false) : poseDetectionFrame();
+  (currentTab === 'camera') ? poseDetectionFrame() : drawResult(false, false);
 });
 
 showBoundingBox.onChange((showBoundingBox) => {
   guiState.showBoundingBox = showBoundingBox;
-  (currentTab == 'image') ? drawResult(false, false) : poseDetectionFrame();
+  (currentTab === 'camera') ? poseDetectionFrame() : drawResult(false, false);
 });
 
 const drawImage = (image, canvas, w, h) => {
@@ -286,25 +286,23 @@ const poseDetectionFrame = async () => {
   showResults();
 }
 
-const main = async (camera) => {
+const main = async (camera = false) => {
   console.log(`Backend: ${currentBackend}, Prefer: ${currentPrefer}`);
   streaming = false;
+  try { utils.deleteAll(); } catch (e) {}
   try {
-    utils.deleteAll();
-  } catch (e) {}
-  try {
-    if(!camera){
-      showProgress('Loading model and initializing...');
-      await util.init(currentBackend, currentPrefer, inputSize);
-      showProgress('Inferencing ...');
-      drawResult();
-    }
-    else {
+    if(camera){
       await loadVideo();
       showProgress('Loading model and initializing ...');
       await util.init(currentBackend, currentPrefer, inputSize);
       showProgress('Inferencing ...');
       poseDetectionFrame();
+    }
+    else {
+      showProgress('Loading model and initializing...');
+      await util.init(currentBackend, currentPrefer, inputSize);
+      showProgress('Inferencing ...');
+      drawResult();
     }
   } catch (e) {
     errorHandler(e);

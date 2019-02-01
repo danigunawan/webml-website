@@ -127,7 +127,7 @@ $(document).ready(() => {
     strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&s=${us}&d=${ud}`;
     window.history.pushState(null, null, strsearch);
 
-    (us === 'image') ? main(false) : main(true);
+    main(us === 'camera');
   });
 
   $('#extra').click(() => {
@@ -247,5 +247,5 @@ $(window).load(() => {
   } else {
     $('#option').show();
   }
-  (us === 'camera') ? main(true) : main(false);
+  main(us === 'camera');
 })
