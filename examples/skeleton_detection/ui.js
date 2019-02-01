@@ -97,7 +97,7 @@ $(document).ready(() => {
 
   $('input:radio[name=b]').click(() => {
     $('.alert').hide();
-    let rid = $("input:radio[name='b']:checked").attr('id');
+    let rid = $('input:radio[name="b"]:checked').attr('id');
     $('.backend input').removeAttr('checked');
     $('.backend label').removeClass('checked');
     $('#' + rid).attr('checked', 'checked');
@@ -233,7 +233,7 @@ const showError = (title, description) => {
 }
 
 const updateLoading = (loadedSize, totalSize, percentComplete) => {
-  $(".loading-page .counter h1").html(`${loadedSize}/${totalSize} ${percentComplete}%`);
+  $('.loading-page .counter h1').html(`${loadedSize}/${totalSize} ${percentComplete}%`);
 }
 
 $(window).load(() => {

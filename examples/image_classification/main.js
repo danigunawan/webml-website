@@ -18,7 +18,7 @@ const showAlert = (error) => {
   div.setAttribute('class', 'backendAlert alert alert-warning alert-dismissible fade show');
   div.setAttribute('role', 'alert');
   div.innerHTML = `<strong>${error}</strong>`;
-  div.innerHTML += `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
+  div.innerHTML += `<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>`;
   let container = document.getElementById('container');
   container.insertBefore(div, container.firstElementChild);
 }
@@ -113,7 +113,7 @@ const utilsPredictCamera = async (backend, prefer) => {
     if (init == 'NOT_LOADED') {
       return;
     }
-    let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "environment" } });
+    let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'environment' } });
     video.srcObject = stream;
     track = stream.getTracks()[0];
     startPredictCamera();

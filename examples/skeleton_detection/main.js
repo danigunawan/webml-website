@@ -68,7 +68,7 @@ const showAlert = (error) => {
   div.setAttribute('class', 'backendAlert alert alert-warning alert-dismissible fade show');
   div.setAttribute('role', 'alert');
   div.innerHTML = `<strong>${error}</strong>`;
-  div.innerHTML += `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
+  div.innerHTML += `<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>`;
   let container = document.getElementById('container');
   container.insertBefore(div, container.firstElementChild);
 }
@@ -138,8 +138,8 @@ const drawImage = (image, canvas, w, h) => {
   const ctx = canvas.getContext('2d');
   canvas.width = w;
   canvas.height = h;
-  canvas.setAttribute("width", w);
-  canvas.setAttribute("height", h);
+  canvas.setAttribute('width', w);
+  canvas.setAttribute('height', h);
   ctx.save();
   ctx.drawImage(image, 0, 0, w, h);
   ctx.restore();
@@ -153,8 +153,8 @@ const loadImage = (imagePath, canvas) => {
     image.onload = () => {
       canvas.width = inputWidth;
       canvas.height = inputHeight;
-      canvas.setAttribute("width", inputWidth);
-      canvas.setAttribute("height", inputHeight);
+      canvas.setAttribute('width', inputWidth);
+      canvas.setAttribute('height', inputHeight);
       ctx.drawImage(image, 0, 0, inputWidth, inputHeight);
       resolve(image);
     };
@@ -224,8 +224,8 @@ const setupCamera = async () => {
 const loadVideo = async () => {
   const videoElement = await setupCamera();
   videoElement.play();
-  canvas.setAttribute("width", videoElement.videoWidth);
-  canvas.setAttribute("height", videoElement.videoHeight);
+  canvas.setAttribute('width', videoElement.videoWidth);
+  canvas.setAttribute('height', videoElement.videoHeight);
   return videoElement;
 }
 
