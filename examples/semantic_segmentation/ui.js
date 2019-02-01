@@ -47,11 +47,9 @@ const buttonUI = (camera = false) => {
   if(camera) {
     $('#pickimage').addClass('dnone');
     $('#fps').removeClass('dnone');
-    $('#fullscreen').removeClass('dnone');
   } else {
     $('#pickimage').removeClass('dnone');
     $('#fps').addClass('dnone');
-    $('#fullscreen').addClass('dnone');
   }
 }
 

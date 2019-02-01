@@ -1,21 +1,3 @@
-const getSearchParamsPrefer = () => {
-  let searchParams = new URLSearchParams(location.search);
-  return searchParams.has('prefer') ? searchParams.get('prefer') : '';
-}
-
-const getSearchParamsBackend = () => {
-  let searchParams = new URLSearchParams(location.search);
-  return searchParams.has('b') ? searchParams.get('b') : '';
-}
-const getSearchParamsModel = () => {
-  let searchParams = new URLSearchParams(location.search);
-  if (searchParams.has('m') && searchParams.has('t')) {
-    return searchParams.get('m') + '_' + searchParams.get('t');
-  } else {
-    return '';
-  }
-}
-
 const videoElement = document.getElementById('video');
 const imageElement = document.getElementById('image');
 const inputElement = document.getElementById('input');
@@ -91,21 +73,6 @@ const updateResult = (result) => {
   }
 }
 
-if (currentBackend === '') {
-  if (nnNative) {
-    currentBackend = 'WebML';
-  } else {
-    currentBackend = 'WASM';
-  }
-}
-
-// register prefers
-if (getOS() === 'Mac OS' && currentBackend === 'WebML') {
-  if (!currentPrefer) {
-    currentPrefer = "sustained";
-  }
-}
-
 const logConfig = () => {
   console.log(`Model: ${currentModel}, Backend: ${currentBackend}, Prefer: ${currentPrefer}`);
 }
@@ -140,10 +107,15 @@ const predictCamera = async () => {
 }
 
 const setCamResolution = async (resolution) => {
-  let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "user" } });
-  videoElement.srcObject = stream;
-  track = stream.getTracks()[0];
+  try {
+    let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "user" } });
+    videoElement.srcObject = stream;
+    track = stream.getTracks()[0];
+  } catch (e) {
+    errorHandler(e);
+  }
 }
+
 // const setCamResolution = (resolution) => {
 //   return navigator.mediaDevices.getUserMedia({
 //     audio: false,

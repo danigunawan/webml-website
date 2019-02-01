@@ -431,3 +431,21 @@ const getPreferCode = (backend, prefer) => {
   }
   return preferCode;
 }
+
+const getSearchParamsPrefer = () => {
+  let searchParams = new URLSearchParams(location.search);
+  return searchParams.has('prefer') ? searchParams.get('prefer') : '';
+}
+
+const getSearchParamsBackend = () => {
+  let searchParams = new URLSearchParams(location.search);
+  return searchParams.has('b') ? searchParams.get('b') : '';
+}
+const getSearchParamsModel = () => {
+  let searchParams = new URLSearchParams(location.search);
+  if (searchParams.has('m') && searchParams.has('t')) {
+    return searchParams.get('m') + '_' + searchParams.get('t');
+  } else {
+    return '';
+  }
+}

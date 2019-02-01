@@ -79,7 +79,6 @@ $(document).ready(() => {
   optionCompact();
 
   const updateTitle = (backend, prefer) => {
-    model = model.replace(/_/g, ' ');
     let currentprefertext;
     if (backend == 'WASM' || backend == 'WebGL') {
       $('#ictitle').html(`Skeleton Detection / ${backend}`);

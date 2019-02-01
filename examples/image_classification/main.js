@@ -1,21 +1,3 @@
-const getSearchParamsPrefer = () => {
-  let searchParams = new URLSearchParams(location.search);
-  return searchParams.has('prefer') ? searchParams.get('prefer') : '';
-}
-
-const getSearchParamsBackend = () => {
-  let searchParams = new URLSearchParams(location.search);
-  return searchParams.has('b') ? searchParams.get('b') : '';
-}
-const getSearchParamsModel = () => {
-  let searchParams = new URLSearchParams(location.search);
-  if (searchParams.has('m') && searchParams.has('t')) {
-    return searchParams.get('m') + '_' + searchParams.get('t');
-  } else {
-    return '';
-  }
-}
-
 const videoElement = document.getElementById('video');
 const imageElement = document.getElementById('image');
 const inputElement = document.getElementById('input');
@@ -75,21 +57,6 @@ const updateResult = (result) => {
   }
   catch(e) {
     console.log(e);
-  }
-}
-
-if (currentBackend === '') {
-  if (nnNative) {
-    currentBackend = 'WebML';
-  } else {
-    currentBackend = 'WASM';
-  }
-}
-
-// register prefers
-if (getOS() === 'Mac OS' && currentBackend === 'WebML') {
-  if (!currentPrefer) {
-    currentPrefer = "sustained";
   }
 }
 

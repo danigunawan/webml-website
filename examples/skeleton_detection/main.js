@@ -35,16 +35,6 @@ customContainer.appendChild(gui.domElement);
 guiState.scaleFactor = 0.75;
 guiState.scoreThreshold = 0.15;
 
-const getSearchParamsPrefer = () => {
-  let searchParams = new URLSearchParams(location.search);
-  return searchParams.has('prefer') ? searchParams.get('prefer') : '';
-}
-
-const getSearchParamsBackend = () => {
-  let searchParams = new URLSearchParams(location.search);
-  return searchParams.has('b') ? searchParams.get('b') : '';
-}
-
 let currentBackend = getSearchParamsBackend();
 let currentPrefer = getSearchParamsPrefer();
 let currentTab = 'image';
@@ -81,20 +71,6 @@ const showAlert = (error) => {
   div.innerHTML += `<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
   let container = document.getElementById('container');
   container.insertBefore(div, container.firstElementChild);
-}
-
-if (currentBackend === '') {
-  if (nnNative) {
-    currentBackend = 'WebML';
-  } else {
-    currentBackend = 'WASM';
-  }
-}
-
-if (getOS() === 'Mac OS' && currentBackend === 'WebML') {
-  if (!currentPrefer) {
-    currentPrefer = "sustained";
-  }
 }
 
 const logConfig = () => {
