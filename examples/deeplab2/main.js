@@ -39,6 +39,7 @@ function main(camera) {
   let currentBackend = '';
   let currentModel = '';
   let currentPrefer = '';
+  let currentTab = 'image';
   let streaming = false;
   let hoverPos = null;
   let stats;

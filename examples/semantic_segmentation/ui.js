@@ -50,12 +50,14 @@ $(document).ready(() => {
     $('.nav-pills #cam').addClass('active');
     $('#imagetab').removeClass('active');
     $('#cameratab').addClass('active');
+    currentTab = 'camera';
   } else {
     $('.nav-pills li').removeClass('active');
     $('.nav-pills #img').addClass('active');
     $('#cameratab').removeClass('active');
     $('#imagetab').addClass('active');
     $('#fps').html('');
+    currentTab = 'image';
   }
 
   if (hasUrlParam('b')) {
@@ -127,7 +129,7 @@ $(document).ready(() => {
       showError('No model selected', 'Please select a model to start prediction.');
       return;
     }
-    (us == 'camera') ? main(true) : main();
+    (currentTab == 'camera') ? updateScenario(true) : updateScenario(false);
   });
 
   $('input:radio[name=m]').click(() => {
@@ -153,7 +155,7 @@ $(document).ready(() => {
     disableModel();
     currentModel = `${um}_${ut}`;
     updateTitle(currentBackend, currentPrefer, `${um}`, `${ut}`);
-    (us == 'camera') ? main(true) : main();
+    (currentTab == 'camera') ? main(true) : main(false);
   });
 
   $('#extra').click(() => {

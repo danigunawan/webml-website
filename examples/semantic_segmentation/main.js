@@ -192,6 +192,18 @@ const predictPath = (camera) => {
 const updateScenario = async (camera) => {
   streaming = false;
   logConfig();
+  try { utils.deleteAll(); } catch (e) {}
+  await showProgress('Inferencing ...');
+  for (let model of semanticSegmentationModels) {
+    if (currentModel == model.modelName) {
+      try {
+        await utils.init(currentBackend, currentPrefer);
+      }
+      catch (e) {
+        errorHandler(e);
+      }
+    }
+  }
   predictPath(camera);
 }
 
