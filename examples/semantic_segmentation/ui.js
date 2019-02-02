@@ -45,11 +45,11 @@ const checkedModelStyle = () => {
 
 const buttonUI = (camera = false) => {
   if(camera) {
-    $('#pickimage').addClass('dnone');
-    $('#fps').removeClass('dnone');
+    $('#pickimage').hide();
+    $('#fps').show();
   } else {
-    $('#pickimage').removeClass('dnone');
-    $('#fps').addClass('dnone');
+    $('#pickimage').show();
+    $('#fps').hide();
   }
 }
 

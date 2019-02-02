@@ -150,15 +150,11 @@ const main = async (camera = false) => {
   try { utils.deleteAll(); } catch (e) {}
   logConfig();
   await showProgress('Loading model ...');
-  for (let model of imageClassificationModels) {
-    if (currentModel == model.modelName) {
-      try {
-        await utils.loadModel(model);
-      }
-      catch (e) {
-        errorHandler(e);
-      }
-    }
+  try {
+    let model = imageClassificationModels.filter(f => f.modelName == currentModel);
+    await utils.loadModel(model[0]);
+  } catch (e) {
+    errorHandler(e);
   }
   predictPath(camera);
 }

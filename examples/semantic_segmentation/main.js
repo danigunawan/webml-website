@@ -40,7 +40,7 @@ const updateProgress = (ev) => {
   if (ev.lengthComputable) {
     let totalSize = ev.total / (1000 * 1000);
     let loadedSize = ev.loaded / (1000 * 1000);
-    let percentComplete = ev.loaded / ev.total * 100;    
+    let percentComplete = ev.loaded / ev.total * 100;
     percentComplete = percentComplete.toFixed(0);
     progressBar.style = `width: ${percentComplete}%`;
     updateLoading(loadedSize.toFixed(1), totalSize.toFixed(1), percentComplete);
@@ -55,7 +55,7 @@ const updateResult = (result) => {
     console.log(`Inference time: ${result.time} ms`);
     let inferenceTimeElement = document.getElementById('inferenceTime');
     inferenceTimeElement.innerHTML = `inference time: <span class='ir'>${result.time} ms</span>`;
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   }
   try {
@@ -68,7 +68,7 @@ const updateResult = (result) => {
       probElement.innerHTML = `${c.prob}%`;
     });
   }
-  catch(e) {
+  catch (e) {
     console.log(e);
   }
 }
@@ -86,7 +86,7 @@ const startPredict = async () => {
   if (streaming) {
     try {
       stats.begin();
-      await predictAndDraw(videoElement, currentBackend, currentPrefer, true);
+      await predictAndDraw(videoElement, true);
       stats.end();
       setTimeout(startPredict, 0);
     } catch (e) {
@@ -97,24 +97,31 @@ const startPredict = async () => {
 
 const predictCamera = async () => {
   try {
-    let res = utils.getFittedResolution(4 / 3);
-    setCamResolution(res);
     streaming = true;
-    startPredict();
+    // let res = utils.getFittedResolution(4 / 3);
+    // setCamResolution(res);
+    let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'user' } });
+    videoElement.srcObject = stream;
+    track = stream.getTracks()[0];
+    return new Promise((resolve) => {
+      videoElement.onloadeddata = resolve;
+      startPredict();
+    });
   } catch (e) {
     errorHandler(e);
   }
 }
 
-const setCamResolution = async (resolution) => {
-  try {
-    let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'user' } });
-    videoElement.srcObject = stream;
-    track = stream.getTracks()[0];
-  } catch (e) {
-    errorHandler(e);
-  }
-}
+// const setCamResolution = async (resolution) => {
+//   try {
+//     let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: 'user' } });
+//     videoElement.srcObject = stream;
+//     track = stream.getTracks()[0];
+//     startPredict();
+//   } catch (e) {
+//     errorHandler(e);
+//   }
+// }
 
 // const setCamResolution = (resolution) => {
 //   return navigator.mediaDevices.getUserMedia({
@@ -133,46 +140,37 @@ const setCamResolution = async (resolution) => {
 //   
 // }
 
-const predictAndDraw = async (source, backend, prefer, camera = false) => {
-  if(!camera) {
+const predictAndDraw = async (source, camera = false) => {
+  if (!camera) {
     streaming = false;
-    if(track) track.stop();
+    if (track) track.stop();
   }
-  await showProgress('Inferencing ...');
-  try {
-    clippedSize = utils.prepareInput(source);
-    renderer.uploadNewTexture(source, clippedSize);
-    let result = await utils.predict();
-    let inferTime = result.time;
-    console.log(`Inference time: ${inferTime.toFixed(2)} ms`);
-    inferenceTime.innerHTML = `inference time: <span class='ir'>${inferTime.toFixed(2)} ms</span>`;
-    renderer.drawOutputs(result.segMap)
-    renderer.highlightHoverLabel(hoverPos);
-    showResults(); 
-  }
-  catch (e) {
-    errorHandler(e);
-  }
+  showProgress('Inferencing ...');
+  clippedSize = utils.prepareInput(source);
+  renderer.uploadNewTexture(source, clippedSize);
+  let result = await utils.predict();
+  let inferTime = result.time;
+  console.log(`Inference time: ${inferTime.toFixed(2)} ms`);
+  inferenceTime.innerHTML = `inference time: <span class='ir'>${inferTime.toFixed(2)} ms</span>`;
+  renderer.drawOutputs(result.segMap)
+  renderer.highlightHoverLabel(hoverPos);
+  showResults();
 }
 
 const predictPath = (camera) => {
-  camera ? predictCamera(): predictAndDraw(imageElement, currentBackend, currentPrefer, false);
+  camera ? predictCamera() : predictAndDraw(imageElement, currentBackend, currentPrefer, false);
 }
 
 const updateScenario = async (camera = false) => {
   streaming = false;
   logConfig();
-  try { utils.deleteAll(); } catch (e) {}
+  try { utils.deleteAll(); } catch (e) { }
   await showProgress('Inferencing ...');
-  for (let model of semanticSegmentationModels) {
-    if (currentModel == model.modelName) {
-      try {
-        await utils.init(currentBackend, currentPrefer);
-      }
-      catch (e) {
-        errorHandler(e);
-      }
-    }
+  try {
+    await utils.init(currentBackend, currentPrefer);
+  }
+  catch (e) {
+    errorHandler(e);
   }
   predictPath(camera);
 }
@@ -185,25 +183,25 @@ inputElement.addEventListener('change', (e) => {
 }, false);
 
 imageElement.addEventListener('load', () => {
-  predictAndDraw(imageElement, currentBackend, currentPrefer, false);
+  predictAndDraw(imageElement, false);
 }, false);
 
 const main = async (camera = false) => {
+  if (currentModel === 'none_none') {
+    errorHandler('No model selected');
+    return;
+  }
+  console.log(currentModel)
   streaming = false;
-  try { utils.deleteAll(); } catch (e) {}
+  try { utils.deleteAll(); } catch (e) { }
   logConfig();
-  await showProgress('Loading model and initializing...');
-  for (let model of semanticSegmentationModels) {
-    if (currentModel == model.modelName) {
-      try {
-        utils.changeModelParam(model);
-        await utils.init(currentBackend, currentPrefer);
-      }
-      catch (e) {
-        errorHandler(e);
-      }
-    }
+  showProgress('Loading model and initializing...');
+  try {
+    let model = semanticSegmentationModels.filter(f => f.modelName == currentModel);
+    utils.changeModelParam(model[0]);
+    await utils.init(currentBackend, currentPrefer);
+  } catch (e) {
+    errorHandler(e);
   }
   predictPath(camera);
 }
-
