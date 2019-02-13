@@ -200,7 +200,7 @@ const imageClassificationModels = [{
 }];
 
 const objectDetectionModels = [{
-  modelName: 'SSD MobileNetV1(TFlite)',
+  modelName: 'ssd_mobilenet_v1_tflite',
   modelSize: '27.3MB',
   modelFile: '../object_detection/model/ssd_mobilenet_v1.tflite',
   labelsFile: '../object_detection/model/coco_labels_list.txt',
@@ -211,9 +211,11 @@ const objectDetectionModels = [{
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
-  }
+  },
+  intro: 'SSD (Single Shot MultiBox Detector) is an unified framework for object detection with a single network. Loading SSD MobileNet model (converted from Tensorflow SSD MobileNet model) trained by COCO in TensorFlow Lite format, constructs and inferences it by WebML API.',
+  paperUrl: 'https://arxiv.org/abs/1803.08225'
 }, {
-  modelName: 'SSD MobileNetV2(TFlite)',
+  modelName: 'ssd_mobilenet_v2_tflite',
   modelSize: '17.9MB',
   modelFile: '../object_detection/model/ssd_mobilenet_v2.tflite',
   labelsFile: '../object_detection/model/coco_labels_list.txt',
@@ -224,9 +226,11 @@ const objectDetectionModels = [{
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
-  }
+  },
+  intro: 'MobileNet V2 with SSD. This model is faster than Mobilenet V1 SSD at the same accuracy.',
+  paperUrl: 'https://arxiv.org/abs/1801.04381'
 }, {
-  modelName: 'SSDLite MobileNetV2(TFlite)',
+  modelName: 'ssdlite_mobilenet_v2_tflite',
   modelSize: '67.3MB',
   modelFile: '../object_detection/model/ssdlite_mobilenet_v2.tflite',
   labelsFile: '../object_detection/model/coco_labels_list.txt',
@@ -237,7 +241,9 @@ const objectDetectionModels = [{
   preOptions: {
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
-  }
+  },
+  intro: 'MobileNet V2 with SSDLite. This model is faster than Mobilenet V1 SSD at the same accuracy.',
+  paperUrl: 'https://arxiv.org/abs/1801.04381'
 }];
 
 const humanPoseEstimationModels = [{
