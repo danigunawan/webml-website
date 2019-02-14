@@ -12,6 +12,10 @@ if (!location.search) {
   location.href = path + strsearch;
 }
 
+const fpsToggle = (showFPS) => {
+  showFPS ? $('#fps').show() : $('#fps').hide(); 
+}
+
 const componentToggle = () => {
   // $('#header-sticky-wrapper').attr('style', 'display:block');
   $('#header-sticky-wrapper').slideToggle();
@@ -50,12 +54,14 @@ $(document).ready(() => {
     $('.nav-pills #cam').addClass('active');
     $('#imagetab').removeClass('active');
     $('#cameratab').addClass('active');
+    fpsToggle(true);
   } else {
     $('.nav-pills li').removeClass('active');
     $('.nav-pills #img').addClass('active');
     $('#cameratab').removeClass('active');
     $('#imagetab').addClass('active');
     $('#fps').html('');
+    fpsToggle(false);
   }
 
   if (hasUrlParam('b')) {
@@ -195,7 +201,7 @@ $(document).ready(() => {
       showError('No model selected', 'Please select a model to start prediction.');
       return;
     }
-
+    fpsToggle(false);
     updateScenario();
   });
 
@@ -213,14 +219,14 @@ $(document).ready(() => {
       showError('No model selected', 'Please select a model to start prediction.');
       return;
     }
-
+    fpsToggle(true);
     updateScenario(true);
   });
 
   $('#fullscreen i svg').click(() => {
     $('#fullscreen i').toggle();
     toggleFullScreen();
-    $('video').toggleClass('fullscreen');
+    $('#canvasshow').toggleClass('fullscreen');
     $('#overlay').toggleClass('video-overlay');
     $('#fps').toggleClass('fullscreen');
     $('#fullscreen i').toggleClass('fullscreen');

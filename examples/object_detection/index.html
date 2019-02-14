@@ -30,7 +30,7 @@
   <link href='../static/css/style.css' rel='stylesheet'>
 </head>
 
-<body id='imageclassification'>
+<body id='objectdetection'>
   <header id='header'>
     <div class='container'>
       <div id='logo' class='pull-left'>
@@ -87,7 +87,7 @@
                 <label id='l-ssd_mobilenet_v2_tflite' class='themodel' for='ssd_mobilenet_v2_tflite' title='SSD MobileNet v2'>SSD MobileNet
                   v2</label>
                   <input type='radio' class='d-none' name='m' id='ssdlite_mobilenet_v2_tflite' value='ssdlite_mobilenet_v2_tflite' checked>
-                  <label id='l-ssd;ite_mobilenet_v2_tflite' class='themodel' for='ssdlite_mobilenet_v2_tflite' title='SSDLite MobileNet v2'>SSDLite MobileNet
+                  <label id='l-ssdlite_mobilenet_v2_tflite' class='themodel' for='ssdlite_mobilenet_v2_tflite' title='SSDLite MobileNet v2'>SSDLite MobileNet
                     v2</label>
             </td>
           </tr>
@@ -180,15 +180,25 @@
         </div>
       </div>
 
-      <div class='tab-content clearfix row'>
-        <div class='tab-pane text-center active col-sm' id='imagetab'>
+      <div id='inference' class='shoulddisplay' style='display: none;'>
+        <div class='text-center' id='inferencetitle'>
+          <div id='inferenceTime'></div>
+          <div id='fps'></div>
+        </div>
+      </div>
+
+      <div class='tab-content clearfix'>
+        <div class='text-center'>
+            <figure class='item shoulddisplay' style='display: none;'>
+                <div class='inner'>
+                  <canvas id="canvasshow" width='640' height='480'></canvas>
+                </div>
+            </figure>
+        </div>
+
+        <div class='tab-pane text-center active' id='imagetab'>
           <div class='icdisplay' style='display: none;'>
             <div class='col-lg-12 col-xs-12 text-center'>
-              <figure class='item'>
-                <div class='inner'>
-                  <img id='image' crossorigin='anonymous' class='img-fluid' alt='Responsive image' src='./img/image1.jpg'>
-                </div>
-              </figure>
               <div class='row mt-1'>
                 <div class='col'>
                   <div class='box'>
@@ -200,13 +210,12 @@
                   </div>
                 </div>
               </div>
-              <canvas id='canvas' width=224 height=224></canvas>
+              
             </div>
           </div>
         </div>
-        <div class='tab-pane text-center col-sm' id='cameratab'>
+        <div class='tab-pane text-center' id='cameratab'>
           <div class='icdisplay' style='display: none;'>
-            <div id='fps'></div>
             <div id='fullscreen'>
               <i class='fa expand'>
                 <svg aria-hidden='true' data-prefix='fas' data-icon='expand' class='svg-inline--fa fa-expand fa-w-14'
@@ -221,46 +230,15 @@
                 </svg>
               </i>
             </div>
-            <video id='video' autoplay playsinline></video>
-          </div>
-        </div>
-
-        <div id='inference' class='shoulddisplay col-sm' style='display: none;'>
-          <div class='row text-center tc' id='inferencetitle'>
-            <div id='inferenceTime'></div>
-          </div>
-          <div class='row text-center' id='inferenceresult'>
-            <table class='table table-sm'>
-              <thead>
-                <tr>
-                  <th scope='col'>#</th>
-                  <th scope='col'>Label</th>
-                  <th scope='col'>Probability</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope='row'>1</th>
-                  <td id='label0'></td>
-                  <td id='prob0'></td>
-                </tr>
-                <tr>
-                  <th scope='row'>2</th>
-                  <td id='label1'></td>
-                  <td id='prob1'></td>
-                </tr>
-                <tr>
-                  <th scope='row'>3</th>
-                  <td id='label2'></td>
-                  <td id='prob2'></td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
     </div>
   </section>
+
+  <img id='image' crossorigin='anonymous' class='img-fluid' alt='Responsive image' src='./img/image1.jpg'>
+  <canvas id='canvas' width=640 height=480></canvas>
+  <video id='video' autoplay playsinline></video>
 
   <footer>
     <div class='container'>
@@ -310,10 +288,11 @@
   <script src='../third_party/protobuf.min.js'></script>
   <script src='../../dist/webml-polyfill.js'></script>
   <script src='../util/base.js'></script>
-  <script src='../util/tflite/flatbuffers/js/flatbuffers.js'></script>
-  <script src='../util/tflite/schema/schema_generated.js'></script>
-  <script src='../util/tflite/TfLiteModelUtils.js'></script>
-  <script src='../util/tflite/TFliteModelImporter.js'></script>
+  <script src="../util/tflite/flatbuffers/js/flatbuffers.js"></script>
+  <script src="../util/tflite/schema/schema_generated.js"></script>
+  <script src="../util/tflite/TfLiteModelUtils.js"></script>
+  <script src="../util/tflite/TFliteModelImporter.js"></script>
+  <script src="../util/decoders/SsdDecoder.js"></script>
   <script src='utils.js'></script>
   <script src='main.js'></script>
   <script src='../util/uicommon.js'></script>
