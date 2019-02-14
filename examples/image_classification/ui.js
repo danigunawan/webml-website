@@ -94,7 +94,7 @@ $(document).ready(() => {
       } else if (getUrlParam('p') == 'low') {
         prefer = 'LOW_POWER';
       }
-      $('#ictitle').html(`Image Classification / ${backend} / ${prefer} / ${model} (${modeltype})`);
+      $('#ictitle').html(`Image Classification / WebNN / ${prefer} / ${model} (${modeltype})`);
     }
   }
   updateTitle(ub, up, um, ut);

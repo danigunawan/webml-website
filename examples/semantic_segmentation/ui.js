@@ -110,7 +110,7 @@ $(document).ready(() => {
       } else if (getUrlParam('p') == 'low') {
         prefer = 'LOW_POWER';
       }
-      $('#ictitle').html(`Semantic Segmentation / ${backend} / ${prefer} / ${model} (${modeltype})`);
+      $('#ictitle').html(`Semantic Segmentation / WebNN / ${prefer} / ${model} (${modeltype})`);
     }
   }
   updateTitle(ub, up, um, ut);

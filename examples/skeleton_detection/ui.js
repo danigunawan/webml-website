@@ -90,7 +90,7 @@ $(document).ready(() => {
       } else if (getUrlParam('p') == 'low') {
         prefer = 'LOW_POWER';
       }
-      $('#ictitle').html(`Skeleton Detection / ${backend} / ${prefer}`);
+      $('#ictitle').html(`Skeleton Detection / WebNN / ${prefer}`);
     }
   }
   updateTitle(ub, up);
