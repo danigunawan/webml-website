@@ -6,17 +6,16 @@ Download Model
 -----------
 Before launch this sample, you need to download the model. Please check out [README.md](model/README.md) in model folder for details.
 
+Screenshots
+-----------
+![screenshot](screenshot.png)
+
 URL Parameters for Image Classification Example
 ====
 
 Example
 -----------
 https://127.0.0.1/examples/image_classification/index.html?prefer=none&b=WASM&m=mobilenet_v1&t=tflite&s=image&d=0
-
-Screenshots
------------
-![screenshot](screenshot.png)
-
 
 Description
 -----------
