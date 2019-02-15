@@ -55,6 +55,7 @@ function showModel(div, modelcategory) {
 
 $(document).ready(function () {
   showModel('#modelcv-ic tbody', imageClassificationModels)
+  showModel('#modelcv-od tbody', objectDetectionModels)
   showModel('#modelcv-hpe tbody', humanPoseEstimationModels)
   showModel('#modelcv-ss tbody', semanticSegmentationModels)
 });
