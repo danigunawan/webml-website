@@ -263,7 +263,7 @@ const objectDetectionModels = [{
 
 const humanPoseEstimationModels = [{
   modelName: 'PoseNet',
-  modelFormatName: 'PoseNet',
+  modelFormatName: 'posenet',
   modelSize: '13.3MB',
   modelFile: '../skeleton_detection/model/mobilenet_v1_101',
   inputSize: [513, 513, 3],
