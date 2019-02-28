@@ -241,7 +241,7 @@ const objectDetectionModels = [{
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
   },
-  intro: 'MobileNet V2 with SSD. This model is slower than Mobilenet V1 SSD, but have a higher accuracy.',
+  intro: 'SSD MobileNet V2 is slower than SSD Mobilenet V1, but has higher accuracy.',
   paperUrl: 'https://arxiv.org/abs/1801.04381'
 }, {
   modelName: 'SSDLite MobileNet v2 (TFLite)',
