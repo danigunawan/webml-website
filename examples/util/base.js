@@ -257,7 +257,7 @@ const objectDetectionModels = [{
     mean: [127.5, 127.5, 127.5],
     std: [127.5, 127.5, 127.5],
   },
-  intro: 'SSDLite MobileNet V2 is an upgraded version of SSD MobileNet V2. Compared with SSD Mobilenet V2, SSDLite Mobilenet V2 is much faster, and almost have no loss of the accuracy.',
+  intro: 'SSDLite MobileNet V2 is an upgraded version of SSD MobileNet V2. Compared with SSD Mobilenet V2, SSDLite Mobilenet V2 is much faster, and almost has no loss of the accuracy.',
   paperUrl: 'https://arxiv.org/abs/1801.04381'
 }];
 
