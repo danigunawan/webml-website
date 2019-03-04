@@ -38,26 +38,26 @@ let utils = new Utils(canvasElement);
 utils.updateProgress = updateProgress;    //register updateProgress function if progressBar element exist
 
 const updateResult = (result) => {
-    try {
-      console.log(`Inference time: ${result.time} ms`);
-      let inferenceTimeElement = document.getElementById('inferenceTime');
-      inferenceTimeElement.innerHTML = `inference time: <span class='ir'>${result.time} ms</span>`;
-    } catch (e) {
-      console.log(e);
-    }
-    try {
-      console.log(`Classes: `);
-      result.classes.forEach((c, i) => {
-        console.log(`\tlabel: ${c.label}, probability: ${c.prob}%`);
-        let labelElement = document.getElementById(`label${i}`);
-        let probElement = document.getElementById(`prob${i}`);
-        labelElement.innerHTML = `${c.label}`;
-        probElement.innerHTML = `${c.prob}%`;
-      });
-    }
-    catch (e) {
-      console.log(e);
-    }
+  try {
+    console.log(`Inference time: ${result.time} ms`);
+    let inferenceTimeElement = document.getElementById('inferenceTime');
+    inferenceTimeElement.innerHTML = `inference time: <span class='ir'>${result.time} ms</span>`;
+  } catch (e) {
+    console.log(e);
+  }
+  try {
+    console.log(`Classes: `);
+    result.classes.forEach((c, i) => {
+      console.log(`\tlabel: ${c.label}, probability: ${c.prob}%`);
+      let labelElement = document.getElementById(`label${i}`);
+      let probElement = document.getElementById(`prob${i}`);
+      labelElement.innerHTML = `${c.label}`;
+      probElement.innerHTML = `${c.prob}%`;
+    });
+  }
+  catch (e) {
+    console.log(e);
+  }
 }
 
 const logConfig = () => {
