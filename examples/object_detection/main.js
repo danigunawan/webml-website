@@ -121,7 +121,7 @@ const updateScenario = async (camera = false) => {
   predictPath(camera);
 }
 
-const updateBackend = async (camera = false) => {
+ const updateBackend = async (camera = false) => {
   streaming = false;
   logConfig();
   try {
@@ -151,7 +151,7 @@ const main = async (camera = false) => {
   await showProgress('Loading model ...');
   try {
     let model = objectDetectionModels.filter(f => f.modelFormatName == currentModel);
-    utils.changeModelParam(model[0]);
+    await utils.loadModel(model[0]);
     await utilsInit(currentBackend, currentPrefer);
   } catch (e) {
     errorHandler(e);
