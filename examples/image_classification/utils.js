@@ -18,6 +18,7 @@ class Utils {
     this.prefer = '';
     this.initialized = false;
     this.loaded = false;
+    this.resolveGetRequiredOps = null;
     this.outstandingRequest = null;
   }
 
@@ -95,7 +96,31 @@ class Utils {
     let elapsed = performance.now() - start;
     console.log(`warmup time: ${elapsed.toFixed(2)} ms`);
     this.initialized = true;
+
+    if (this.resolveGetRequiredOps) {
+      this.resolveGetRequiredOps(this.model.getRequiredOps());
+    }
+
     return 'SUCCESS';
+  }
+
+  async getRequiredOps() {
+    if (!this.initialized) {
+      return new Promise(resolve => this.resolveGetRequiredOps = resolve);
+    } else {
+      return this.model.getRequiredOps();
+    }
+  }
+
+  getSubgraphsSummary() {
+    if (this.model._backend !== 'WebML' &&
+        this.model &&
+        this.model._compilation &&
+        this.model._compilation._preparedModel) {
+      return this.model._compilation._preparedModel.getSubgraphsSummary();
+    } else {
+      return [];
+    }
   }
 
   async predict(imageSource) {
@@ -216,6 +241,60 @@ class Utils {
   deleteAll() {
     if (this.model._backend != 'WebML') {
       this.model._compilation._preparedModel._deleteAll();
+    }
+  }
+
+
+  // for debugging
+  async iterateLayers(configs, layerList) {
+    if (!this.initialized) return;
+
+    let iterators = [];
+    let models = [];
+    for (let config of configs) {
+      let importer = this.modelFile.split('.').pop() === 'tflite' ? TFliteModelImporter : OnnxModelImporter;
+      let model = await new importer({
+        rawModel: this.rawModel,
+        backend: config.backend,
+        prefer: config.prefer || null,
+      });
+      iterators.push(model.layerIterator([this.inputTensor], layerList));
+      models.push(model);
+    }
+
+    while (true) {
+
+      let layerOutputs = [];
+      for (let it of iterators) {
+        layerOutputs.push(await it.next());
+      }
+
+      let refOutput = layerOutputs[0];
+      if (refOutput.done) {
+        break;
+      }
+
+      console.debug(`\n\n\nLayer(${refOutput.value.layerId}) ${refOutput.value.outputName}`);
+
+      for (let i = 0; i < configs.length; ++i) {
+        console.debug(`\n${configs[i].backend}:`);
+        console.debug(`\n${layerOutputs[i].value.tensor}`);
+
+        if (i > 0) {
+          let sum = 0;
+          for (let j = 0; j < refOutput.value.tensor.length; j++) {
+            sum += Math.pow(layerOutputs[i].value.tensor[j] - refOutput.value.tensor[j], 2);
+          }
+          let variance = sum / refOutput.value.tensor.length;
+          console.debug(`var with ${configs[0].backend}: ${variance}`);
+        }
+      }
+    }
+
+    for (let model of models) {
+      if (model._backend !== 'WebML') {
+        model._compilation._preparedModel._deleteAll();
+      }
     }
   }
 }
