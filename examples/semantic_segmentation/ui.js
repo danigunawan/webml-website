@@ -25,7 +25,19 @@ $(document).ready(() => {
 
   $('input:radio[name=m]').click(() => {
     updateTitle('Semantic Segmentation', currentBackend, currentPrefer, ssmodel(), `${ut}`);
+    $('.offload').hide();
   });
+ 
+  inputElement.addEventListener('change', (e) => {
+    let files = e.target.files;
+    if (files.length > 0) {
+      imageElement.src = URL.createObjectURL(files[0]);
+    }
+  }, false);
+
+  imageElement.addEventListener('load', () => {
+    predictAndDraw(imageElement, false);
+  }, false);
  
 });
 
@@ -44,14 +56,6 @@ $(document).ready(() => {
   });
 
 });
-
-const showResultsSS = () => {
-  $('#progressmodel').hide();
-  $('.icdisplay').show();
-  $('.shoulddisplay').show();
-  $('#resulterror').hide();
-  buttonUI(us === 'camera');
-}
 
 const zoomSlider = document.getElementById('zoomSlider');
 const blurSlider = document.getElementById('blurSlider');
