@@ -36,7 +36,7 @@ const utilsPredict = async (source, backend, prefer) => {
 }
 
 const updateScenario = async (camera = false) => {
-  // for camera tab if needed
+  // for camera tab when needed
 }
 
 const updateBackend = async (camera = false) => {
