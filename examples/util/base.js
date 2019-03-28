@@ -31,7 +31,7 @@ const imageClassificationModels = [{
   intro: 'An efficient Convolutional Neural Networks for Mobile Vision Applications.',
   paperUrl: 'https://arxiv.org/pdf/1704.04861.pdf'
 }, {
-  modelName: 'Mobilenet v1 Quant(TFLite)',
+  modelName: 'Mobilenet v1 Quant (TFLite)',
   modelFormatName: 'mobilenet_v1_quant_tflite',
   isQuantized: true,
   modelSize: '4.3MB',
@@ -56,7 +56,7 @@ const imageClassificationModels = [{
   intro: 'MobileNetV2 improves the state of the art performance of mobile models.',
   paperUrl: 'https://arxiv.org/abs/1801.04381'
 }, {
-  modelName: 'Mobilenet v2 Quant(TFLite)',
+  modelName: 'Mobilenet v2 Quant (TFLite)',
   modelFormatName: 'mobilenet_v2_quant_tflite',
   isQuantized: true,
   modelSize: '6.9MB',
@@ -255,7 +255,7 @@ const objectDetectionModels = [{
   intro: 'SSD (Single Shot MultiBox Detector) is an unified framework for object detection with a single network. Loading SSD MobileNet model (converted from Tensorflow SSD MobileNet model) trained by COCO in TensorFlow Lite format, constructs and inferences it by WebML API.',
   paperUrl: 'https://arxiv.org/abs/1803.08225'
 }, {
-  modelName: 'SSD MobileNet v1 Quant(TFLite)',
+  modelName: 'SSD MobileNet v1 Quant (TFLite)',
   modelFormatName: 'ssd_mobilenet_v1_quant_tflite',
   isQuantized: true,
   modelSize: '6.9MB',
@@ -288,7 +288,7 @@ const objectDetectionModels = [{
   intro: 'SSD MobileNet V2 is slower than SSD Mobilenet V1, but has higher accuracy.',
   paperUrl: 'https://arxiv.org/abs/1801.04381'
 }, {
-  modelName: 'SSD MobileNet v2 Quant(TFLite)',
+  modelName: 'SSD MobileNet v2 Quant (TFLite)',
   modelFormatName: 'ssd_mobilenet_v2_quant_tflite',
   isQuantized: true,
   modelSize: '6.2MB',
@@ -506,6 +506,65 @@ const superResolutionModels = [
     paperUrl: 'https://arxiv.org/abs/1609.04802'
   }
 ];
+
+const faceDetectionModels = [{
+    modelName: 'SSD MobileNetV1(TFlite)',
+    type: 'SSD',
+    modelFile: '../facial_landmark_detection/model/ssd_mobilenetv1_face.tflite',
+    box_size: 4,
+    num_classes: 2,
+    num_boxes: 1083 + 600 + 150 + 54 + 24 + 6,
+    margin: [1.2,1.2,0.8,1.1],
+    inputSize: [300, 300, 3],
+    preOptions: {
+      mean: [127.5, 127.5, 127.5],
+      std: [127.5, 127.5, 127.5],
+    }
+  }, {
+    modelName: 'SSD MobileNetV2(TFlite)',
+    type: 'SSD',
+    modelFile: '../facial_landmark_detection/model/ssd_mobilenetv2_face.tflite',
+    box_size: 4,
+    num_classes: 2,
+    num_boxes: 1083 + 600 + 150 + 54 + 24 + 6,
+    margin: [1.2,1.2,0.8,1.1],
+    inputSize: [300, 300, 3],
+    preOptions: {
+      mean: [127.5, 127.5, 127.5],
+      std: [127.5, 127.5, 127.5],
+    }
+  }, {
+    modelName: 'SSDLite MobileNetV2(TFlite)',
+    type: 'SSD',
+    modelFile: '../facial_landmark_detection/model/ssdlite_mobilenetv2_face.tflite',
+    box_size: 4,
+    num_classes: 2,
+    num_boxes: 1083 + 600 + 150 + 54 + 24 + 6,
+    margin: [1.2,1.2,0.8,1.1],
+    inputSize: [300, 300, 3],
+    preOptions: {
+      mean: [127.5, 127.5, 127.5],
+      std: [127.5, 127.5, 127.5],
+    }
+  }, {
+    modelName: 'Tiny YoloV2(TFlite)',
+    modelFile: '../facial_landmark_detection/model/tiny_yolov2_face.tflite',
+    type: 'YOLO',
+    margin: [1.15, 1.15, 0.6, 1.15],
+    inputSize: [416, 416, 3],
+    outputSize: 1 * 13 * 13 * 30,
+    anchors: [0.57273, 0.677385, 1.87446, 2.06253, 3.33843, 5.47434, 7.88282, 3.52778, 9.77052, 9.16828],
+    preOptions: {
+      norm: true,
+    },
+}];
+
+const faceLandmarkDetectionModels = [{
+  modelName: 'DAN(TFlite)',
+  modelFile: '../facial_landmark_detection/model/face_landmark.tflite',
+  inputSize: [128, 128, 3],
+  outputSize: 136,
+}];
 
 const getOS = () => {
   var userAgent = window.navigator.userAgent,
