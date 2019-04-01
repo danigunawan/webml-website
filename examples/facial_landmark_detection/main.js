@@ -96,7 +96,11 @@ const updateScenario = async (camera = false) => {
   predictPath(camera);
 }
 
-const updateBackend = async (camera = false) => {
+const updateBackend = async (camera = false, force = false) => {
+  if (force) {
+    faceDetector.initialized = false;
+    landmarkDetector.initialized = false;
+  }
   streaming = false;
   try { 
     landmarkDetector.deleteAll();
@@ -105,7 +109,7 @@ const updateBackend = async (camera = false) => {
   logConfig();
   await showProgress('Updating backend ...');
   try {
-    // getOffloadOps(currentBackend, currentPrefer);
+    getOffloadOps(currentBackend, currentPrefer);
     utilsInit(currentBackend, currentPrefer);
     predictPath(camera);
   }
@@ -114,10 +118,19 @@ const updateBackend = async (camera = false) => {
   }
 }
 
+// override `requiredOps` in main.common.js
+requiredOps = async() => {
+  const opsOfAllModels = await Promise.all([
+    faceDetector.getRequiredOps(),
+    landmarkDetector.getRequiredOps()
+  ]);
+  return opsOfAllModels.reduce((a, b) => new Set([...a, ...b]));
+}
+
 const main = async (camera = false) => {
   streaming = false;
   try { 
-    landmarkDetector.deleteAll();
+    // landmarkDetector.deleteAll();
     faceDetector.deleteAll();
   } catch (e) { }
   logConfig();
@@ -127,7 +140,7 @@ const main = async (camera = false) => {
     await faceDetector.loadModel(model[0]);
     let landmarkmodel = facialLandmarkDetectionModels.filter(f => f.modelFormatName == currentLandmarkModel);
     await landmarkDetector.loadModel(landmarkmodel[0]);
-    // getOffloadOps(currentBackend, currentPrefer);
+    getOffloadOps(currentBackend, currentPrefer);
     utilsInit(currentBackend, currentPrefer);
     predictPath(camera);
   } catch (e) {
