@@ -101,10 +101,33 @@ const updateBackend = async (camera = false, force = false) => {
   try {
     getOffloadOps(currentBackend, currentPrefer);
     await utilsInit(currentBackend, currentPrefer);
+    showSubGraphsSummary(utils.getSubgraphsSummary());
     predictPath(camera);
   }
   catch (e) {
     errorHandler(e);
+  }
+}
+
+const showSubGraphsSummary = (summary) => {
+  if(summary) {
+    let listhtml = '';
+    for(let i in summary) {
+      let backend = summary[i].split(':')[0].toLowerCase();
+      let subgraphlist = summary[i].split(':')[1];
+      let tmp;
+
+      if(backend.indexOf('webnn') >-1) {
+        tmp = `<li><div class="timeline-badge webnn"><i class="glyphicon">WebNN</i></div><div class="timeline-panel"><div class="timeline-body"><p>${subgraphlist}</p></div></div></li>`;
+      } else if (backend.indexOf('wasm') >-1) {
+        tmp = `<li class="timeline-inverted"><div class="timeline-badge wasm"><i class="glyphicon">WASM</i></div><div class="timeline-panel"><div class="timeline-body"><p>${subgraphlist}</p></div></div></li>`;
+      } else if (backend.indexOf('webgl') >-1) {
+        tmp = `<li class="timeline-inverted"><div class="timeline-badge webgl"><i class="glyphicon">WebGL</i></div><div class="timeline-panel"><div class="timeline-body"><p>${subgraphlist}</p></div></div></li>`;
+      }
+
+      listhtml += tmp;
+    }
+    $('#subgraph').html(listhtml);
   }
 }
 
@@ -118,6 +141,7 @@ const main = async (camera = false) => {
     await utils.loadModel(model[0]);
     getOffloadOps(currentBackend, currentPrefer);
     await utilsInit(currentBackend, currentPrefer);
+    showSubGraphsSummary(utils.getSubgraphsSummary());
   } catch (e) {
     errorHandler(e);
   }

@@ -43,7 +43,12 @@ $(document).ready(() => {
     if (backend !== 'WebML' && prefer !== 'none') {
       backendtext = backend + ' + WebNN';
     }
-    $('#ictitle').html(`Skeleton Detection / ${backendtext} / ${currentprefertext}`);
+
+    if (currentprefertext === 'None') {
+      $('#ictitle').html(`Skeleton Detection / ${backendtext}`);
+    } else {
+      $('#ictitle').html(`Skeleton Detection / ${backendtext} (${currentprefertext})`);
+    }
   }
   updateTitleSD(ub, up);
 
@@ -68,12 +73,8 @@ $(document).ready(() => {
 
     currentBackend = polyfillId;
 
-    if(currentBackend === 'none' || currentBackend === '') {
-      $('#option').hide();
-    } else {
-      $('#option').show();
-      optionCompact();
-    }
+    $('#option').show();
+    optionCompact();
 
     updateTitleSD(currentBackend, currentPrefer);
     strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&s=${us}&d=${ud}`;
@@ -103,12 +104,11 @@ $(document).ready(() => {
 
     currentPrefer = webnnId;
 
-    if(currentBackend === 'none' || currentBackend === '') {
-      $('#option').hide();
-    } else {
-      $('#option').show();
-      optionCompact();
+    if (currentPrefer !== 'none' && currentBackend === 'none') {
+      currentBackend = 'WebML';
     }
+    $('#option').show();
+    optionCompact();
 
     updateTitleSD(currentBackend, currentPrefer);
     strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&s=${us}&d=${ud}`;
