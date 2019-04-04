@@ -75,6 +75,16 @@ const showSubGraphsSummary = (summary) => {
   }
 }
 
+const setPreferenceCodeToolTip = () => {
+  if($('#l-low')) {
+    $('#l-fast').attr('data-tooltip','Prefer returning a single answer as fast as possible, even if this causes more power consumption.');
+    $('#l-sustained').attr('data-tooltip','Prefer maximizing the throughput of successive frames, for example when processing successive frames coming from the camera.');
+    $('#l-low').attr('data-tooltip','Prefer executing in a way that minimizes battery drain. This is desirable for compilations that will be executed often.');
+  }
+  $('#l-WASM').attr('data-tooltip','Compiled Tensorflow Lite C++ kernels to WebAssembly format');
+  $('#l-WebGL').attr('data-tooltip','Tensorflow.js WebGL kernel');
+}
+
 const updateTitle = (name, backend, prefer, model, modeltype) => {
   model = model.replace(/_/g, ' ');
   let currentprefertext = {
@@ -188,6 +198,8 @@ $(document).ready(() => {
     $('#l-WebML').removeClass('dnone');
     $('#webmlstatus').addClass('webml-status-true').html('supported');
   }
+
+  setPreferenceCodeToolTip();
 
 });
 
