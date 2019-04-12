@@ -12,7 +12,7 @@
  */
 
 /** 
- * Code modified in line for following section for WebNN project
+ * Code modified in following sections for WebNN project
  * 1. styleSheet = ___$insertStyle
  * 2. onResize: function onResize()
  * 3. function setWidth(gui, w)
