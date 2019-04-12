@@ -11,6 +11,14 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
+/** 
+ * Code modified in line for following section for WebNN project
+ * 1. styleSheet = ___$insertStyle
+ * 2. onResize: function onResize()
+ * 3. function setWidth(gui, w)
+ * 4. Common.extend(gui.__resize_handle.style,
+*/ 
+
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
     typeof define === 'function' && define.amd ? define(['exports'], factory) :
