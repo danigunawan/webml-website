@@ -274,13 +274,6 @@ const updateBackendRadioUI = (backend, prefer) => {
   let polyfillId = $('input:radio[name="bp"]:checked').attr('id') || $('input:radio[name="bp"][checked="checked"]').attr('id');
   let webnnId = $('input:radio[name="bw"]:checked').attr('id') || $('input:radio[name="bw"][checked="checked"]').attr('id');
 
-  console.log('+++++++++++++')
-  console.log(polyfillId)
-  console.log(webnnId)
-  console.log(backend)
-  console.log(prefer)
-  console.log('+++++++++++++')
-
   if (backend !== 'none' && prefer !== 'none') {
     if (backend.toLocaleLowerCase() !== 'webml') {
       $('.backend label').removeClass('x');
