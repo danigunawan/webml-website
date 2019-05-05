@@ -274,6 +274,13 @@ const updateBackendRadioUI = (backend, prefer) => {
   let polyfillId = $('input:radio[name="bp"]:checked').attr('id') || $('input:radio[name="bp"][checked="checked"]').attr('id');
   let webnnId = $('input:radio[name="bw"]:checked').attr('id') || $('input:radio[name="bw"][checked="checked"]').attr('id');
 
+  console.log('+++++++++++++')
+  console.log(polyfillId)
+  console.log(webnnId)
+  console.log(backend)
+  console.log(prefer)
+  console.log('+++++++++++++')
+
   if (backend !== 'none' && prefer !== 'none') {
     if (backend.toLocaleLowerCase() !== 'webml') {
       $('.backend label').removeClass('x');
@@ -340,7 +347,7 @@ if (skeletonDetectionPath <= -1) {
         $('#' + polyfillId).attr('checked', 'checked');
         $('#l-' + polyfillId).addClass('checked');
       } else if (currentPrefer === 'none') {
-        showAlert('At least one backend is required, please select other backends if needed.');
+        showAlert('At least one backend required, please select other backends if needed.');
         return;
       } else {
         $('.b-polyfill input').removeAttr('checked');
@@ -352,12 +359,12 @@ if (skeletonDetectionPath <= -1) {
       strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&m=${um}&t=${ut}&s=${us}&d=${ud}`;
       window.history.pushState(null, null, strsearch);
 
+      updateBackendRadioUI(currentBackend, currentPrefer);
+
       if (um === 'none') {
         showError('No model selected', 'Please select a model to start prediction.');
         return;
       }
-
-      updateBackendRadioUI(currentBackend, currentPrefer);
 
       updateBackend(us === 'camera', true);
     });
@@ -373,7 +380,7 @@ if (skeletonDetectionPath <= -1) {
         $('#' + webnnId).attr('checked', 'checked');
         $('#l-' + webnnId).addClass('checked');
       } else if (currentBackend === 'WebML') {
-        showAlert('At least one backend is required, please select other backends if needed.');
+        showAlert('At least one backend required, please select other backends if needed.');
         return;
       } else {
         $('.b-webnn input').removeAttr('checked');
@@ -385,12 +392,12 @@ if (skeletonDetectionPath <= -1) {
       strsearch = `?prefer=${currentPrefer}&b=${currentBackend}&m=${um}&t=${ut}&s=${us}&d=${ud}`;
       window.history.pushState(null, null, strsearch);
 
+      updateBackendRadioUI(currentBackend, currentPrefer);
+
       if (um === 'none') {
         showError('No model selected', 'Please select a model to start prediction.');
         return;
       }
-
-      updateBackendRadioUI(currentBackend, currentPrefer);
 
       updateBackend(us === 'camera', true);
     });
