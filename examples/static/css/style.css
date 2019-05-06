@@ -1025,7 +1025,7 @@ footer {
 }
 
 .x::after {
-  content: " ⛌" !important;
+  content: " x" !important;
   color: white;
 }
 
@@ -2647,3 +2647,4 @@ button.xclose {
 .backendtooltip {
   text-align: left;
 }
+
