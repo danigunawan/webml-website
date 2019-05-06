@@ -1025,7 +1025,7 @@ footer {
 }
 
 .x::after {
-  content: " x" !important;
+  content: " ×" !important;
   color: white;
 }
 
