@@ -5,3 +5,4 @@ examples/**/*.onnx
 src/nn/wasm/src/build
 .DS_Store
 coverage/
+package-lock.json
