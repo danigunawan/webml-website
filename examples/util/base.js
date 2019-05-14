@@ -47,7 +47,7 @@ const imageClassificationModels = [{
   modelSize: '14.0MB',
   inputSize: [224, 224, 3],
   outputSize: 1001,
-  modelFile: '../image_classification/model/mobilenet_v2_1.0_224.tflite',
+  modelFile: 'https://s3-us-west-2.amazonaws.com/webnn/image_classification/model/mobilenet_v2_1.0_224.tflite',
   labelsFile: '../image_classification/model/labels1001.txt',
   preOptions: {
     mean: [127.5, 127.5, 127.5],
