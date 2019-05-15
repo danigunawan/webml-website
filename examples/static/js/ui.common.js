@@ -309,12 +309,14 @@ $(document).ready(() => {
     $('.nav-pills #cam').addClass('active');
     $('#imagetab').removeClass('active');
     $('#cameratab').addClass('active');
+    $('#cameraswitcher').show();
   } else {
     $('.nav-pills li').removeClass('active');
     $('.nav-pills #img').addClass('active');
     $('#cameratab').removeClass('active');
     $('#imagetab').addClass('active');
     $('#fps').html('');
+    $('#cameraswitcher').hide();
   }
 
   if (hasUrlParam('b')) {
@@ -561,6 +563,7 @@ $(document).ready(() => {
     $('ul.nav-pills #img').addClass('active');
     $('#imagetab').addClass('active');
     $('#cameratab').removeClass('active');
+    $('#cameraswitcher').hide();
   });
 
   $('#cam').click(() => {
@@ -569,6 +572,7 @@ $(document).ready(() => {
     $('ul.nav-pills #cam').addClass('active');
     $('#cameratab').addClass('active');
     $('#imagetab').removeClass('active');
+    $('#cameraswitcher').fadeIn()
   });
 });
 
