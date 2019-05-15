@@ -1,6 +1,6 @@
 const canvasElement = document.getElementById('canvas');
 const canvasShowElement = document.getElementById('canvasshow');
-let front = true;
+let front = false;
 
 let utils = new Utils(canvasElement, canvasShowElement);
 utils.updateProgress = updateProgress;    //register updateProgress function if progressBar element exist

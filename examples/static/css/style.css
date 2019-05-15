@@ -1366,22 +1366,39 @@ video.fullscreen, #canvasvideo.fullscreen, #canvasshow.fullscreen {
   color: rgba(255, 255, 255, 0.70);
 }
 
+.fullscreen .table {
+  color: rgba(255, 255, 255, 0.70);
+}
+
 
 #cameraswitcher {
   top: -50px;
   display: inline-block;
   margin-top: -50px;
+  font-weight: 200;
+  font-size: 13px;
 }
 
 #cameraswitcher.fullscreen {
   position: fixed;
   right: 0rem;
   margin-right: 2rem;
-  font-size: 1.0rem;
   top: 14rem;
   z-index: 3006;
   color: rgba(255, 255, 255, 0.70);
 }
+
+#imageclassification #cameraswitcher {
+  display: block;
+  margin-top: 50px;
+  text-align: center;
+}
+
+#imageclassification #cameraswitcher.fullscreen {
+  margin-top: 70px;
+}
+
+
 
 #cameraswitcher.fullscreen .custom-control-input:checked~.custom-control-label::before {
   border-color: rgba(255, 111, 97, 0.4);
