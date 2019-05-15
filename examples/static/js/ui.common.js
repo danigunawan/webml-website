@@ -288,6 +288,20 @@ let isBackendSwitch = () => {
   return $('#backendswitch').is(':checked')
 }
 
+let isFrontFacingSwitch = () => {
+  return $('#cameraswitch').is(':checked')
+}
+
+$(document).ready(() => {
+  $('#cameraswitch').prop('checked', front);
+
+  $('#cameraswitch').click(() => {
+    front = !front;
+    $('#cameraswitch').prop('checked', front);
+    updateBackend(us === 'camera', true);
+  })
+})
+
 $(document).ready(() => {
 
   if (us == 'camera') {
@@ -536,6 +550,7 @@ $('#fullscreen i svg').click(() => {
   $('#fullscreen i').toggleClass('fullscreen');
   $('#ictitle').toggleClass('fullscreen');
   $('#inference').toggleClass('fullscreen');
+  $('#cameraswitcher').toggleClass('fullscreen');
 });
 
 $(document).ready(() => {
