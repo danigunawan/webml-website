@@ -59,7 +59,7 @@ $ npm run watch
 
 # Examples
 
-![QR Code](./examples/static/img/qr.png?s=120)
+<img src="./examples/static/img/qr.png" width="160" height="160" alt="WebNN API Examples QR code">
 
 * [WebNN API Examples](https://intel.github.io/webml-polyfill/examples/)
 
