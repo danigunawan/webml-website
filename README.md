@@ -59,7 +59,7 @@ $ npm run watch
 
 # Examples
 
-![QR Code](./examples/static/img/qr.png | width=160)
+![QR Code](./examples/static/img/qr.png |200x200)
 
 * [WebNN API Examples](https://intel.github.io/webml-polyfill/examples/)
 
