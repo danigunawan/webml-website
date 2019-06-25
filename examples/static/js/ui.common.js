@@ -670,7 +670,7 @@ if (skeletonDetectionPath <= -1) {
   });
 }
 
-const showProgress = async (pm, pb, pi, pii, pic) => {
+const showProgress = async (pm, pb, pi, pii) => {
   let p = '';
   let modelicon = ``;
   if(pm === 'done') {
@@ -728,7 +728,7 @@ const showProgress = async (pm, pb, pi, pii, pic) => {
             ${modelicon}<span class='step_list_title'>Loading model</span>
           </li>
           <li class='step step-${pb}'>
-            ${updateicon}<span class='step_list_title'>Updating backend (initialization, compilation, warmup)</span>
+            ${updateicon}<span class='step_list_title'>Initialization, compilation, warmup</span>
           </li>
           <li class='step step-${pi}'>
             ${inferenceicon}<span class='step_list_title'>Inferencing image (input, compute)</span>
@@ -736,7 +736,7 @@ const showProgress = async (pm, pb, pi, pii, pic) => {
         </ul>
       </nav>
   `;
-  } else if (pic) {
+  } else {
     p = `
       <nav class='step'>
         <ul class='step_list'>
@@ -744,10 +744,10 @@ const showProgress = async (pm, pb, pi, pii, pic) => {
             ${modelicon}<span class='step_list_title'>Loading model</span>
           </li>
           <li class='step step-${pb}'>
-            ${updateicon}<span class='step_list_title'>Updating backend</span>
+            ${updateicon}<span class='step_list_title'>Initialization, compilation, warmup</span>
           </li>
           <li class='step step-${pi}'>
-            ${inferenceicon}<span class='step_list_title'>Inferencing camera</span>
+            ${inferenceicon}<span class='step_list_title'>Inferencing camera (input, compute)</span>
           </li>
         </ul>
       </nav>

@@ -47,7 +47,7 @@ const utilsPredict = async (imageElement, backend, prefer) => {
   if (track) {
     track.stop();
   }
-  await showProgress('done', 'done', 'current', true, false);
+  await showProgress('done', 'done', 'current', true);
   try {
     let ret = await utils.predict(imageElement);
     showResults();
@@ -60,7 +60,7 @@ const utilsPredict = async (imageElement, backend, prefer) => {
 
 const utilsPredictCamera = async (backend, prefer) => {
   streaming = true;
-  await showProgress('done', 'done', 'current', false, true);
+  await showProgress('done', 'done', 'current', false);
   try {
     let stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: (front ? 'user' : 'environment') } });
     video.srcObject = stream;
@@ -98,7 +98,7 @@ const updateBackend = async (camera = false, force = false) => {
   streaming = false;
   try { utils.deleteAll(); } catch (e) { }
   logConfig();
-  await showProgress('done', 'current', 'pending', !camera, camera);
+  await showProgress('done', 'current', 'pending', !camera);
   try {
     getOffloadOps(currentBackend, currentPrefer);
     await utilsInit(currentBackend, currentPrefer);
@@ -114,7 +114,7 @@ const main = async (camera = false) => {
   streaming = false;
   try { utils.deleteAll(); } catch (e) { }
   logConfig();
-  await showProgress('current', 'pending', 'pending', !camera, camera);
+  await showProgress('current', 'pending', 'pending', !camera);
   try {
     let model = getModelById(currentModel);
     await utils.loadModel(model);
