@@ -44,6 +44,7 @@ const utilsPredict = async (source) => {
   try {
     await showProgress('done', 'done', 'current', true);
     await predict(source);
+    await showProgress('done', 'done', 'done', true);
     showResults();
   }
   catch (e) {
@@ -70,6 +71,7 @@ const utilsPredictCamera = async () => {
     track = stream.getTracks()[0];
     await showProgress('done', 'done', 'current', false);
     startPredict();
+    await showProgress('done', 'done', 'done', false);
     showResults();
   }
   catch (e) {

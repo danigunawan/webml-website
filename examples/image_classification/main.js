@@ -50,6 +50,7 @@ const utilsPredict = async (imageElement, backend, prefer) => {
   await showProgress('done', 'done', 'current', true);
   try {
     let ret = await utils.predict(imageElement);
+    await showProgress('done', 'done', 'done', true);
     showResults();
     updateResult(ret);
   }
@@ -66,6 +67,7 @@ const utilsPredictCamera = async (backend, prefer) => {
     video.srcObject = stream;
     track = stream.getTracks()[0];
     startPredictCamera();
+    await showProgress('done', 'done', 'done', true);
     showResults();
   }
   catch (e) {
