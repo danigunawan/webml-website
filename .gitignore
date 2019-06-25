@@ -6,5 +6,4 @@ src/nn/wasm/src/build
 .DS_Store
 coverage/
 package-lock.json
-examples/**/resnet-50.bin
-examples/**/googlenet-v4.bin
+examples/**/*.bin
