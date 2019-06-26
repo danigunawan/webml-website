@@ -241,7 +241,7 @@ const updateScenario = async (camera = false) => {
   try {
     if(camera){
       await loadVideo();
-      await showProgress('done', 'done', 'current', camera);
+      await showProgress('done', 'done', 'current', !camera);
       poseDetectionFrame();
     }
     else {
