@@ -67,7 +67,7 @@ const utilsPredictCamera = async (backend, prefer) => {
     video.srcObject = stream;
     track = stream.getTracks()[0];
     startPredictCamera();
-    await showProgress('done', 'done', 'done', true);
+    await showProgress('done', 'done', 'done', false);
     showResults();
   }
   catch (e) {

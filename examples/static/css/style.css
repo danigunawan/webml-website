@@ -995,6 +995,12 @@ footer {
   font-weight: 200;
 }
 
+@media (max-width: 768px) {
+  .t-filter label, .g span {
+    padding: 0.25rem 0.5rem !important;
+  }
+}
+
 .checked {
   padding: 0px 6px;
   color: rgb(255, 255, 255);
@@ -2731,13 +2737,13 @@ button.xclose {
 }
 
 @media (min-width: 48em) {
-  .step {
+  .prog {
     padding: 10px;
     font-size: 13px;
   }
 }
 
-.step_list {
+.prog_list {
   width: 100%;
   margin: 0;
   padding: 0;
@@ -2745,13 +2751,13 @@ button.xclose {
 }
 
 @media (min-width: 48em) {
-  .step_list {
+  .prog_list {
     display: flex;
     justify-content: space-between;
   }
 }
 
-.step {
+.prog {
   padding: 3px 5px;
   text-align: center;
   position: relative;
@@ -2760,14 +2766,14 @@ button.xclose {
 }
 
 @media (min-width: 48em) {
-  .step {
+  .prog {
     padding: 10px;
     flex-direction: column;
     flex: 1;
   }
 }
 
-.step:after {
+.prog:after {
   content: '';
   display: block;
   position: absolute;
@@ -2775,7 +2781,7 @@ button.xclose {
 }
 
 @media (min-width: 48em) {
-  .step:after {
+  .prog:after {
     width: calc(100% - 100px);
     top: 28%;
     left: calc(50% + 50px);
@@ -2783,73 +2789,73 @@ button.xclose {
   }
 }
 
-.step-done {
+.prog-done {
   color: rgba(25, 190, 225, 1.0);
 }
 
 @media (min-width: 48em) {
-  .step-done:after {
+  .prog-done:after {
     border-top-style: solid;
     border-top-width: 1px;
   }
 }
 
-.step-current {
+.prog-current {
   color: rgba(25, 190, 225, 1.0);
 }
 
-.step-current:last-of-type:after, .step-current:only-of-type:after {
+.prog-current:last-of-type:after, .prog-current:only-of-type:after {
   height: 30%;
 }
 
-.step:last-of-type:after {
+.prog:last-of-type:after {
   display: none;
 }
 
-.step-pending {
+.prog-pending {
   color: #333;
 }
 
-.step-pending:after {
+.prog-pending:after {
   height: 30%;
 }
 
-.step_list_title {
+.prog_list_title {
   margin: 1px 0 0;
 }
 
 @media (min-width: 48em) {
-  .step_list_title {
+  .prog_list_title {
     margin: 0;
   }
 }
 
-.step_list_icon {
+.prog_list_icon {
   margin: 0 10px 0 0;
   height: 2em;
   width: 2em;
 }
 
 @media (min-width: 48em) {
-  .step_list_icon {
+  .prog_list_icon {
     margin: 0 0 15px;
   }
 }
 
-.step_list_icon path {
+.prog_list_icon path {
   fill: currentColor;
 }
 
-.step_list_icon ellipse,
-.step_list_icon circle {
+.prog_list_icon ellipse,
+.prog_list_icon circle {
   stroke: currentColor;
 }
 
 @media (max-width: 768px) {
-  .step {
+  .prog {
     font-size: 13px;
   }
-  .step_list_title {
+  .prog_list_title {
     text-align: left;
   }
 }
