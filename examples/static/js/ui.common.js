@@ -107,7 +107,6 @@ const formatToLogo = {
 const trademarks = (allFormats) => {
   let trademarknote;
   for (const format of allFormats) {
-    console.log(format)
     if (format.toLowerCase() === 'tflite') {
       trademarknote = 'TensorFlow, the TensorFlow logo and any related marks are trademarks of Google Inc.';
     } else if (format.toLowerCase() === 'onnx') {

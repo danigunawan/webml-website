@@ -175,6 +175,7 @@ class Utils {
       let request = new XMLHttpRequest();
       this.outstandingRequest = request;
       request.open('GET', url, true);
+      request.setRequestHeader('Cache-Control', 'public, max-age=2592000');
       if (binary) {
         request.responseType = 'arraybuffer';
       }
