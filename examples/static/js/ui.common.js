@@ -669,7 +669,7 @@ if (skeletonDetectionPath <= -1) {
   });
 }
 
-const showProgress = async (pm, pb, pi, pii) => {
+const showProgress = async (pm, pb, pi) => {
   let p = '';
   let modelicon = ``;
   if(pm === 'done') {
@@ -719,39 +719,22 @@ const showProgress = async (pm, pb, pi, pii) => {
               </svg>`;
   }
 
-  if(pii) {
-    p = `
-      <nav class='prog'>
-        <ul class='prog_list'>
-          <li class='prog prog-${pm}'>
-            ${modelicon}<span class='prog_list_title'>Model loading</span>
-          </li>
-          <li class='prog prog-${pb}'>
-            ${updateicon}<span class='prog_list_title'>Initialization, compilation, warmup</span>
-          </li>
-          <li class='prog prog-${pi}'>
-            ${inferenceicon}<span class='prog_list_title'>Image inference (input, compute)</span>
-          </li>
-        </ul>
-      </nav>
+  p = `
+    <nav class='prog'>
+      <ul class='prog_list'>
+        <li class='prog prog-${pm}'>
+          ${modelicon}<span class='prog_list_title'>Model loading</span>
+        </li>
+        <li class='prog prog-${pb}'>
+          ${updateicon}<span class='prog_list_title'>Model compilation</span>
+        </li>
+        <li class='prog prog-${pi}'>
+          ${inferenceicon}<span class='prog_list_title'>Model inferencing</span>
+        </li>
+      </ul>
+    </nav>
   `;
-  } else {
-    p = `
-      <nav class='prog'>
-        <ul class='prog_list'>
-          <li class='prog prog-${pm}'>
-            ${modelicon}<span class='prog_list_title'>Loading model</span>
-          </li>
-          <li class='prog prog-${pb}'>
-            ${updateicon}<span class='prog_list_title'>Initialization, compilation, warmup</span>
-          </li>
-          <li class='prog prog-${pi}'>
-            ${inferenceicon}<span class='prog_list_title'>Camera inference (input, compute)</span>
-          </li>
-        </ul>
-      </nav>
-    `;
-  }
+
   $('#progressmodel').show();
   $('#progressstep').html(p);
   $('.shoulddisplay').hide();
