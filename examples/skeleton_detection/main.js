@@ -13,57 +13,6 @@ let sdconfig = {
   showBoundingBox: false,
 };
 
-$(document).ready(function(){
-  $('#sdmodel').change(() => {
-    sdconfig.model = $('#sdmodel').find('option:selected').attr('value');
-    main(currentTab === 'camera');
-  });
-
-  $('#sdstride').change(() => {
-    sdconfig.outputStride = parseInt($('#sdstride').find('option:selected').attr('value'));
-    main(currentTab === 'camera');
-  });
-
-  $('#scalefactor').change(() => {
-    sdconfig.scaleFactor = parseFloat($('#scalefactor').find('option:selected').attr('value'));
-    main(currentTab === 'camera');
-  });
-
-  $('#sdscorethreshold').change(() => {
-    sdconfig.scoreThreshold = parseFloat($('#sdscorethreshold').val());
-    utils._minScore = sdconfig.scoreThreshold;
-    (currentTab === 'camera') ? poseDetectionFrame() : drawResult(false, false);
-  });
-
-  $('#sdnmsradius').change(() => {
-    sdconfig.multiPoseDetection.nmsRadius = parseInt($('#sdnmsradius').val());
-    utils._nmsRadius = sdconfig.multiPoseDetection.nmsRadius;
-    (currentTab === 'camera') ? poseDetectionFrame() : drawResult(false, true);
-  });
-
-  $('#sdmaxdetections').change(() => {
-    sdconfig.multiPoseDetection.maxDetections = parseInt($('#sdmaxdetections').val());
-    utils._maxDetection = sdconfig.multiPoseDetection.maxDetections;
-    (currentTab === 'camera') ? poseDetectionFrame() : drawResult(false, true);
-  });
-
-  $('#sdshowpose').change(() => {
-    sdconfig.showPose = $('#sdshowpose').prop('checked');
-    (currentTab === 'camera') ? poseDetectionFrame() : drawResult(false, false);
-  });
-
-  $('#sduseatrousconvops').change(() => {
-    sdconfig.useAtrousConv = $('#sduseatrousconvops').prop('checked');
-    main(currentTab === 'camera');
-  });
-
-  $('#sdshowboundingbox').change(() => {
-    sdconfig.showBoundingBox = $('#sdshowboundingbox').prop('checked');
-    (currentTab === 'camera') ? poseDetectionFrame() : drawResult(false, false);
-  });
-
-})
-
 let currentTab = 'image';
 let front = true;
 
