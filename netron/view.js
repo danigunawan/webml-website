@@ -1151,6 +1151,23 @@ view.ModelFactoryService = class {
                         }
                         match++;
                         return modelFactory.open(context, this._host).then((model) => {
+                            var requiredops = document.getElementById('requiredops');
+                            var nodes = model._graphs[0]._nodes;
+                            var allops = []
+                            nodes.map(x => {
+                                if(x._operator) {
+                                    // TFLite and ONNX
+                                    allops.push(x._operator)
+                                } else {
+                                    // OpenVINO
+                                    allops.push(x._type)
+                                }
+                            }
+                            );
+                            var filteredops = new Set(allops);
+                            var t = [...filteredops]
+                            requiredops.innerHTML = t.join(' ');
+                            console.log('url check');
                             return model;
                         }).catch((error) => {
                             errors.push(error);

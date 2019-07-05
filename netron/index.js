@@ -435,22 +435,6 @@ host.BrowserHost = class {
         }).then((buffer => {
             var context = new BrowserContext(this, '', file.name, buffer);
             return this._view.open(context).then((model) => {
-                var requiredops = this.document.getElementById('requiredops');
-                var nodes = model._graphs[0]._nodes;
-                var allops = []
-                nodes.map(x => {
-                    if(x._operator) {
-                        // TFLite and ONNX
-                        allops.push(x._operator)
-                    } else {
-                        // OpenVINO
-                        allops.push(x._type)
-                    }
-                }
-                );
-                var filteredops = new Set(allops);
-                var t = [...filteredops]
-                requiredops.innerHTML = t.join(' ');
                 return model;
             })
         }));
