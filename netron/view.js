@@ -1167,7 +1167,6 @@ view.ModelFactoryService = class {
                             var filteredops = new Set(allops);
                             var t = [...filteredops]
                             requiredops.innerHTML = t.join(' ');
-                            console.log('url check');
                             return model;
                         }).catch((error) => {
                             errors.push(error);

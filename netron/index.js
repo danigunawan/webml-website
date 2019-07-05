@@ -727,3 +727,20 @@ class BrowserContext {
 }
 
 window.__view__ = new view.View(new host.BrowserHost());
+
+let toggleWebNN = (() => {
+    var tog = document.getElementById('tog');
+    var webnn = document.getElementById('webnn');
+    let togggleStatus = (() => {
+        if(tog.innerHTML == '[Hide]') {
+            tog.innerHTML = '[Display]';
+            webnn.setAttribute('style', 'display: none');
+        } else {
+            tog.innerHTML = '[Hide]';
+            webnn.setAttribute('style', 'display: block');
+        }
+    })
+    tog.addEventListener('click', togggleStatus, false);
+})
+
+document.addEventListener('DOMContentLoaded', toggleWebNN, false);
