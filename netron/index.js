@@ -733,7 +733,7 @@ let toggleWebNN = (() => {
     var webnn = document.getElementById('webnn');
     let togggleStatus = (() => {
         if(tog.innerHTML == '[Hide]') {
-            tog.innerHTML = '[Display]';
+            tog.innerHTML = '[Show]';
             webnn.setAttribute('style', 'display: none');
         } else {
             tog.innerHTML = '[Hide]';
