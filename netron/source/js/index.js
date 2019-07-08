@@ -732,11 +732,11 @@ let toggleWebNN = (() => {
     var tog = document.getElementById('tog');
     var webnn = document.getElementById('webnn');
     let togggleStatus = (() => {
-        if(tog.innerHTML == '[Hide]') {
-            tog.innerHTML = '[Show]';
+        if(tog.innerHTML == '[-] WebNN API Support Status') {
+            tog.innerHTML = '[+] WebNN API Support Status';
             webnn.setAttribute('style', 'display: none');
         } else {
-            tog.innerHTML = '[Hide]';
+            tog.innerHTML = '[-] WebNN API Support Status';
             webnn.setAttribute('style', 'display: block');
         }
     })

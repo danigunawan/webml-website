@@ -1151,6 +1151,8 @@ view.ModelFactoryService = class {
                         }
                         match++;
                         return modelFactory.open(context, this._host).then((model) => {
+                            
+
                             var requiredops = document.getElementById('requiredops');
                             var nodes = model._graphs[0]._nodes;
                             var allops = []
@@ -1167,6 +1169,8 @@ view.ModelFactoryService = class {
                             var filteredops = new Set(allops);
                             var t = [...filteredops]
                             requiredops.innerHTML = t.join(' ');
+
+
                             return model;
                         }).catch((error) => {
                             errors.push(error);
