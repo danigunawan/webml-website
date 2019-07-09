@@ -54,7 +54,7 @@ view.View = class {
             });
         }
     }
-    
+
     show(page) {
 
         if (!page) {
@@ -70,7 +70,7 @@ view.View = class {
         var spinnerElement = this._host.document.getElementById('spinner');
         var graphElement = this._host.document.getElementById('graph');
         var toolbarElement = this._host.document.getElementById('toolbar');
-    
+
         if (page == 'Welcome') {
             this._host.document.body.style.cursor = 'default';
             welcomeElement.style.display = 'block';
@@ -219,7 +219,7 @@ view.View = class {
         }
     }
 
-    resetZoom() { 
+    resetZoom() {
         switch (this._host.environment('zoom')) {
             case 'scroll':
                 if (this._zoom) {
@@ -273,7 +273,7 @@ view.View = class {
             }
         }
     }
-    
+
     select(selection) {
         this.clearSelection();
         if (selection && selection.length > 0) {
@@ -364,7 +364,7 @@ view.View = class {
                         this._host.event('Graph', 'Render', 'Skip', nodes.length);
                         this.show(null);
                         return null;
-                    }  
+                    }
                 }
             }
             return this.renderGraph(graph).then(() => {
@@ -393,7 +393,7 @@ view.View = class {
                 while (graphElement.lastChild) {
                     graphElement.removeChild(graphElement.lastChild);
                 }
-    
+
                 switch (this._host.environment('zoom')) {
                     case 'scroll':
                         this._zoom = 0;
@@ -406,9 +406,9 @@ view.View = class {
                         graphElement.style.margin = '0';
                         break;
                 }
-    
+
                 var groups = graph.groups;
-    
+
                 var graphOptions = {};
                 graphOptions.nodesep = 25;
                 graphOptions.ranksep = 20;
@@ -416,13 +416,13 @@ view.View = class {
                 var g = new dagre.graphlib.Graph({ compound: groups });
                 g.setGraph(graphOptions);
                 g.setDefaultEdgeLabel(() => { return {}; });
-            
+
                 var nodeId = 0;
                 var edgeMap = {};
-            
+
                 var clusterMap = {};
                 var clusterParentMap = {};
-    
+
                 var id = new Date().getTime();
                 var nodes = graph.nodes;
 
@@ -453,25 +453,25 @@ view.View = class {
 
                 var self = this;
                 for (node of nodes) {
-    
+
                     var element = new grapher.NodeElement(this._host.document);
 
-                    var addNode = function(element, node, edges) {
+                    var addNode = function (element, node, edges) {
 
-                        var header =  element.block('header');
-                        var styles = [ 'node-item-operator' ];
+                        var header = element.block('header');
+                        var styles = ['node-item-operator'];
                         var category = node.category;
                         if (category) {
                             styles.push('node-item-operator-' + category.toLowerCase());
                         }
                         var content = self.showNames && node.name ? node.name : node.operator;
                         var tooltip = self.showNames && node.name ? node.operator : node.name;
-                        header.add(null, styles, content, tooltip, () => { 
+                        header.add(null, styles, content, tooltip, () => {
                             self.showNodeProperties(node, null);
                         });
 
                         if (node.function) {
-                            header.add(null, [ 'node-item-function' ], '+', null, () => {
+                            header.add(null, ['node-item-function'], '+', null, () => {
                                 // debugger;
                             });
                         }
@@ -483,7 +483,7 @@ view.View = class {
                                 if (input.visible && input.arguments.length == 1 && input.arguments[0].initializer != null) {
                                     initializers.push(input);
                                 }
-                                if ((!input.visible || input.arguments.length > 1) && 
+                                if ((!input.visible || input.arguments.length > 1) &&
                                     input.arguments.some((argument) => argument.initializer != null)) {
                                     hiddenInitializers = true;
                                 }
@@ -504,8 +504,8 @@ view.View = class {
                                 var shape = '';
                                 var separator = '';
                                 if (type &&
-                                    type.shape && 
-                                    type.shape.dimensions && 
+                                    type.shape &&
+                                    type.shape.dimensions &&
                                     Object.prototype.hasOwnProperty.call(type.shape.dimensions, 'length')) {
                                     shape = '\u3008' + type.shape.dimensions.join('\u00D7') + '\u3009';
                                     if (type.shape.dimensions.length == 0 && argument.initializer && !argument.initializer.state) {
@@ -543,8 +543,8 @@ view.View = class {
                                             tuple = { from: null, to: [] };
                                             edgeMap[argument.id] = tuple;
                                         }
-                                        tuple.to.push({ 
-                                            node: nodeId, 
+                                        tuple.to.push({
+                                            node: nodeId,
                                             name: input.name
                                         });
                                     }
@@ -565,7 +565,7 @@ view.View = class {
                                             tuple = { from: null, to: [] };
                                             edgeMap[argument.id] = tuple;
                                         }
-                                        tuple.from = { 
+                                        tuple.from = {
                                             node: nodeId,
                                             name: output.name,
                                             type: argument.type
@@ -574,7 +574,7 @@ view.View = class {
                                 }
                             }
                         }
-    
+
                         if (node.chain && node.chain.length > 0) {
                             for (var innerNode of node.chain) {
                                 addNode(element, innerNode, false);
@@ -585,7 +585,7 @@ view.View = class {
                             addNode(element, node.inner, false);
                         }
                     }
-    
+
                     addNode(element, node, true);
 
                     if (node.controlDependencies && node.controlDependencies.length > 0) {
@@ -611,10 +611,10 @@ view.View = class {
                         g.setNode(nodeId, { label: element.format(graphElement), id: 'node-' + id.toString() });
                         id++;
                     }
-            
-                    var createCluster = function(name) {
+
+                    var createCluster = function (name) {
                         if (!clusterMap[name]) {
-                            g.setNode(name, { rx: 5, ry: 5});
+                            g.setNode(name, { rx: 5, ry: 5 });
                             clusterMap[name] = true;
                             var parent = clusterParentMap[name];
                             if (parent) {
@@ -623,7 +623,7 @@ view.View = class {
                             }
                         }
                     }
-    
+
                     if (groups) {
                         var groupName = node.group;
                         if (groupName && groupName.length > 0) {
@@ -645,7 +645,7 @@ view.View = class {
                             }
                         }
                     }
-                
+
                     nodeId++;
                 }
 
@@ -656,7 +656,7 @@ view.View = class {
                             tuple = { from: null, to: [] };
                             edgeMap[argument.id] = tuple;
                         }
-                        tuple.from = { 
+                        tuple.from = {
                             node: nodeId,
                             type: argument.type
                         };
@@ -666,15 +666,15 @@ view.View = class {
                     if (inputName.length > 16) {
                         inputName = inputName.split('/').pop();
                     }
-    
+
                     var inputElement = new grapher.NodeElement(this._host.document);
                     var inputHeader = inputElement.block('header');
-                    inputHeader.add(null, [ 'graph-item-input' ], inputName, types, () => {
+                    inputHeader.add(null, ['graph-item-input'], inputName, types, () => {
                         this.showModelProperties();
                     });
-                    g.setNode(nodeId++, { label: inputElement.format(graphElement), class: 'graph-input' } ); 
+                    g.setNode(nodeId++, { label: inputElement.format(graphElement), class: 'graph-input' });
                 }
-            
+
                 for (output of graph.outputs) {
                     for (argument of output.arguments) {
                         tuple = edgeMap[argument.id];
@@ -689,13 +689,13 @@ view.View = class {
                     if (outputName.length > 16) {
                         outputName = outputName.split('/').pop();
                     }
-            
+
                     var outputElement = new grapher.NodeElement(this._host.document);
                     var outputHeader = outputElement.block('header');
-                    outputHeader.add(null, [ 'graph-item-output' ], outputName, outputTypes, () => {
+                    outputHeader.add(null, ['graph-item-output'], outputName, outputTypes, () => {
                         this.showModelProperties();
                     });
-                    g.setNode(nodeId++, { label: outputElement.format(graphElement) } ); 
+                    g.setNode(nodeId++, { label: outputElement.format(graphElement) });
                 }
 
                 for (var edge of Object.keys(edgeMap)) {
@@ -707,16 +707,16 @@ view.View = class {
                             if (type && type.shape && type.shape.dimensions && type.shape.dimensions.length > 0) {
                                 text = type.shape.dimensions.join('\u00D7');
                             }
-            
+
                             if (this._showNames) {
                                 text = edge.split('\n').shift(); // custom argument id
                             }
-    
+
                             if (to.controlDependency) {
-                                g.setEdge(tuple.from.node, to.node, { label: text, id: 'edge-' + edge, arrowhead: 'vee', class: 'edge-path-control-dependency' } );
+                                g.setEdge(tuple.from.node, to.node, { label: text, id: 'edge-' + edge, arrowhead: 'vee', class: 'edge-path-control-dependency' });
                             }
                             else {
-                                g.setEdge(tuple.from.node, to.node, { label: text, id: 'edge-' + edge, arrowhead: 'vee' } );
+                                g.setEdge(tuple.from.node, to.node, { label: text, id: 'edge-' + edge, arrowhead: 'vee' });
                             }
                         }
                     }
@@ -737,7 +737,7 @@ view.View = class {
                 var originElement = this._host.document.createElementNS('http://www.w3.org/2000/svg', 'g');
                 originElement.setAttribute('id', 'origin');
                 graphElement.appendChild(originElement);
-            
+
                 if (this._host.environment('zoom') == 'd3') {
                     // Set up zoom support
                     var svg = d3.select(graphElement);
@@ -798,7 +798,7 @@ view.View = class {
                                 var x = xs[0];
                                 var y = ys[0];
                                 if (ys.every(y => y == ys[0])) {
-                                    x = xs.reduce((a,b) => { return a + b; }) / xs.length;
+                                    x = xs.reduce((a, b) => { return a + b; }) / xs.length;
                                 }
                                 this._zoom.transform(svg, d3.zoomIdentity.translate((svgSize.width / 2) - x, (svgSize.height / 4) - y));
                             }
@@ -877,14 +877,14 @@ view.View = class {
             backgroundElement.setAttribute('width', width);
             backgroundElement.setAttribute('height', height);
             backgroundElement.setAttribute('fill', '#fff');
-    
+
             var data = new XMLSerializer().serializeToString(exportElement);
-    
+
             if (extension == 'svg') {
-                var blob = new Blob([ data ], { type: 'image/svg' });
+                var blob = new Blob([data], { type: 'image/svg' });
                 this._host.export(file, blob);
             }
-    
+
             if (extension == 'png') {
                 var imageElement = new Image();
                 imageElement.onload = () => {
@@ -925,7 +925,7 @@ view.View = class {
             this._sidebar.open(modelSidebar.render(), 'Model Properties');
         }
     }
-    
+
     showNodeProperties(node, input) {
         if (node) {
             var nodeSidebar = new sidebar.NodeSidebar(this._host, node);
@@ -938,7 +938,7 @@ view.View = class {
                     this._host.save('NumPy Array', 'npy', defaultPath, (file) => {
                         try {
                             var array = new numpy.Array(tensor.value, tensor.type.dataType, tensor.type.shape.dimensions);
-                            var blob = new Blob([ array.toBuffer() ], { type: 'application/octet-stream' });
+                            var blob = new Blob([array.toBuffer()], { type: 'application/octet-stream' });
                             this._host.export(file, blob);
                         }
                         catch (error) {
@@ -970,7 +970,7 @@ view.View = class {
 class ModelError extends Error {
     constructor(message) {
         super(message);
-        this.name = 'Error loading model.'; 
+        this.name = 'Error loading model.';
     }
 }
 
@@ -1010,7 +1010,7 @@ class ModelContext {
                     case 'pbtxt':
                         var b = this.buffer;
                         var length = b.length;
-                        var signature = 
+                        var signature =
                             (length >= 3 && b[0] === 0xef && b[1] === 0xbb && b[2] === 0xbf) ||
                             (length >= 4 && b[0] === 0x00 && b[1] === 0x00 && b[2] === 0xfe && b[3] === 0xff) ||
                             (length >= 4 && b[0] === 0xff && b[1] === 0xfe && b[2] === 0x00 && b[3] === 0x00) ||
@@ -1104,22 +1104,22 @@ view.ModelFactoryService = class {
     constructor(host) {
         this._host = host;
         this._extensions = [];
-        this.register('./onnx', [ '.onnx', '.pb', '.pbtxt', '.prototxt' ]);
-        this.register('./mxnet', [ '.mar', '.model', '.json', '.params' ]);
-        this.register('./keras', [ '.h5', '.keras', '.hdf5', '.json', '.model' ]);
-        this.register('./coreml', [ '.mlmodel' ]);
-        this.register('./caffe', [ '.caffemodel', '.pbtxt', '.prototxt', '.pt' ]);
-        this.register('./caffe2', [ '.pb', '.pbtxt', '.prototxt' ]);
-        this.register('./pytorch', [ '.pt', '.pth', '.pkl', '.h5', '.t7', '.model', '.dms', '.pth.tar', '.ckpt' ]);
-        this.register('./torch', [ '.t7' ]);
-        this.register('./torchscript', [ '.pt', '.pth' ]);
-        this.register('./tflite', [ '.tflite', '.lite', '.bin' ]);
-        this.register('./tf', [ '.pb', '.meta', '.pbtxt', '.prototxt', '.json' ]);
-        this.register('./sklearn', [ '.pkl', '.joblib' ]);
-        this.register('./cntk', [ '.model', '.cntk', '.cmf', '.dnn' ]);
-        this.register('./openvino', [ '.xml' ]);
-        this.register('./darknet', [ '.cfg' ]);
-        this.register('./paddle', [ '.paddle', '__model__' ]);
+        this.register('./onnx', ['.onnx', '.pb', '.pbtxt', '.prototxt']);
+        this.register('./mxnet', ['.mar', '.model', '.json', '.params']);
+        this.register('./keras', ['.h5', '.keras', '.hdf5', '.json', '.model']);
+        this.register('./coreml', ['.mlmodel']);
+        this.register('./caffe', ['.caffemodel', '.pbtxt', '.prototxt', '.pt']);
+        this.register('./caffe2', ['.pb', '.pbtxt', '.prototxt']);
+        this.register('./pytorch', ['.pt', '.pth', '.pkl', '.h5', '.t7', '.model', '.dms', '.pth.tar', '.ckpt']);
+        this.register('./torch', ['.t7']);
+        this.register('./torchscript', ['.pt', '.pth']);
+        this.register('./tflite', ['.tflite', '.lite', '.bin']);
+        this.register('./tf', ['.pb', '.meta', '.pbtxt', '.prototxt', '.json']);
+        this.register('./sklearn', ['.pkl', '.joblib']);
+        this.register('./cntk', ['.model', '.cntk', '.cmf', '.dnn']);
+        this.register('./openvino', ['.xml']);
+        this.register('./darknet', ['.cfg']);
+        this.register('./paddle', ['.paddle', '__model__']);
     }
 
     register(id, extensions) {
@@ -1127,7 +1127,7 @@ view.ModelFactoryService = class {
             this._extensions.push({ extension: extension, id: id });
         }
     }
- 
+
     open(context) {
         return this._openArchive(context).then((context) => {
             context = new ModelContext(context);
@@ -1145,31 +1145,230 @@ view.ModelFactoryService = class {
                         if (!module.ModelFactory) {
                             throw new ModelError("Failed to load module '" + id + "'.");
                         }
-                        var modelFactory = new module.ModelFactory(); 
+                        var modelFactory = new module.ModelFactory();
                         if (!modelFactory.match(context)) {
                             return nextModule();
                         }
                         match++;
                         return modelFactory.open(context, this._host).then((model) => {
-                            
+
+                            var findName = (v, key) => {
+                                console.log(v + ' ' + key)
+                               return (v.toLowerCase().indexOf(key) >-1) ? true : false; 
+                            }
 
                             var requiredops = document.getElementById('requiredops');
+                            var opmap = document.getElementById('opmap');
+
                             var nodes = model._graphs[0]._nodes;
                             var allops = []
                             nodes.map(x => {
-                                if(x._operator) {
+                                if (x._operator) {
                                     // TFLite and ONNX
-                                    allops.push(x._operator)
+                                    let item = { name: x._operator, para: ""}
+                                    allops.push(item)
                                 } else {
                                     // OpenVINO
-                                    allops.push(x._type)
+
+                                    let item = {}
+
+                                    if(x.type === 'Convolution') {
+                                        if (findName(x._name, 'conv2d')) {
+                                            item = { name: x._type, para: "conv2d" }
+                                        } else if (findName(x._name, 'depthwise')) {
+                                            item = { name: x._type, para: "depthwise_conv_2d" }
+                                        } else {
+                                            item = { name: x._type, para: x._name }
+                                        }
+                                    } else {
+                                        item = { name: x._type, para: x._name }
+                                    }
+                                    allops.push(item)
                                 }
                             }
                             );
                             var filteredops = new Set(allops);
                             var t = [...filteredops]
-                            requiredops.innerHTML = t.join(' ');
 
+                            console.log(t)
+                            
+                            // requiredops.innerHTML = '<span>' + t.join(' </span><span>') + '</span>'
+
+                            // fetch('source/json/webnnsupportedops.json')
+                            //     .then(function (response) {
+                            //         return response.json();
+                            //     })
+                            //     .then(function (data) {
+                            //         // console.log()
+                            //         // console.log(t);
+
+                            //         t.map((i) => {
+                            //             let tr = document.createElement('tr');
+                            //             let td = `<td>${i}</td>`;
+
+                            //             switch (i) {
+                            //                 // ONNX
+                            //                 // https://github.com/intel/webml-polyfill/blob/master/examples/util/onnx/OnnxModelImporter.js
+                            //                 case 'Conv':
+                            //                     i = 'CONV_2D'; // + DEPTHWISE_CONV_2D
+                            //                     break;
+                            //                 case 'BatchNormalization':
+                            //                     i = 'CONV_2D';
+                            //                     break;
+                            //                 case 'Relu':
+                            //                     i = 'CONV_2D';
+                            //                     break;
+                            //                 case 'Sum':
+                            //                     i = 'ADD';
+                            //                     break;
+                            //                 case 'Add':
+                            //                     i = 'ADD';
+                            //                     break;
+                            //                 case 'Mul':
+                            //                     i = 'MUL';
+                            //                     break;
+                            //                 case 'Gemm':
+                            //                     i = 'FULLY_CONNECTED';
+                            //                     break;
+                            //                 case 'MaxPool':
+                            //                     i = 'MAX_POOL_2D';
+                            //                     break;
+                            //                 case 'AveragePool':
+                            //                     i = 'AVERAGE_POOL_2D';
+                            //                     break;
+                            //                 case 'Concat':
+                            //                     i = 'CONCATENATION';
+                            //                     break;
+                            //                 case 'Dropout':
+                            //                     i = 'Skip';
+                            //                     break;
+                            //                 case 'GlobalAveragePool':
+                            //                     i = 'AVERAGE_POOL_2D';
+                            //                     break;
+                            //                 case 'Constant':
+                            //                     i = 'Skip';
+                            //                     break;
+                            //                 case 'Reshape':
+                            //                     i = 'RESHAPE';
+                            //                     break;
+                            //                 case 'Transpose':
+                            //                     i = 'TRANSPOSE';
+                            //                     break;
+                            //                 case 'Flatten':
+                            //                     i = 'RESHAPE';
+                            //                     break;
+                            //                 case 'Unsqueeze':
+                            //                     i = 'Skip';
+                            //                     break;
+                            //                 case 'Neg':
+                            //                     i = 'MUL';
+                            //                     break;
+                            //                 case 'Softmax':
+                            //                     i = 'SOFTMAX';
+                            //                     break;
+                            //                 default: {
+                            //                     //
+                            //                 }
+                            //             }
+
+                            //             switch (i) {
+                            //                 // ONNX
+                            //                 // https://github.com/intel/webml-polyfill/blob/master/examples/util/openvino/OpenVINOModelImporter.js
+                            //                 case 'Convolution':
+                            //                     i = 'CONV_2D'; // DEPTHWISE_CONV_2D 
+                            //                     break;
+                            //                 case 'Eltwise':
+                            //                     i = 'Skip';
+                            //                     break;
+                            //                 case 'sum':
+                            //                     i = 'ADD';
+                            //                     break;
+                            //                 case 'mul':
+                            //                     i = 'MUL';
+                            //                     break;
+                            //                 case 'FullyConnected':
+                            //                     i = 'FULLY_CONNECTED';
+                            //                     break;
+                            //                 case 'ScaleShift':
+                            //                     i = 'ADD';
+                            //                     break;
+                            //                 case 'Pooling':
+                            //                     i = 'MAX_POOL_2D'; // AVERAGE_POOL_2D
+                            //                     break;
+                            //                 case 'Concat':
+                            //                     i = 'CONCATENATION';
+                            //                     break;
+                            //                 case 'Permute':
+                            //                     i = 'Skip';
+                            //                     break;
+                            //                 case 'Const':
+                            //                     i = 'Skip';
+                            //                     break;
+                            //                 case 'Reshape':
+                            //                     i = 'RESHAPE';
+                            //                     break;
+                            //                 case 'SoftMax':
+                            //                     i = 'SOFTMAX';
+                            //                     break;
+                            //                 case 'ReLU':
+                            //                     i = 'FUSED_RELU';
+                            //                     break;
+                            //                 case 'Clamp':
+                            //                     i = 'FUSED_RELU6'; // FUSED_RELU1
+                            //                     break;
+                            //                 default: {
+                            //                     //
+                            //                 }
+                            //             }
+
+                            //             i = i.toLowerCase().replace(/_/g, '');
+
+                            //             var lr = (i) => {
+                            //                 return i.toLowerCase().replace(/_/g, '');
+                            //             }
+
+                            //             if(i === 'skip') {
+                            //                 td += '<td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td>'
+                            //             }
+                            //             else {
+                            //                 (data.WASM.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                            //                 (data.WebGL.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                            //                 (data.NNAPI.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                            //                 (data.MPS.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                            //                 (data.BNNS.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                            //                 (data.clDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                            //                 (data.MKLDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                            //                 (data.DirectML.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                            //                 (data.IE_clDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                            //                 (data.IE_MKLDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                            //                 (data.IE_MYRIAD.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                            //                 // let iemyriad = data.IE_MYRIAD.map((v)=>{ return lr(v)});
+                            //                 // let iemyriads = wasm.includes(i);
+                            //                 // iemyriads ? td += '<td>Yes</td>' : td += '<td>No</td>';
+                            //             }
+
+
+                            //             tr.innerHTML = td;
+                            //             opmap.appendChild(tr);
+                            //         });
+
+
+                            //         // t.map((i) => {
+                            //         //     console.log(i);
+
+                            //         //     let wasm = data['WASM'];
+
+                            //         //     wasm.map((j) => {
+                            //         //         if (j.toLowerCase().replace(/_/g, '') === i) {
+                            //         //             console.log('Support:' + i);
+                            //         //         }
+                            //         //     });
+
+
+                            //         // });
+
+                            //         // console.log(data);
+                            //     });
 
                             return model;
                         }).catch((error) => {
@@ -1208,7 +1407,7 @@ view.ModelFactoryService = class {
                 if (archive.entries.length == 1) {
                     entry = archive.entries[0];
                     if (entry.name) {
-                            
+
                         identifier = entry.name;
                     }
                     else {
@@ -1233,7 +1432,7 @@ view.ModelFactoryService = class {
             switch (extension) {
                 case 'tar':
                     // handle .pth.tar
-                    var torch = [ 0x8a, 0x0a, 0x6c, 0xfc, 0x9c, 0x46, 0xf9, 0x20, 0x6a, 0xa8, 0x50, 0x19 ];
+                    var torch = [0x8a, 0x0a, 0x6c, 0xfc, 0x9c, 0x46, 0xf9, 0x20, 0x6a, 0xa8, 0x50, 0x19];
                     if (!buffer || buffer.length < 14 || buffer[0] != 0x80 || !torch.every((v, i) => v == buffer[i + 2])) {
                         archive = new tar.Archive(buffer);
                     }

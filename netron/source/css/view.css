@@ -43,32 +43,101 @@ body {
 
 .webnn-title {
     display: inline-block;
-    border: 1px solid rgba(255, 111, 97, 0.9);
-    background: rgba(255, 111, 97, 0.9);
+    border: 1px solid rgba(255,78,132, 0.9);
+    background: rgba(255,78,132, 0.9);
     color: rgba(255, 255, 255, 1.0);
+    margin: 0.2rem 0.2rem;
     padding: 0.2rem 0.5rem 0.3rem 0.5rem;
 }
 
 .webnn-title:hover {
-    border: 1px solid rgba(255, 111, 97, 1.0);
-    background: rgba(255, 111, 97, 1.0);
+    border: 1px solid rgba(255,78,132, 1.0);
+    background: rgba(255,78,132, 1.0);
 }
 
 .webnn-status {
     display: inline-block;
+}
+
+/* .webnn-status {
+    display: inline-block;
     margin-left: -5px;
     background: transparent;
     color: rgba(0, 0, 0, 0.8);
-    border: 1px solid rgba(255, 111, 97, 0.9);
+    border: 1px solid rgba(255,78,132, 0.9);
     display: inline-block;
     padding: 0.2rem 0.5rem 0.3rem 0.5rem;
 }
 
 .webnn-status:hover {
-    color: rgba(255, 111, 97, 1.0);
-    border: 1px solid rgba(255, 111, 97, 1.0);
+    color: rgba(255,78,132, 1.0);
+    border: 1px solid rgba(255,78,132, 1.0);
+} */
+
+.webnn-status span {
+    background: rgba(255,78,132, 0.9);
+    margin: 0.2rem 0.2rem;
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0.2rem 0.5rem 0.3rem 0.5rem;
+    border: 1px solid rgba(255,78,132, 0.9);
 }
 
+.webnn-status span:hover {
+    background: rgba(255,78,132, 1.0);
+    color: rgba(255, 255, 255, 1.0);
+    text-decoration: underline;
+    border: 1px solid rgba(255,78,132, 1.0);
+}
+
+.node, .node-item {
+    border-radius: 0px !important;
+}
+
+.table-wrapper {
+    text-align: center;
+    margin: auto;
+    padding: 1rem 2rem;
+}    
+
+table {
+    text-align: center;
+    margin: auto;
+    font-size: 0.8rem;
+    font-weight: 200;
+    border-collapse: collapse;
+}
+
+tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+tr:hover {
+    background-color: rgb(72, 170, 255, 0.05);
+    color: rgba(0, 0, 0, 0.8);
+}
+  
+th {
+    background-color: rgb(72, 170, 255);
+    color: #fff;
+}
+
+th, td {
+    text-align: center;
+    padding: 0.3rem 0.5rem;
+    font-weight: 200;
+}
+
+td:hover {
+    background-color: rgba(255,78,132, 1.0);
+    color: rgba(255, 255, 255, 1.0);
+}
+
+.no {
+    background:  rgba(255,78,132, 0.4);
+    color: rgba(0, 0, 0, 0.8);
+}
+ 
 .background {
     position: fixed;
     left: 0;
@@ -143,7 +212,7 @@ body {
     padding: 0 10px 0 10px;
     min-width: 60px;
     height: 30px;
-    border-radius: 6px;
+    border-radius: 0px;
     transition: 0.1s;
     user-select: none;
     -webkit-user-select: none;
@@ -189,7 +258,7 @@ body {
 
 .toolbar-button {
     background: None;
-    border-radius: 6px;
+    border-radius: 0px;
     border: 0;
     margin: 0;
     padding: 0;
@@ -221,7 +290,7 @@ body {
     position: absolute;
     min-width: 225px;
     z-index: 1;
-    border-radius: 4px;
+    border-radius: 0px;
     background-color: #f2f2f2;
     border: 1px solid rgba(0,0,0,.15);
     padding-top: 2px;
@@ -233,7 +302,7 @@ body {
 .dropdown button {
     display: block;
     border: none;
-    border-radius: 0;
+    border-radius: 0px;
     background-color: transparent;
     color: black;
     width: 100%;
