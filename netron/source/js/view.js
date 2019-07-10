@@ -1152,11 +1152,6 @@ view.ModelFactoryService = class {
                         match++;
                         return modelFactory.open(context, this._host).then((model) => {
 
-                            var findName = (v, key) => {
-                                console.log(v + ' ' + key)
-                               return (v.toLowerCase().indexOf(key) >-1) ? true : false; 
-                            }
-
                             function uniqueArray(array, key) { 
                                 var result = [array[0]]; 
                                 for (var i = 1; i < array.length; i++) { 
