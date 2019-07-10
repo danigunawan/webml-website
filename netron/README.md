@@ -4,9 +4,9 @@ This tool is based on [Netron](https://github.com/lutzroeder/netron). [Netron](h
 
 The revised version could show WebNN API support status for loaded models.
 
-# Getting Started
+## Getting Started
 
-Visit [index.html](index.html) page.
+Visit [index.html](index.html) page, load a model.
 
 ## Download Models
 
