@@ -1157,218 +1157,318 @@ view.ModelFactoryService = class {
                                return (v.toLowerCase().indexOf(key) >-1) ? true : false; 
                             }
 
+                            function uniqueArray(array, key) { 
+                                var result = [array[0]]; 
+                                for (var i = 1; i < array.length; i++) { 
+                                    var item = array[i]; 
+                                    var repeat = false; 
+                                    for (var j = 0; j < result.length; j++) { 
+                                        if (item[key] == result[j][key]) { 
+                                            repeat = true; 
+                                            break; 
+                                        } 
+                                    } 
+                                    if (!repeat) { 
+                                        result.push(item); 
+                                    } 
+                                } 
+                                return result; 
+                            }
+
                             var requiredops = document.getElementById('requiredops');
                             var opmap = document.getElementById('opmap');
 
-                            var nodes = model._graphs[0]._nodes;
+                            var nodes = model.graphs[0].nodes;
                             var allops = []
                             nodes.map(x => {
-                                if (x._operator) {
+                                if (x.operator) {
                                     // TFLite and ONNX
-                                    let item = { name: x._operator, para: ""}
+                                    // let item = { name: x._operator, para: ""}
+
+                                    let item = { "name": x.operator }
+                                    // ONNX 
+                                    if(x.operator === 'Conv') {
+                                        let nGroups = 1;
+                                        let inputChannels;
+                                        let depthwise;
+                                        let dilations = false;
+                                        x.attributes.map((i) => {
+                                            if(i.name === 'group') {
+                                                nGroups = i.value
+                                                if(i.value <= 1) {
+                                                    depthwise = false;
+                                                } 
+                                            }
+                                        })
+
+                                        x.inputs.map((i) => {
+                                            let inputChannelsW;
+                                            if(i.name === 'W') {
+                                                if(i.arguments[0] && i.arguments[0].type && i.arguments[0].type.shape) {
+                                                    inputChannelsW = i.arguments[0].type.shape.dimensions[0];
+                                                }
+                                            }
+                                            let inputChannelsX;
+                                            if(i.name === 'X') {
+                                                if(i.arguments[0] && i.arguments[0].type && i.arguments[0].type.shape) {
+                                                    inputChannelsX = i.arguments[0].type.shape.dimensions[1];
+                                                }
+                                            }
+
+                                            if (inputChannelsW) {
+                                                inputChannels = inputChannelsW
+                                            } else if (inputChannelsX) {
+                                                inputChannels = inputChannelsX
+                                            }
+
+                                            if(inputChannels && nGroups > 1 && nGroups == inputChannels) {
+                                                depthwise = true;
+                                            } else {
+                                                depthwise = false;
+                                            }
+                                        })
+                                        x.attributes.map((i) => {
+                                            if(i.name === 'dilations') {
+                                                (i.value[0] > 1 || i.value[1] > 1) ? dilations = true : dilations = false;
+                                            }
+                                        })
+
+                                        item = {"name": x.operator, "depthwise": depthwise, "dilations": dilations }
+                                    }
+
                                     allops.push(item)
                                 } else {
                                     // OpenVINO
-
                                     let item = {}
+                                    // if(x._type === 'Convolution') {
 
-                                    if(x.type === 'Convolution') {
-                                        if (findName(x._name, 'conv2d')) {
-                                            item = { name: x._type, para: "conv2d" }
-                                        } else if (findName(x._name, 'depthwise')) {
-                                            item = { name: x._type, para: "depthwise_conv_2d" }
-                                        } else {
-                                            item = { name: x._type, para: x._name }
-                                        }
-                                    } else {
-                                        item = { name: x._type, para: x._name }
-                                    }
+                                    //     console.log(x._type)
+                                    //     let inDims = x._inputs[0].shape()
+                                    //     console.log(inDims)
+
+                                    //     item = { name: x._type, para: x._name }
+
+                                    // } else {
+                                    //     console.log('else' + x._type)
+                                    //     item = { name: x._type, para: x._name }
+                                    // }
                                     allops.push(item)
                                 }
                             }
                             );
-                            var filteredops = new Set(allops);
-                            var t = [...filteredops]
 
-                            console.log(t)
+                            // allops = uniqueArray(allops, "name"); 
+
+                            var allops = allops.filter((allops, index, self) => index === self.findIndex((t) => (t.name === allops.name && t.depthwise === allops.depthwise && t.dilations === allops.dilations)))
+
+                            console.log(allops)
+
+                            var t = []
+                            allops.map((i)=> {
+                                let item = i.name;
+                                if(i.name === 'Conv') {
+                                    if (i.depthwise === true && i.dilations === true) {
+                                        item = 'Conv/ATROUS_DEPTHWISE_CONV_2D';
+                                    } else if (i.depthwise === true && i.dilations === false) {
+                                        item = 'Conv/DEPTHWISE_CONV_2D';
+                                    } else if (i.depthwise === false && i.dilations === true) {
+                                        item = 'Conv/ATROUS_CONV_2D';
+                                    } else {
+                                        item = 'Conv/CONV_2D';
+                                    }
+                                }
+                                t.push(item);
+                            });
+
+                            // var filteredops = new Set(allops);
+                            // var t = [...filteredops]
                             
-                            // requiredops.innerHTML = '<span>' + t.join(' </span><span>') + '</span>'
+                            requiredops.innerHTML = '<span>' + t.join(' </span><span>') + '</span>'
 
-                            // fetch('source/json/webnnsupportedops.json')
-                            //     .then(function (response) {
-                            //         return response.json();
-                            //     })
-                            //     .then(function (data) {
-                            //         // console.log()
-                            //         // console.log(t);
+                            fetch('source/json/webnnsupportedops.json')
+                                .then(function (response) {
+                                    return response.json();
+                                })
+                                .then(function (data) {
+                                    // console.log()
+                                    // console.log(t);
 
-                            //         t.map((i) => {
-                            //             let tr = document.createElement('tr');
-                            //             let td = `<td>${i}</td>`;
+                                    t.map((i) => {
+                                        let tr = document.createElement('tr');
+                                        let td = `<td>${i}</td>`;
 
-                            //             switch (i) {
-                            //                 // ONNX
-                            //                 // https://github.com/intel/webml-polyfill/blob/master/examples/util/onnx/OnnxModelImporter.js
-                            //                 case 'Conv':
-                            //                     i = 'CONV_2D'; // + DEPTHWISE_CONV_2D
-                            //                     break;
-                            //                 case 'BatchNormalization':
-                            //                     i = 'CONV_2D';
-                            //                     break;
-                            //                 case 'Relu':
-                            //                     i = 'CONV_2D';
-                            //                     break;
-                            //                 case 'Sum':
-                            //                     i = 'ADD';
-                            //                     break;
-                            //                 case 'Add':
-                            //                     i = 'ADD';
-                            //                     break;
-                            //                 case 'Mul':
-                            //                     i = 'MUL';
-                            //                     break;
-                            //                 case 'Gemm':
-                            //                     i = 'FULLY_CONNECTED';
-                            //                     break;
-                            //                 case 'MaxPool':
-                            //                     i = 'MAX_POOL_2D';
-                            //                     break;
-                            //                 case 'AveragePool':
-                            //                     i = 'AVERAGE_POOL_2D';
-                            //                     break;
-                            //                 case 'Concat':
-                            //                     i = 'CONCATENATION';
-                            //                     break;
-                            //                 case 'Dropout':
-                            //                     i = 'Skip';
-                            //                     break;
-                            //                 case 'GlobalAveragePool':
-                            //                     i = 'AVERAGE_POOL_2D';
-                            //                     break;
-                            //                 case 'Constant':
-                            //                     i = 'Skip';
-                            //                     break;
-                            //                 case 'Reshape':
-                            //                     i = 'RESHAPE';
-                            //                     break;
-                            //                 case 'Transpose':
-                            //                     i = 'TRANSPOSE';
-                            //                     break;
-                            //                 case 'Flatten':
-                            //                     i = 'RESHAPE';
-                            //                     break;
-                            //                 case 'Unsqueeze':
-                            //                     i = 'Skip';
-                            //                     break;
-                            //                 case 'Neg':
-                            //                     i = 'MUL';
-                            //                     break;
-                            //                 case 'Softmax':
-                            //                     i = 'SOFTMAX';
-                            //                     break;
-                            //                 default: {
-                            //                     //
-                            //                 }
-                            //             }
+                                        switch (i) {
+                                            // ONNX
+                                            // https://github.com/intel/webml-polyfill/blob/master/examples/util/onnx/OnnxModelImporter.js
+                                            case 'Conv/ATROUS_DEPTHWISE_CONV_2D':
+                                                i = 'ATROUS_DEPTHWISE_CONV_2D';
+                                                break;
+                                            case 'Conv/DEPTHWISE_CONV_2D':
+                                                i = 'DEPTHWISE_CONV_2D';
+                                                break;
+                                            case 'Conv/ATROUS_CONV_2D':
+                                                i = 'ATROUS_CONV_2D';
+                                                break;
+                                            case 'Conv/CONV_2D':
+                                                i = 'CONV_2D';
+                                                break;
+                                            case 'BatchNormalization':
+                                                i = 'CONV_2D';
+                                                break;
+                                            case 'Relu':
+                                                i = 'CONV_2D';
+                                                break;
+                                            case 'Sum':
+                                                i = 'ADD';
+                                                break;
+                                            case 'Add':
+                                                i = 'ADD';
+                                                break;
+                                            case 'Mul':
+                                                i = 'MUL';
+                                                break;
+                                            case 'Gemm':
+                                                i = 'FULLY_CONNECTED';
+                                                break;
+                                            case 'MaxPool':
+                                                i = 'MAX_POOL_2D';
+                                                break;
+                                            case 'AveragePool':
+                                                i = 'AVERAGE_POOL_2D';
+                                                break;
+                                            case 'Concat':
+                                                i = 'CONCATENATION';
+                                                break;
+                                            case 'Dropout':
+                                                i = 'Skip';
+                                                break;
+                                            case 'GlobalAveragePool':
+                                                i = 'AVERAGE_POOL_2D';
+                                                break;
+                                            case 'Constant':
+                                                i = 'Skip';
+                                                break;
+                                            case 'Reshape':
+                                                i = 'RESHAPE';
+                                                break;
+                                            case 'Transpose':
+                                                i = 'TRANSPOSE';
+                                                break;
+                                            case 'Flatten':
+                                                i = 'RESHAPE';
+                                                break;
+                                            case 'Unsqueeze':
+                                                i = 'Skip';
+                                                break;
+                                            case 'Neg':
+                                                i = 'MUL';
+                                                break;
+                                            case 'Softmax':
+                                                i = 'SOFTMAX';
+                                                break;
+                                            default: {
+                                                //
+                                            }
+                                        }
 
-                            //             switch (i) {
-                            //                 // ONNX
-                            //                 // https://github.com/intel/webml-polyfill/blob/master/examples/util/openvino/OpenVINOModelImporter.js
-                            //                 case 'Convolution':
-                            //                     i = 'CONV_2D'; // DEPTHWISE_CONV_2D 
-                            //                     break;
-                            //                 case 'Eltwise':
-                            //                     i = 'Skip';
-                            //                     break;
-                            //                 case 'sum':
-                            //                     i = 'ADD';
-                            //                     break;
-                            //                 case 'mul':
-                            //                     i = 'MUL';
-                            //                     break;
-                            //                 case 'FullyConnected':
-                            //                     i = 'FULLY_CONNECTED';
-                            //                     break;
-                            //                 case 'ScaleShift':
-                            //                     i = 'ADD';
-                            //                     break;
-                            //                 case 'Pooling':
-                            //                     i = 'MAX_POOL_2D'; // AVERAGE_POOL_2D
-                            //                     break;
-                            //                 case 'Concat':
-                            //                     i = 'CONCATENATION';
-                            //                     break;
-                            //                 case 'Permute':
-                            //                     i = 'Skip';
-                            //                     break;
-                            //                 case 'Const':
-                            //                     i = 'Skip';
-                            //                     break;
-                            //                 case 'Reshape':
-                            //                     i = 'RESHAPE';
-                            //                     break;
-                            //                 case 'SoftMax':
-                            //                     i = 'SOFTMAX';
-                            //                     break;
-                            //                 case 'ReLU':
-                            //                     i = 'FUSED_RELU';
-                            //                     break;
-                            //                 case 'Clamp':
-                            //                     i = 'FUSED_RELU6'; // FUSED_RELU1
-                            //                     break;
-                            //                 default: {
-                            //                     //
-                            //                 }
-                            //             }
+                                        switch (i) {
+                                            // ONNX
+                                            // https://github.com/intel/webml-polyfill/blob/master/examples/util/openvino/OpenVINOModelImporter.js
+                                            case 'Convolution':
+                                                i = 'CONV_2D'; // DEPTHWISE_CONV_2D 
+                                                break;
+                                            case 'Eltwise':
+                                                i = 'Skip';
+                                                break;
+                                            case 'sum':
+                                                i = 'ADD';
+                                                break;
+                                            case 'mul':
+                                                i = 'MUL';
+                                                break;
+                                            case 'FullyConnected':
+                                                i = 'FULLY_CONNECTED';
+                                                break;
+                                            case 'ScaleShift':
+                                                i = 'ADD';
+                                                break;
+                                            case 'Pooling':
+                                                i = 'MAX_POOL_2D'; // AVERAGE_POOL_2D
+                                                break;
+                                            case 'Concat':
+                                                i = 'CONCATENATION';
+                                                break;
+                                            case 'Permute':
+                                                i = 'Skip';
+                                                break;
+                                            case 'Const':
+                                                i = 'Skip';
+                                                break;
+                                            case 'Reshape':
+                                                i = 'RESHAPE';
+                                                break;
+                                            case 'SoftMax':
+                                                i = 'SOFTMAX';
+                                                break;
+                                            case 'ReLU':
+                                                i = 'FUSED_RELU';
+                                                break;
+                                            case 'Clamp':
+                                                i = 'FUSED_RELU6'; // FUSED_RELU1
+                                                break;
+                                            default: {
+                                                //
+                                            }
+                                        }
 
-                            //             i = i.toLowerCase().replace(/_/g, '');
+                                        i = i.toLowerCase().replace(/_/g, '');
 
-                            //             var lr = (i) => {
-                            //                 return i.toLowerCase().replace(/_/g, '');
-                            //             }
+                                        var lr = (i) => {
+                                            return i.toLowerCase().replace(/_/g, '');
+                                        }
 
-                            //             if(i === 'skip') {
-                            //                 td += '<td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td>'
-                            //             }
-                            //             else {
-                            //                 (data.WASM.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                            //                 (data.WebGL.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                            //                 (data.NNAPI.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                            //                 (data.MPS.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                            //                 (data.BNNS.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                            //                 (data.clDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                            //                 (data.MKLDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                            //                 (data.DirectML.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                            //                 (data.IE_clDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                            //                 (data.IE_MKLDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                            //                 (data.IE_MYRIAD.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                            //                 // let iemyriad = data.IE_MYRIAD.map((v)=>{ return lr(v)});
-                            //                 // let iemyriads = wasm.includes(i);
-                            //                 // iemyriads ? td += '<td>Yes</td>' : td += '<td>No</td>';
-                            //             }
-
-
-                            //             tr.innerHTML = td;
-                            //             opmap.appendChild(tr);
-                            //         });
-
-
-                            //         // t.map((i) => {
-                            //         //     console.log(i);
-
-                            //         //     let wasm = data['WASM'];
-
-                            //         //     wasm.map((j) => {
-                            //         //         if (j.toLowerCase().replace(/_/g, '') === i) {
-                            //         //             console.log('Support:' + i);
-                            //         //         }
-                            //         //     });
+                                        if(i === 'skip') {
+                                            td += '<td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td>'
+                                        }
+                                        else {
+                                            (data.WASM.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                                            (data.WebGL.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                                            (data.NNAPI.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                                            (data.MPS.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                                            (data.BNNS.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                                            (data.clDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                                            (data.MKLDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                                            (data.DirectML.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                                            (data.IE_clDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                                            (data.IE_MKLDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                                            (data.IE_MYRIAD.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                                            // let iemyriad = data.IE_MYRIAD.map((v)=>{ return lr(v)});
+                                            // let iemyriads = wasm.includes(i);
+                                            // iemyriads ? td += '<td>Yes</td>' : td += '<td>No</td>';
+                                        }
 
 
-                            //         // });
+                                        tr.innerHTML = td;
+                                        opmap.appendChild(tr);
+                                    });
 
-                            //         // console.log(data);
-                            //     });
+
+                                    // t.map((i) => {
+                                    //     console.log(i);
+
+                                    //     let wasm = data['WASM'];
+
+                                    //     wasm.map((j) => {
+                                    //         if (j.toLowerCase().replace(/_/g, '') === i) {
+                                    //             console.log('Support:' + i);
+                                    //         }
+                                    //     });
+
+
+                                    // });
+
+                                    // console.log(data);
+                                });
 
                             return model;
                         }).catch((error) => {
