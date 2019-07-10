@@ -1,8 +1,12 @@
 # Model Required Ops and WebNN API Support Status
 
-This tool is based on [Netron](https://github.com/lutzroeder/netron). [Netron](https://github.com/lutzroeder/netron) is a viewer for neural network, deep learning and machine learning models developed by [Lutz Roeder](https://github.com/lutzroeder)
+This tool is based on [Netron](https://github.com/lutzroeder/netron). [Netron](https://github.com/lutzroeder/netron) is a viewer for neural network, deep learning and machine learning models developed by [Lutz Roeder](https://github.com/lutzroeder).
 
 The revised version could show WebNN API support status for loaded models.
+
+# Getting Started
+
+Visit [index.html](index.html) page.
 
 ## Download Models
 
