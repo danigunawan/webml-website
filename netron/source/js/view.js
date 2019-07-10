@@ -1181,11 +1181,11 @@ view.ModelFactoryService = class {
                             var nodes = model.graphs[0].nodes;
                             var allops = []
                             nodes.map(x => {
-                                if (x.operator) {
-                                    // TFLite and ONNX
-                                    // let item = { name: x._operator, para: ""}
+                                let item = {}
 
-                                    let item = { "name": x.operator }
+                                // TFLite and ONNX
+                                if (x.operator) {
+                                    item = { "name": x.operator }
                                     // ONNX 
                                     if(x.operator === 'Conv') {
                                         let nGroups = 1;
@@ -1235,25 +1235,90 @@ view.ModelFactoryService = class {
 
                                         item = {"name": x.operator, "depthwise": depthwise, "dilations": dilations }
                                     }
-
-                                    allops.push(item)
-                                } else {
-                                    // OpenVINO
-                                    let item = {}
-                                    // if(x._type === 'Convolution') {
-
-                                    //     console.log(x._type)
-                                    //     let inDims = x._inputs[0].shape()
-                                    //     console.log(inDims)
-
-                                    //     item = { name: x._type, para: x._name }
-
-                                    // } else {
-                                    //     console.log('else' + x._type)
-                                    //     item = { name: x._type, para: x._name }
-                                    // }
-                                    allops.push(item)
                                 }
+
+                                // OpenVINO
+                                if(x._type) {
+                                    item = { "name": x._type }
+                                    if(x._type === 'Convolution') {
+                                        let nGroups = 1;
+                                        let inputChannels;
+                                        let depthwise;
+                                        let dilations = false;
+                                        console.log('>>> ')
+                                        x.attributes.map((i) => {
+                                            if(i.name === 'group') {
+                                                nGroups = i.value
+                                                if(i.value <= 1) {
+                                                    depthwise = false;
+                                                } 
+                                            }
+                                        })
+
+                                        x.inputs.map((i) => {
+                                            let inputChannelsW;
+                                            if(i.name === 'weights') {
+                                                if(i.arguments[0] && i.arguments[0].type && i.arguments[0].type.shape) {
+                                                    inputChannelsW = i.arguments[0].type.shape.dimensions[0];
+                                                }
+                                            }
+                                            let inputChannelsI;
+                                            if(i.name === 'input') {
+                                                if(i.arguments[0] && i.arguments[0].type && i.arguments[0].type.shape) {
+                                                    inputChannelsI = i.arguments[0].type.shape.dimensions[1];
+                                                }
+                                            }
+
+                                            if (inputChannelsW) {
+                                                inputChannels = inputChannelsW
+                                            } else if (inputChannelsI) {
+                                                inputChannels = inputChannelsI
+                                            }
+
+                                            if(inputChannels && nGroups > 1 && nGroups == inputChannels) {
+                                                depthwise = true;
+                                            } else {
+                                                depthwise = false;
+                                            }
+                                        })
+                                        x.attributes.map((i) => {
+                                            if(i.name === 'dilations') {
+                                                (i.value[0] > 1 || i.value[1] > 1) ? dilations = true : dilations = false;
+                                            }
+                                        })
+
+                                        item = {"name": x._type, "depthwise": depthwise, "dilations": dilations }
+                                    }
+
+                                    if(x._type === 'Pooling') {
+                                        let poolmethod = 'max';
+                                        x.attributes.map((i) => {
+                                            if(i.name === 'pool-method') {
+                                                (i.value == 'max') ? poolmethod = 'max' : poolmethod = 'avg';
+                                            }
+                                        })
+
+                                        item = {"name": x._type, "poolmethod": poolmethod }
+                                    }
+
+
+                                    if(x._type === 'Clamp') {
+                                        let max;
+                                        let min;
+                                        x.attributes.map((i) => {
+                                            if(i.name === 'max') {
+                                                max = i.value;
+                                            }
+                                            if(i.name === 'min') {
+                                                min = i.value;
+                                            }
+                                        })
+
+                                        item = {"name": x._type, "min": min, "max": max }
+                                    }
+                                }
+                                
+                                allops.push(item)
                             }
                             );
 
@@ -1266,17 +1331,44 @@ view.ModelFactoryService = class {
                             var t = []
                             allops.map((i)=> {
                                 let item = i.name;
-                                if(i.name === 'Conv') {
+                                // ONNX
+                                if (i.name === 'Conv') {
                                     if (i.depthwise === true && i.dilations === true) {
-                                        item = 'Conv/ATROUS_DEPTHWISE_CONV_2D';
+                                        item = 'Conv/AtrousDepthwiseConv2D';
                                     } else if (i.depthwise === true && i.dilations === false) {
-                                        item = 'Conv/DEPTHWISE_CONV_2D';
+                                        item = 'Conv/DepthwiseConv2D';
                                     } else if (i.depthwise === false && i.dilations === true) {
-                                        item = 'Conv/ATROUS_CONV_2D';
+                                        item = 'Conv/AtrousConv2D';
                                     } else {
-                                        item = 'Conv/CONV_2D';
+                                        item = 'Conv/Conv2D';
+                                    }
+                                } 
+
+                                // OpenVINO
+                                else if(i.name === 'Convolution') {
+                                    if (i.depthwise === true && i.dilations === true) {
+                                        item = 'Convolution/AtrousDepthwiseConv2D';
+                                    } else if (i.depthwise === true && i.dilations === false) {
+                                        item = 'Convolution/DepthwiseConv2D';
+                                    } else if (i.depthwise === false && i.dilations === true) {
+                                        item = 'Convolution/AtrousConv2D';
+                                    } else {
+                                        item = 'Convolution/Conv2D';
+                                    }
+                                } else if (i.name === 'Pooling') {
+                                    if(i.poolmethod === 'max') {
+                                        item = 'Pooling/MaxPool2D';
+                                    } else {
+                                        item = 'Pooling/AveragePool2D';
+                                    }
+                                } else if (i.name === 'Clamp') {
+                                    if(i.max === 6 && i.min === 0) {
+                                        item = 'Clamp/Relu6';
+                                    } else if (i.max === 1 && i.min === -1) {
+                                        item = 'Clamp/Relu1';
                                     }
                                 }
+
                                 t.push(item);
                             });
 
@@ -1290,9 +1382,6 @@ view.ModelFactoryService = class {
                                     return response.json();
                                 })
                                 .then(function (data) {
-                                    // console.log()
-                                    // console.log(t);
-
                                     t.map((i) => {
                                         let tr = document.createElement('tr');
                                         let td = `<td>${i}</td>`;
@@ -1300,16 +1389,16 @@ view.ModelFactoryService = class {
                                         switch (i) {
                                             // ONNX
                                             // https://github.com/intel/webml-polyfill/blob/master/examples/util/onnx/OnnxModelImporter.js
-                                            case 'Conv/ATROUS_DEPTHWISE_CONV_2D':
+                                            case 'Conv/AtrousDepthwiseConv2D':
                                                 i = 'ATROUS_DEPTHWISE_CONV_2D';
                                                 break;
-                                            case 'Conv/DEPTHWISE_CONV_2D':
+                                            case 'Conv/DepthwiseConv2D':
                                                 i = 'DEPTHWISE_CONV_2D';
                                                 break;
-                                            case 'Conv/ATROUS_CONV_2D':
+                                            case 'Conv/AtrousConv2D':
                                                 i = 'ATROUS_CONV_2D';
                                                 break;
-                                            case 'Conv/CONV_2D':
+                                            case 'Conv/Conv2D':
                                                 i = 'CONV_2D';
                                                 break;
                                             case 'BatchNormalization':
@@ -1372,10 +1461,19 @@ view.ModelFactoryService = class {
                                         }
 
                                         switch (i) {
-                                            // ONNX
+                                            // OpenVINO
                                             // https://github.com/intel/webml-polyfill/blob/master/examples/util/openvino/OpenVINOModelImporter.js
-                                            case 'Convolution':
-                                                i = 'CONV_2D'; // DEPTHWISE_CONV_2D 
+                                            case 'Convolution/AtrousDepthwiseConv2D':
+                                                i = 'ATROUS_DEPTHWISE_CONV_2D';
+                                                break;
+                                            case 'Convolution/DepthwiseConv2D':
+                                                i = 'DEPTHWISE_CONV_2D';
+                                                break;
+                                            case 'Convolution/AtrousConv2D':
+                                                i = 'ATROUS_CONV_2D';
+                                                break;
+                                            case 'Convolution/Conv2D':
+                                                i = 'CONV_2D';
                                                 break;
                                             case 'Eltwise':
                                                 i = 'Skip';
@@ -1392,8 +1490,11 @@ view.ModelFactoryService = class {
                                             case 'ScaleShift':
                                                 i = 'ADD';
                                                 break;
-                                            case 'Pooling':
-                                                i = 'MAX_POOL_2D'; // AVERAGE_POOL_2D
+                                            case 'Pooling/MaxPool2D':
+                                                i = 'MAX_POOL_2D';
+                                                break;
+                                            case 'Pooling/AveragePool2D':
+                                                i = 'AVERAGE_POOL_2D';
                                                 break;
                                             case 'Concat':
                                                 i = 'CONCATENATION';
@@ -1413,8 +1514,11 @@ view.ModelFactoryService = class {
                                             case 'ReLU':
                                                 i = 'FUSED_RELU';
                                                 break;
-                                            case 'Clamp':
-                                                i = 'FUSED_RELU6'; // FUSED_RELU1
+                                            case 'Clamp/Relu6':
+                                                i = 'FUSED_RELU6';  
+                                                break;
+                                            case 'Clamp/Relu1':
+                                                i = 'FUSED_RELU1';  
                                                 break;
                                             default: {
                                                 //
@@ -1451,23 +1555,6 @@ view.ModelFactoryService = class {
                                         tr.innerHTML = td;
                                         opmap.appendChild(tr);
                                     });
-
-
-                                    // t.map((i) => {
-                                    //     console.log(i);
-
-                                    //     let wasm = data['WASM'];
-
-                                    //     wasm.map((j) => {
-                                    //         if (j.toLowerCase().replace(/_/g, '') === i) {
-                                    //             console.log('Support:' + i);
-                                    //         }
-                                    //     });
-
-
-                                    // });
-
-                                    // console.log(data);
                                 });
 
                             return model;
