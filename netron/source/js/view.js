@@ -1372,7 +1372,7 @@ view.ModelFactoryService = class {
                             
                             requiredops.innerHTML = '<span>' + t.join(' </span><span>') + '</span>'
 
-                            fetch('source/json/webnnsupportedops.json')
+                            fetch('source/json/webnnops.json')
                                 .then(function (response) {
                                     return response.json();
                                 })
@@ -1522,30 +1522,39 @@ view.ModelFactoryService = class {
 
                                         i = i.toLowerCase().replace(/_/g, '');
 
-                                        var lr = (i) => {
+                                        let lr = (i) => {
                                             return i.toLowerCase().replace(/_/g, '');
+                                        }
+
+                                        let ops = (i) => {
+                                            let t = [], key;
+                                                for (key in i) {
+                                                    if(i[key] === 1) {
+                                                        t.push(lr(key));
+                                                    }
+                                                }
+                                            return t;
                                         }
 
                                         if(i === 'skip') {
                                             td += '<td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td><td>Skip</td>'
                                         }
                                         else {
-                                            (data.WASM.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                                            (data.WebGL.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                                            (data.NNAPI.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                                            (data.MPS.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                                            (data.BNNS.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                                            (data.clDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                                            (data.MKLDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                                            (data.DirectML.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                                            (data.IE_clDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                                            (data.IE_MKLDNN.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
-                                            (data.IE_MYRIAD.map((v) => { return lr(v) }).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>';
+                                            data.WASM.map((v) => { (ops(v).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>'; })
+                                            data.WebGL.map((v) => { (ops(v).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>'; })
+                                            data.NNAPI.map((v) => { (ops(v).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>'; })
+                                            data.MPS.map((v) => { (ops(v).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>'; })
+                                            data.BNNS.map((v) => { (ops(v).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>'; })
+                                            data.clDNN.map((v) => { (ops(v).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>'; })
+                                            data.MKLDNN.map((v) => { (ops(v).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>'; })
+                                            data.DirectML.map((v) => { (ops(v).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>'; })
+                                            data.IE_clDNN.map((v) => { (ops(v).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>'; })
+                                            data.IE_MKLDNN.map((v) => { (ops(v).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>'; })
+                                            data.IE_MYRIAD.map((v) => { (ops(v).includes(i)) ? td += '<td>Yes</td>' : td += '<td class="no">No</td>'; })
                                             // let iemyriad = data.IE_MYRIAD.map((v)=>{ return lr(v)});
                                             // let iemyriads = wasm.includes(i);
                                             // iemyriads ? td += '<td>Yes</td>' : td += '<td>No</td>';
                                         }
-
 
                                         tr.innerHTML = td;
                                         opmap.appendChild(tr);
