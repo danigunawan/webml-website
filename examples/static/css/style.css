@@ -2880,6 +2880,32 @@ button.xclose {
   background: linear-gradient(to bottom right, rgba(255, 213, 188, 1.0), rgba(255, 110, 97, 1.0));
 }
 
+#controller {
+  margin-top: 1rem;
+}
+
+#controller div {
+  color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  width: 60px;
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  margin: 0.1rem 0.1rem;
+  font-size: 13px;
+  text-align: center;
+}
+
+#controller div:hover {
+  color: rgba(25, 190, 225, 1.0);
+  cursor: pointer;
+  border: 1px solid rgba(25, 190, 225, 1.0);
+}
+
+#controller div:current {
+  color: rgba(255, 110, 97, 1.0);
+  border: 1px solid rgba(255, 110, 97, 1.0);
+}
+
 #speechcommands #controller svg {
   width: 30px;
   height: 30px;
@@ -2949,4 +2975,8 @@ button.xclose {
 #speechcommands #scresult #rtext:hover {
   background-color: rgba(255, 110, 97, 1.0);
   color: rgba(255, 255, 255, 1.0);
+}
+
+#rtext {
+  text-transform: capitalize;
 }
