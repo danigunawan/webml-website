@@ -12,8 +12,11 @@ const detecorCanvasElement = document.getElementById('detecorCanvas');
 const recognitionCanvasElement = document.getElementById('recognitionCanvas');
 
 let front = true;
-const currentRecognitionModel = 'facenet_OpenVino';
+let currentDetecorModel = null;
+let currentRecognitionModel = null;
 
+const detectionModels = faceDetectionModels.map((m) => m.modelId);
+const recognitionModels = faceRecognitionModels.map((m) => m.modelId);
 const faceDetector = new FaceDetecor(detecorCanvas);
 const faceRecognition = new Utils(recognitionCanvasElement);
 
@@ -35,7 +38,7 @@ const predict = async(targetSource, searchSource, targetShow, searchShow, embedd
       targetRecogniseResult, targetEmbeddings;
   if (embeddings == null) {
     targetDetectResult = await faceDetector.getFaceBoxes(targetSource);
-    targetFaceBoxes = faceRecognition.getSquareBox(targetDetectResult.boxes);
+    targetFaceBoxes = faceRecognition.getBoxs(targetDetectResult.boxes);
     targetRecogniseResult = await faceRecognition.predict(targetSource, targetFaceBoxes);
     targetEmbeddings = targetRecogniseResult.embedding;
     targetTime = parseFloat(targetDetectResult.time + targetRecogniseResult.time);
@@ -49,7 +52,7 @@ const predict = async(targetSource, searchSource, targetShow, searchShow, embedd
   }
 
   let searchDetectResult = await faceDetector.getFaceBoxes(searchSource);
-  let searchFaceBoxes = faceRecognition.getSquareBox(searchDetectResult.boxes);
+  let searchFaceBoxes = faceRecognition.getBoxs(searchDetectResult.boxes);
   let searchRecogniseResult = await faceRecognition.predict(searchSource, searchFaceBoxes);
   let searchEmbeddings = searchRecogniseResult.embedding;
   let searchTime = parseFloat(searchDetectResult.time + searchRecogniseResult.time);
@@ -161,16 +164,39 @@ requiredOps = async() => {
 
 const main = async (camera = false) => {
   streaming = false;
-  try {
-    faceDetector.deleteAll();
-  } catch (e) { }
+
+  if (currentModel !== 'undefined') {
+    let currentModelArray = currentModel.split(/\s|\+/);
+    for (let curtModel of currentModelArray) {
+      if (recognitionModels.includes(curtModel)) {
+        if (curtModel !== currentRecognitionModel) {
+          try {
+            faceRecognition.deleteAll();
+          } catch (e) { }
+        }
+
+        currentRecognitionModel = curtModel;
+      } else if (detectionModels.includes(curtModel)) {
+        if (curtModel !== currentDetecorModel) {
+          try {
+            faceDetector.deleteAll();
+          } catch (e) { }
+        }
+
+        currentDetecorModel = curtModel;
+      } else {
+        throw new Error(`Unknown model: ${curtModel}`);
+      }
+    }
+  }
+
   logConfig();
   await showProgress('current', 'pending', 'pending');
   try {
-    let model = getModelById(currentModel);
-    await faceDetector.loadModel(model);
-    let facerecognitionmodel = getModelById(currentRecognitionModel);
-    await faceRecognition.loadModel(facerecognitionmodel);
+    let faceDetecorModel = getModelById(currentDetecorModel);
+    await faceDetector.loadModel(faceDetecorModel);
+    let faceRecognitionModel = getModelById(currentRecognitionModel);
+    await faceRecognition.loadModel(faceRecognitionModel);
     getOffloadOps(currentBackend, currentPrefer);
     await showProgress('done', 'current', 'pending');
     await utilsInit(currentBackend, currentPrefer);

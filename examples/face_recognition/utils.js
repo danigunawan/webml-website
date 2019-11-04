@@ -6,6 +6,9 @@ class Utils {
     this.outputTensor = [];
     this.inputSize;
     this.outputSize;
+    this.boxH;
+    this.boxW;
+    this.modelID;
     this.threshold;
     this.preOptions;
     this.canvasElement = canvas;
@@ -28,6 +31,7 @@ class Utils {
     // set new model params
     this.inputSize = newModel.inputSize;
     this.outputSize = newModel.outputSize;
+    this.modelID = newModel.modelId;
     this.modelFile = newModel.modelFile;
     this.threshold = newModel.threshold || 1.26;
     this.preOptions = newModel.preOptions || {};
@@ -35,7 +39,9 @@ class Utils {
     this.outputTensor = [new Float32Array(newModel.outputSize.reduce((x,y) => x*y))];
 
     this.canvasElement.width = newModel.inputSize[2];
+    this.boxW = newModel.inputSize[2];
     this.canvasElement.height = newModel.inputSize[1];
+    this.boxH = newModel.inputSize[1];
 
     let arrayBuffer = await this.loadUrl(this.modelFile, true, true);
     let weightsBuffer = new Uint8Array(arrayBuffer);
@@ -97,19 +103,31 @@ class Utils {
     }
   }
 
-  // Reference: https://blog.csdn.net/u012505617/article/details/89191158
   getDistance(embeddings1, embeddings2) {
-    // The size of embeddings is [1, 512]
-    if (embeddings1.length !== 512 || embeddings2.length !== 512) {
-      throw new Error('Embeddings is not [1, 512]');
-    }
-
     let embeddingSum = 0;
     for (let i = 0; i < embeddings1.length; i++) {
       embeddingSum = embeddingSum + Math.pow((embeddings1[i] - embeddings2[i]), 2);
     }
 
     return embeddingSum;
+  }
+
+  getCosine(embeddings1, embeddings2) {
+    let dotSum = 0;
+    let norm1 = 0;
+    let norm2 = 0;
+    for (let i = 0; i < embeddings1.length; i++) {
+      dotSum = dotSum + embeddings1[i] * embeddings2[i];
+      norm1 = norm1 + Math.pow(embeddings1[i], 2);
+      norm2 = norm2 + Math.pow(embeddings2[i], 2);
+    }
+
+    norm1 = Math.sqrt(norm1);
+    norm2 = Math.sqrt(norm2);
+
+    let cosine = dotSum / (norm1 * norm2);
+
+    return 1 - cosine;
   }
 
   // Embeddings normalization
@@ -126,7 +144,7 @@ class Utils {
     let embeddingsNorm = new Float32Array(embeddings.length);
     for (let i = 0; i < embeddings.length; i++) {
       if (embeddings[i] !== 0) {
-        embeddingsNorm[i] = (embeddings[i] / L2).toFixed(16);
+        embeddingsNorm[i] = (embeddings[i] / L2).toFixed(10);
       } else {
         embeddingsNorm[i] = 0;
       }
@@ -135,19 +153,24 @@ class Utils {
     return embeddingsNorm;
   }
 
-  getSquareBox(boxs) {
+  getBoxs(boxs) {
+    let boxMean = (this.boxH + this.boxW) / 2;
     let boxsTmp = new Array();
     for (let box of boxs) {
       let h = box[3] - box[2];
       let w = box[1] - box[0];
-      let max_side = Math.floor(Math.max(h, w) / 2) - 1;
+      let mean = (h + w) / 2;
+
+      let sideW = Math.floor(this.boxW * mean / boxMean / 2);
+      let sideH = Math.floor(this.boxH * mean / boxMean / 2);
+
       let centerW = Math.floor((box[1] + box[0]) / 2);
       let centerH = Math.floor((box[3] + box[2]) / 2);
       let boxTmp = new Array();
-      boxTmp[0] = centerW - max_side;
-      boxTmp[1] = centerW + max_side;
-      boxTmp[2] = centerH - max_side;
-      boxTmp[3] = centerH + max_side;
+      boxTmp[0] = centerW - sideW;
+      boxTmp[1] = centerW + sideW;
+      boxTmp[2] = centerH - sideH;
+      boxTmp[3] = centerH + sideH;
       boxsTmp.push(boxTmp);
     }
 
@@ -161,11 +184,22 @@ class Utils {
     for (let i in targetEmbeddings) {
       for (let j in searchEmbeddings) {
         results[j] = 'X';
-        let distance = this.getDistance(targetEmbeddings[i], searchEmbeddings[j]);
+
+        let distance;
+        if (this.modelID === "facenet_recognition_openvino") {
+          let [...targetEmbeddingsTmp] = Float32Array.from(this.normalization(targetEmbeddings[i]));
+          let [...searchEmbeddingsTmp] = Float32Array.from(this.normalization(searchEmbeddings[j]));
+          distance = this.getDistance(targetEmbeddingsTmp, searchEmbeddingsTmp);
+        } else if (this.modelID === "facereidentification_recognition_openvino") {
+          distance = this.getCosine(targetEmbeddings[i], searchEmbeddings[j]);
+        }
+
         if (!distanceMap.has(j)) distanceMap.set(j, new Map());
         distanceMap.get(j).set(i, distance);
       }
     }
+
+    console.dir(distanceMap);
 
     for (let key1 of distanceMap.keys()) {
       let num = null;
@@ -204,8 +238,7 @@ class Utils {
                                    this.canvasElement.height);
       this.prepareInputTensor(this.inputTensor, this.canvasElement);
       await this.model.compute(this.inputTensor, this.outputTensor);
-      let embedding = Float32Array.from(this.outputTensor[0]);
-      let [...normEmbedding] = this.normalization(embedding);
+      let [...normEmbedding] = Float32Array.from(this.outputTensor[0]);
       embeddings.push(normEmbedding);
     }
 
@@ -217,89 +250,7 @@ class Utils {
       time: elapsed.toFixed(2)
     };
   }
-/*
-  async predict(targetSource, targetBoxes, searchSource, searchBoxes) {
-    if (!this.initialized) return;
 
-    let start = performance.now();
-
-    let targetResults = new Array();
-    let searchResults = new Array();
-    let targetEmbeddings = new Array();
-    let searchEmbeddings = new Array();
-
-    let flag = 1;
-    for (let box of targetBoxes) {
-      this.canvasContext.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
-      this.canvasContext.drawImage(targetSource, box[0], box[2],
-                                   box[1]-box[0], box[3]-box[2], 0, 0,
-                                   this.canvasElement.width,
-                                   this.canvasElement.height);
-      this.prepareInputTensor(this.inputTensor, this.canvasElement);
-//      console.log(`inputTensor: ${this.inputTensor}`);
-      await this.model.compute(this.inputTensor, this.outputTensor);
-      let embedding = Float32Array.from(this.outputTensor[0]);
-//      console.log(`target: ${embedding}`);
-      let [...normEmbedding] = this.normalization(embedding);
-      targetEmbeddings.push(normEmbedding);
-      targetResults.push(flag++);
-    }
-
-    for (let box of searchBoxes) {
-      this.canvasContext.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
-      this.canvasContext.drawImage(searchSource, box[0], box[2],
-                                   box[1]-box[0], box[3]-box[2], 0, 0,
-                                   this.canvasElement.width,
-                                   this.canvasElement.height);
-      this.prepareInputTensor(this.inputTensor, this.canvasElement);
-//      console.log(`inputTensor: ${this.inputTensor}`);
-      await this.model.compute(this.inputTensor, this.outputTensor);
-      let embedding = Float32Array.from(this.outputTensor[0]);
-//      console.log(`search: ${embedding}`);
-      let [...normEmbedding] = this.normalization(embedding);
-      searchEmbeddings.push(normEmbedding);
-      searchResults.push('X');
-    }
-
-    let distanceMap = new Map();
-    for (let i in targetEmbeddings) {
-      for (let j in searchEmbeddings) {
-        let distance = this.getDistance(targetEmbeddings[i], searchEmbeddings[j]);
-        if (!distanceMap.has(j)) distanceMap.set(j, new Map());
-        distanceMap.get(j).set(i, distance);
-      }
-    }
-
-    for (let key1 of distanceMap.keys()) {
-      let num = null;
-      let minDis = null;
-      for (let [key2, value2] of distanceMap.get(key1).entries()) {
-        if (minDis == null) {
-          num = key2;
-          minDis = value2;
-        } else {
-          if (minDis > value2) {
-            num = key2;
-            minDis = value2;
-          }
-        }
-      }
-
-      if (searchResults[key1] === 'X' && minDis < this.threshold) {
-        searchResults[key1] = parseInt(num) + 1;
-      }
-    }
-
-    let elapsed = performance.now() - start;
-    console.log(`Face Recognition Inference time: ${elapsed.toFixed(2)} ms`);
-
-    return {
-      target: targetResults,
-      search: searchResults,
-      time: elapsed.toFixed(2)
-    };
-  }
-*/
   async loadRawModel(modelUrl) {
     let arrayBuffer = await this.loadUrl(modelUrl, true, true);
     let bytes = new Uint8Array(arrayBuffer);
@@ -342,6 +293,8 @@ class Utils {
     let imageC = 4; // NHWC -- RGBA
     let channelScheme = this.preOptions.channelScheme;
     let dataFormat = this.preOptions.format;
+    let mean = this.preOptions.mean;
+    let std = this.preOptions.std;
 
     if (canvas.width !== W || canvas.height !== H) {
       throw new Error(`canvas.width(${canvas.width}) is not ${W} or canvas.height(${canvas.height}) is not ${H}`);
@@ -349,8 +302,6 @@ class Utils {
 
     let context = canvas.getContext('2d');
     let pixels = context.getImageData(0, 0, W, H).data;
-    let mean = [0, 0, 0];
-    let std = [1, 1, 1];
 
     if (dataFormat === 'NHWC') {
       if (channelScheme === 'RGB') {

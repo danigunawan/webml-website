@@ -10,8 +10,13 @@ $(document).ready(() => {
     fpsToggle(false);
   }
 
+  let models = {
+    faceDetection: faceDetectionModels,
+    faceRecognition: faceRecognitionModels
+  };
+
   updateTitle('Face Recognition', ub, up, um);
-//  constructModelTable(faceRecognitionModels);
+  constructModelTable(models, true);
 
   targetInputElement.addEventListener('change', (e) => {
     let files = e.target.files;
@@ -46,8 +51,6 @@ $(document).ready(() => {
     utilsPredictCamera(cameraImageElement);
   }, false);
 
-  $('#facenet_OpenVino').attr('checked', 'checked');
-  $('#l-facenet_OpenVino').addClass('checked');
   $('#targetInput').hide();
   $('#searchInput').hide();
   $('#cameraImageInput').hide();
@@ -72,7 +75,7 @@ $(document).ready(() => {
 
 $(window).load(() => {
   if (um === 'none') {
-    showError('No model selected', 'Please select a model to start prediction.');
+    showError('No model selected', 'Please select face detection and face recognition models to start prediction.');
     return;
   }
   main(us === 'camera');

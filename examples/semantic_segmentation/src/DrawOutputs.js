@@ -140,6 +140,7 @@ class Renderer {
     this.drawOutputs(this._segMap);
   }
 
+
   async setup() {
 
     //
@@ -209,11 +210,60 @@ class Renderer {
         this._setupFillShader();
         this._setupBlendShader();
       } break;
+      case 'bc': {
+        this._setupExtractShader();
+        this._setupBCShader();
+        // this._setupImageShader();
+        this._setupBlendShader();
+      } break;
       default: {
         console.warn('Unknown effect');
       }
     }
     // this.utils.freeze();
+  }
+
+  _setupBCShader() {
+
+    const vs =
+      `#version 300 es
+      in vec4 a_pos;
+      out vec2 v_texcoord;
+
+      void main() {
+        gl_Position = a_pos;
+        v_texcoord = a_pos.xy * vec2(0.5, 0.5) + 0.5;
+      }`;
+
+    const fs =
+      `#version 300 es
+      precision highp float;
+
+      in vec2 v_texcoord;
+      out vec4 out_color;
+      uniform vec4 fill_color;
+
+      void main() {
+        // solid color background
+        out_color = fill_color;
+    }`;
+
+    this.textRenderer = new VRTextRenderer();
+    
+
+    this.shaders.bc = this.textRenderer.render(projectionMat, modelViewMat, textMatrix, 'China');
+    this.shaders.bc.use();
+    // set solid color in fill shader
+    // const fillColor = this._bgColor.map(x => x / 255);
+    // this.shaders.bc.set4f('fill_color', ...[255, 0, 0], 0.2);
+
+    this.utils.createTexInFrameBuffer('styledBg',
+      [{
+        name: 'styledBg',
+        width: this._clippedSize[0] * this._zoom,
+        height: this._clippedSize[1] * this._zoom,
+      }]
+    );
   }
 
   _setupColorizeShader() {
@@ -384,6 +434,8 @@ class Renderer {
         v_texcoord = a_pos.xy * vec2(0.5, 0.5) + 0.5;
       }`;
 
+      
+
     const fs =
       `#version 300 es
       precision highp float;
@@ -466,13 +518,7 @@ class Renderer {
     const fillColor = this._bgColor.map(x => x / 255);
     this.shaders.fill.set4f('fill_color', ...fillColor, 1);
 
-    this.utils.createTexInFrameBuffer('styledBg',
-      [{
-        name: 'styledBg',
-        width: this._clippedSize[0] * this._zoom,
-        height: this._clippedSize[1] * this._zoom,
-      }]
-    );
+ 
   }
 
   _setupImageShader() {
@@ -796,7 +842,13 @@ class Renderer {
         currShader.use();
         this.utils.bindFramebuffer('styledBg');
         this.utils.render();
-      }
+      } break;
+      case 'bc': {
+        currShader = this.shaders.bc;
+        currShader.use();
+        this.utils.bindFramebuffer('styledBg');
+        this.utils.render();
+      } break;
     }
 
     // feed into blend shader
