@@ -69,7 +69,7 @@ $(document).ready(() => {
   });
 
   $('#fullscreen i svg').click(() => {
-    $('#canvasshow').toggleClass('fullscreen');
+    $('#cameraShow').toggleClass('fullscreen');
   });
 });
 
@@ -79,23 +79,11 @@ $(window).load(() => {
     return;
   }
   // Check if "+" shows in URL for dual models
-  console.log(um.indexOf(' '))
-  console.log(um.indexOf('+'))
-  if(um.indexOf(' ') < 0 && um.indexOf('+') < 0) { 
-    let modelClasss = getModelClasss();
-    let seatModelClass = $('#' + um).parent().parent().attr('id');
-    if (modelClasss.length <= 1) {
-      let umArray;
-      if (um.includes('+')) {
-        umArray = um.split('+');
-      } else if (um.includes(' ')) {
-        umArray = um.split(' ');
-      }
-      if (modelClasss.length !== umArray.length) {
-        showError('Not enough selected models', 'Please select ' + modelClasss.length + ' kinds of models to start prediction.');
-        return;
-      }
-    }
+  let modelClasss = getModelClasss();
+  let seatModelClass = $('#' + um).parent().parent().attr('id');
+  if(um.indexOf(' ') < 0 && um.indexOf('+') < 0 && modelClasss.length > 1) { 
+    showError('Not enough selected models', 'Please select ' + modelClasss.length + ' kinds (detection and recognition) of models to start prediction.');
+    return;
   } else {
     main(us === 'camera');
   }

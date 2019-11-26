@@ -107,6 +107,7 @@ var VRTextRenderer = (function() {
   function linkProgram(gl, vertexSource, fragmentSource, attribLocationMap) {
     // No error checking for brevity.
     var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+    
     gl.shaderSource(vertexShader, vertexSource);
     gl.compileShader(vertexShader);
 
